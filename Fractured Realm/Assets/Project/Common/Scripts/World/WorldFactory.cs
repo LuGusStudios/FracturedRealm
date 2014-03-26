@@ -8,7 +8,9 @@ namespace FR
 	{
 		NONE,
 		FOREST,
-		DESERT
+		DESERT,
+		FIRE,
+		ICE
 	}
 }
 

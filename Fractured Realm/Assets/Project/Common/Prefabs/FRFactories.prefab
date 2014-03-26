@@ -8,6 +8,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400000}
+  - 114: {fileID: 11400000}
+  - 114: {fileID: 11400002}
   m_Layer: 0
   m_Name: FRFactories
   m_TagString: Untagged
@@ -26,6 +28,50 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6ed7a09893da4ef285b1fad73d9a2b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Numerators:
+  - {fileID: 11400002, guid: db6f3b882c1b83d4682c3c75f6678597, type: 2}
+  - {fileID: 11400002, guid: 907a7a064c2dd524abd133134cf9b0c9, type: 2}
+  - {fileID: 11400000, guid: ace42c793bc57e14f827ef81f5b41321, type: 2}
+  - {fileID: 11400000, guid: 880f148eda83ac74f862ebc66264b9d2, type: 2}
+  - {fileID: 11400002, guid: c69f28c458d298b48b83912d4bc16320, type: 2}
+  - {fileID: 11400002, guid: af861871efabe4c489d4368fefed3c1e, type: 2}
+  Denominators:
+  - {fileID: 11400002, guid: cdb50ae297d024446ae9454fdbc3dc21, type: 2}
+  - {fileID: 11400002, guid: ef1b0c78fa3d787409c00cfd431da4ee, type: 2}
+  - {fileID: 11400000, guid: 4bd72cc8fe336584db900a045d3bb738, type: 2}
+  - {fileID: 11400000, guid: 83cc50baa5be1014fa6656f3d1f447cd, type: 2}
+  - {fileID: 11400002, guid: c3e799dacff90ad4ebf702b8d8292ce4, type: 2}
+  - {fileID: 11400002, guid: 2886738899a5c5343b342e2ea9846be4, type: 2}
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08ac408b4fcc24b69835ea6b31bd80d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldTypes: 0100000002000000
+  worldTemplates:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 70e565b2894ed4606ab445c242ee868c, type: 2}
+  - {fileID: 11400000, guid: 59d33c9f954b9489491403e3588cf231, type: 2}
+  debug_initialFractions: []
+  test: 5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -197,6 +197,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400022}
+  - 114: {fileID: 11400000}
   m_Layer: 0
   m_Name: Desert_A_Numerator
   m_TagString: Untagged
@@ -333,7 +334,7 @@ Transform:
   m_GameObject: {fileID: 100018}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -2.27161598, z: -2.92192173}
-  m_LocalScale: {x: 94.001709, y: 1, z: 18.7172108}
+  m_LocalScale: {x: 94.001709, y: 1, z: 30.4628944}
   m_Children: []
   m_Father: {fileID: 400022}
 --- !u!4 &400020
@@ -343,8 +344,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100020}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 3.77723217}
-  m_LocalScale: {x: 28.4734154, y: 2.25, z: 1}
+  m_LocalPosition: {x: 0, y: 3.79736304, z: 3.77723217}
+  m_LocalScale: {x: 28.4734154, y: 2.65096211, z: 1}
   m_Children: []
   m_Father: {fileID: 400022}
 --- !u!4 &400022
@@ -716,6 +717,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3.90707779, y: 6.96096706, z: 1.5480386}
   m_Center: {x: -.961952209, y: 2.98048353, z: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2c57505af3014fa499d3f7e453020d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
