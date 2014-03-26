@@ -5,6 +5,10 @@ public class LugusCamera
 {
 	protected static Camera _frontCamera = null;
 	protected static Camera _gameCamera = null;
+
+	
+	protected static Camera _numeratorCamera = null;
+	protected static Camera _denominatorCamera = null;
 	
 	public static Camera front
 	{
@@ -36,6 +40,30 @@ public class LugusCamera
 	{
 		get{ return front; } 
 	}
+
+	
+	public static Camera numerator
+	{
+		get
+		{
+			if( _numeratorCamera == null )
+				_numeratorCamera = GameObject.Find("CameraHigh").camera;
+			
+			return _numeratorCamera;
+		}
+	}
+	
+	public static Camera denominator
+	{
+		get
+		{
+			if( _denominatorCamera == null )
+				_denominatorCamera = GameObject.Find("CameraLow").camera;
+			
+			return _denominatorCamera;
+		}
+	}
+
 }
 
 public static class LugusCameraExtensions
