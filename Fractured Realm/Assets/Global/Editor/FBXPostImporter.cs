@@ -14,6 +14,8 @@ class FBXPostprocessor : AssetPostprocessor
 		mi.importMaterials = false;
 		
 		mi.generateSecondaryUV = true;
+
+        mi.animationType = ModelImporterAnimationType.None;
 		
 		Debug.Log ("Model post processed " + mi.assetPath);
     }
