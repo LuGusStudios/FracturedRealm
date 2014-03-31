@@ -24,8 +24,11 @@ public class ObjectBehavior : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                iTween.PunchScale(hit.collider.gameObject, new Vector3(scaleBy, scaleBy, scaleBy), .6f);
-                Debug.Log(hit.collider.gameObject.name);
+                if (hit.collider.gameObject.name == this.gameObject.name)
+                {
+                    iTween.PunchScale(hit.collider.gameObject, new Vector3(scaleBy, scaleBy, scaleBy), .6f);
+                    Debug.Log(hit.collider.gameObject.name);
+                }
             }
         }
 	}
