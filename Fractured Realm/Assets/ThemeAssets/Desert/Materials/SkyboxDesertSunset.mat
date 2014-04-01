@@ -52,7 +52,7 @@ Material:
         first:
           name: _UpTex
         second:
-          m_Texture: {fileID: 2800000, guid: cae480192c29fab4caf5b5957cd2061a, type: 3}
+          m_Texture: {fileID: 2800000, guid: 785c9266f755ff54f901131443707f30, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
