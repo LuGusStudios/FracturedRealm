@@ -34,7 +34,10 @@ public class FRCamera : MonoBehaviour
 			LugusCamera.denominator.fieldOfView = 30;
 			LugusCamera.denominator.rect = new Rect(0, 0, 1, 0.5f);
 			LugusCamera.denominator.transform.position = new Vector3(0,-200, -10.0f);
+
+            SetCharactersPosition(4f);
 		}
+
 		else if( mode == Mode.Numerator )
 		{
 			LugusCamera.numerator.gameObject.SetActive(true);
@@ -53,7 +56,10 @@ public class FRCamera : MonoBehaviour
 
 
 			LugusCamera.denominator.gameObject.SetActive(false);
+
+            SetCharactersPosition(2f);
 		}
+
 		else if( mode == Mode.Denominator )
 		{
 			LugusCamera.denominator.gameObject.SetActive(true);
@@ -63,16 +69,24 @@ public class FRCamera : MonoBehaviour
 
 
 			LugusCamera.numerator.gameObject.SetActive(false);
+
+            SetCharactersPosition(2f);
 		}
 	}
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    void SetCharactersPosition(float zPosition)
+    {
+        Character[] characters = GameObject.FindObjectsOfType<Character>();
+
+        if (characters.Length < 1)
+        {
+            Debug.LogWarning("FRCamera: Couldn't find any characters in the scene");
+            return;
+        }
+
+        foreach (Character character in characters)
+        {
+            character.transform.position = new Vector3(character.transform.position.x, character.transform.position.y, zPosition);
+        }
+    }
 }
