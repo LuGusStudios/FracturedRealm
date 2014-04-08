@@ -78,31 +78,6 @@ public class DebugByTaps : MonoBehaviour
 		if( !LugusDebug.debug )
 			return;
 
-		GUILayout.BeginArea( new Rect(Screen.width - 200, 0, 200, Screen.height) );
-
-		List<string> levels = new List<string>();  
-		levels.Add( "DanceBuilder" );
-		levels.Add( "e02_argentina" ); 
-		levels.Add( "FroggerBuilder" );
-		levels.Add( "PacmanBuilder" );
-		levels.Add( "RunnerBuilder" );  
-		levels.Add( "DartsBuilder" ); 
-
-		foreach( string level in levels )
-		{
-			if( GUILayout.Button( "" + level) )
-			{
-				Application.LoadLevel( level );
-			}
-
-			if( Screen.height > 1000 )
-			{
-				GUILayout.Space( 20 );
-			}
-		}
-
-		GUILayout.EndArea();
-
 		DrawFPS();
 	}
 

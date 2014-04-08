@@ -31,12 +31,19 @@ public class Button : MonoBehaviour
 	// Use this for initialization
 	void Awake () 
 	{
-		if( inactiveTexture == null )
-			inactiveTexture = (Texture2D) renderer.material.mainTexture;
+		if( this.renderer != null )
+		{
+			if( inactiveTexture == null )
+				inactiveTexture = (Texture2D) renderer.material.mainTexture;
+			else
+			{
+				if( changeTextures )
+					renderer.material.mainTexture = inactiveTexture;
+			}
+		}
 		else
 		{
-			if( changeTextures )
-				renderer.material.mainTexture = inactiveTexture;
+			changeTextures = false;
 		}
 		
 		if( originalScale == Vector3.zero )

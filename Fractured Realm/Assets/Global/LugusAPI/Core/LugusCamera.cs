@@ -14,8 +14,8 @@ public class LugusCamera
 	{
 		get
 		{
-            if (_frontCamera == null && GameObject.Find ("GUICamera") != null )
-                _frontCamera = GameObject.Find("GUICamera").camera;
+            if (_frontCamera == null && GameObject.Find ("UICamera") != null )
+                _frontCamera = GameObject.Find("UICamera").camera;
 			
 			if( _frontCamera == null )
 				_frontCamera = game;
@@ -47,7 +47,7 @@ public class LugusCamera
 		get
 		{
 			if( _numeratorCamera == null )
-				_numeratorCamera = GameObject.Find("CameraHigh").camera;
+				_numeratorCamera = GameObject.Find("FRCameras").transform.FindChild("CameraHigh").camera;
 			
 			return _numeratorCamera;
 		}
@@ -58,7 +58,7 @@ public class LugusCamera
 		get
 		{
 			if( _denominatorCamera == null )
-				_denominatorCamera = GameObject.Find("CameraLow").camera;
+				_denominatorCamera = GameObject.Find("FRCameras").transform.FindChild("CameraLow").camera;//GameObject.Find("CameraLow").camera;
 			
 			return _denominatorCamera;
 		}
