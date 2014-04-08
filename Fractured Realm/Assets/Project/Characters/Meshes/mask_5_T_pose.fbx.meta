@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 6631b17a2a07bae40a32b2338a68f158
 ModelImporter:
-  serializedVersion: 16
+  serializedVersion: 15
   fileIDToRecycleName:
     100000: body
     100002: facial_rig_baseCurve10
@@ -311,6 +311,36 @@ ModelImporter:
     400302: root_controller 1
     400304: Spine
     400306: spine_controller
+    2300000: body
+    2300002: kilt2
+    2300004: mask_5_face_rig_brokenface
+    2300006: mask_5_face_rig_face
+    2300008: mask_5_face_rig_hair
+    2300010: mask_5_face_rig_left_brow
+    2300012: mask_5_face_rig_polySurface24
+    2300014: mask_5_face_rig_polySurface25
+    2300016: mask_5_face_rig_polySurface26
+    2300018: mask_5_face_rig_polySurface27
+    2300020: mask_5_face_rig_polySurface28
+    2300022: mask_5_face_rig_polySurface31
+    2300024: mask_5_face_rig_polySurface32
+    2300026: mask_5_face_rig_polySurface33
+    2300028: mask_5_face_rig_right_brow
+    3300000: body
+    3300002: kilt2
+    3300004: mask_5_face_rig_brokenface
+    3300006: mask_5_face_rig_face
+    3300008: mask_5_face_rig_hair
+    3300010: mask_5_face_rig_left_brow
+    3300012: mask_5_face_rig_polySurface24
+    3300014: mask_5_face_rig_polySurface25
+    3300016: mask_5_face_rig_polySurface26
+    3300018: mask_5_face_rig_polySurface27
+    3300020: mask_5_face_rig_polySurface28
+    3300022: mask_5_face_rig_polySurface31
+    3300024: mask_5_face_rig_polySurface32
+    3300026: mask_5_face_rig_polySurface33
+    3300028: mask_5_face_rig_right_brow
     4300000: body
     4300002: mask_5_face_rig_brokenface
     4300004: mask_5_face_rig_face
@@ -392,6 +422,5 @@ ModelImporter:
     feetSpacing: 0
     rootMotionBoneName: Hips
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
-  additionalBone: 1
+  animationType: 0
   userData: 
