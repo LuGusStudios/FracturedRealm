@@ -70,7 +70,7 @@ public class OperationVisualizerMultiply : IOperationVisualizer
 			Runner.transform.eulerAngles = new Vector3(0, 230, 0);
 			Runner.transform.position = Starter.Numerator.transform.position;
 			
-			Runner.GetComponent<Animator>().SetBool("Running", true); 
+			Runner.GetComponent<Animator>().SetBool("running", true); 
 			Runner.gameObject.MoveTo( Receiver.Numerator.transform.position ).Time (2.0f).Execute();
 		
 		
@@ -127,7 +127,7 @@ public class OperationVisualizerMultiply : IOperationVisualizer
 			Runner.transform.eulerAngles = new Vector3(0, 230, 0);
 			Runner.transform.position = Starter.Denominator.transform.position;
 			
-			Runner.GetComponent<Animator>().SetBool("Running", true);
+			Runner.GetComponent<Animator>().SetBool("running", true);
 			Runner.gameObject.MoveTo( Receiver.Denominator.transform.position ).Time (2.0f).Execute();
 		
 		

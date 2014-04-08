@@ -33,16 +33,16 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 		//OLD: current.StopFraction.Numerator.Renderer.interactionCharacter.GetComponent<Animator>().FireBool("TurnRight");
 		//OLD: current.StopFraction.Denominator.Renderer.interactionCharacter.GetComponent<Animator>().FireBool("TurnRight");
 		
-		Smallest.AnimationFireBool(FR.Target.BOTH, "TurnRight");
+		Smallest.AnimationFireBool(FR.Target.BOTH, "turnRight");
 		
 		//OLD: yield return Stop.Numerator.StartCoroutine( Stop.AnimationWaitForState(Stop.Numerator.interactionCharacter, "Base Layer.Idle") );
-		yield return WaitForAnimationState.New(Smallest.Numerator.interactionCharacter, "Base Layer.Idle");
+		yield return WaitForAnimationState.New(Smallest.Numerator.interactionCharacter, "Base Layer.idle");
 		
 		Smallest.Numerator.transform.eulerAngles -= new Vector3(0, 30, 0);
 		Smallest.Denominator.transform.eulerAngles -= new Vector3(0, 30, 0);
 		
 		//OLD: current.StopFraction.Numerator.Renderer.interactionCharacter.GetComponent<Animator>().FireBool("CastFireball");
-		Smallest.AnimationFireBool(FR.Target.NUMERATOR, "CastFireball");
+		Smallest.AnimationFireBool(FR.Target.NUMERATOR, "castFireball");
 		
 		yield return new WaitForSeconds(1.0f);
 		
@@ -113,7 +113,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 			{
 				firstTime = false;
 				
-				Biggest.AnimationFireBool(FR.Target.BOTH, "TurnLeft");
+				Biggest.AnimationFireBool(FR.Target.BOTH, "turnLeft");
 				
 				yield return WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
 				
@@ -174,7 +174,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 		yield return WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
 		
 		Debug.Log ("OperationVisualizerSubtract : finished 1  :turning right");
-		Biggest.AnimationFireBool(FR.Target.BOTH, "TurnRight");
+		Biggest.AnimationFireBool(FR.Target.BOTH, "turnRight");
 		yield return WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
 	
 		
