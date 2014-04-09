@@ -47,7 +47,7 @@ public class NumberAnimator : MonoBehaviour
 	
 	public IEnumerator TurnLeftRoutine()
 	{
-		yield return StartCoroutine( SetBool("TurnLeft") );
+		yield return StartCoroutine( SetBool("turnLeft") );
 	}
 	
 	public IEnumerator CastFireballRoutine()
@@ -136,7 +136,7 @@ public class NumberAnimator : MonoBehaviour
         {
             if (!animator.IsInTransition(0))
             {
-                animator.SetBool("TurnRight", false);
+                animator.SetBool("turnRight", false);
             }
         }
 

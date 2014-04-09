@@ -19,7 +19,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 	public void Start()
 	{
 		// TODO: CHANGE!
-		CreateWorld(FR.WorldType.FOREST);
+		CreateWorld(FR.WorldType.DESERT);
 		
 	}
 	
@@ -74,7 +74,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 			GameObject.DestroyImmediate( WORLD );
 			
 		WORLD = new GameObject("WORLD");
-		WORLD.transform.position = new Vector3(2000, 0, 0);
+		WORLD.transform.position = new Vector3(0, 0, 0);
 		
 		World world = WORLD.AddComponent<World>();
 		world.numerator = (WorldPart) GameObject.Instantiate( worldTemplates[ index ] );
@@ -83,8 +83,8 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		world.numerator.transform.parent = WORLD.transform;
 		world.denominator.transform.parent = WORLD.transform;
 		
-		world.numerator.transform.localPosition = new Vector3(0, 2000, 0);
-		world.denominator.transform.localPosition = new Vector3(0, 0, 0);
+		world.numerator.transform.position   = new Vector3(LugusCamera.numerator.transform.position.x, LugusCamera.numerator.transform.position.y, LugusCamera.numerator.transform.position.z + 15.0f);
+		world.denominator.transform.position = new Vector3(LugusCamera.denominator.transform.position.x, LugusCamera.denominator.transform.position.y,  LugusCamera.denominator.transform.position.z + 15.0f);
 		
 		Fraction fr = new Fraction(fractions[0].Numerator.Value, fractions[0].Denominator.Value); 
 		
@@ -123,8 +123,8 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		c.transform.position = world.denominator.SpawnRight.position;
 		*/
 		
-		LugusCamera.numerator.transform.position = world.numerator.transform.position + new Vector3(512, 192, -300);
-		LugusCamera.denominator.transform.position = world.denominator.transform.position + new Vector3(512,192,-300);
+		//LugusCamera.numerator.transform.position = world.numerator.transform.position + new Vector3(512, 192, -300);
+		//LugusCamera.denominator.transform.position = world.denominator.transform.position + new Vector3(512,192,-300);
 		
 		return world;
 	}

@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: e8b1c2c56f1670646b522d0cb373e295
 ModelImporter:
-  serializedVersion: 16
+  serializedVersion: 15
   fileIDToRecycleName:
     100000: body
     100002: facial_rig_baseCurve10
@@ -263,6 +263,24 @@ ModelImporter:
     400254: root_controller
     400256: Spine
     400258: spine_controller
+    2300000: body
+    2300002: kilt2
+    2300004: pasted__hair
+    2300006: pasted__polySurface24
+    2300008: pasted__polySurface26
+    2300010: pasted__polySurface28
+    2300012: polySurface4
+    2300014: polySurface5
+    2300016: polySurface6
+    3300000: body
+    3300002: kilt2
+    3300004: pasted__hair
+    3300006: pasted__polySurface24
+    3300008: pasted__polySurface26
+    3300010: pasted__polySurface28
+    3300012: polySurface4
+    3300014: polySurface5
+    3300016: polySurface6
     4300000: body
     4300002: kilt2
     4300004: polySurface4
@@ -332,6 +350,5 @@ ModelImporter:
     feetSpacing: 0
     rootMotionBoneName: Hips
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
-  additionalBone: 1
+  animationType: 0
   userData: 

@@ -149,9 +149,10 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 			//renderer.Characters[1] = (Character) GameObject.Instantiate( pool[ number.ValuePast6 - 1 ] );
 			
 			renderer.Characters[1] = renderer.Characters[0];
-			renderer.Characters[1].transform.position += new Vector3(0, 140, 0);
+			renderer.Characters[1].transform.position += new Vector3(0, 3.5f, 0);
 			renderer.Characters[1].transform.localScale /= 2.0f;
-			renderer.Characters[1].GetComponent<Animator>().SetBool("Floating", true);
+			renderer.Characters[1].GetComponent<Animator>().SetBool("float", true); // TODO: make floating a looping state!
+			renderer.Characters[1].GetComponent<Animator>().SetTrigger("float");
 			renderer.Characters[1].ShowBody(false);
 			
 			

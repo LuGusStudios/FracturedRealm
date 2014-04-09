@@ -22,14 +22,14 @@ public class OperationVisualizerAdd : IOperationVisualizer
 		FractionRenderer Receiver = current.StopFraction.Renderer;
 		
 		
-		Runner.AnimationFireBool(FR.Target.BOTH, "TurnLeft");
+		Runner.AnimationFireBool(FR.Target.BOTH, "turnLeft");
 		
-		yield return WaitForAnimationState.New( Runner.Numerator.interactionCharacter, "Base Layer.Idle");
+		yield return WaitForAnimationState.New( Runner.Numerator.interactionCharacter, "Base Layer.idle");
 		
 		Runner.Numerator.transform.eulerAngles = new Vector3(0, 30, 0);
 		Runner.Denominator.transform.eulerAngles = new Vector3(0, 30, 0);
 			
-		Runner.AnimationSetBool(FR.Target.BOTH, "Running", true);
+		Runner.AnimationSetBool(FR.Target.BOTH, "running", true);
 		
 		Runner.Numerator.gameObject.MoveTo( Receiver.Numerator.transform.position ).Time (2.0f).Execute();
 		Runner.Denominator.gameObject.MoveTo( Receiver.Denominator.transform.position ).Time (2.0f).Execute();

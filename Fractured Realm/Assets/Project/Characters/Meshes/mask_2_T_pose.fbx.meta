@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: ecea3bd2012121848b938781b726a1b7
 ModelImporter:
-  serializedVersion: 16
+  serializedVersion: 15
   fileIDToRecycleName:
     100000: body
     100002: Brow_left
@@ -257,6 +257,22 @@ ModelImporter:
     400248: spine_controller
     400250: veer_left1
     400252: veer_right
+    2300000: body
+    2300002: Brow_left
+    2300004: Brow_right
+    2300006: hair1
+    2300008: kilt2
+    2300010: Mask
+    2300012: veer_left1
+    2300014: veer_right
+    3300000: body
+    3300002: Brow_left
+    3300004: Brow_right
+    3300006: hair1
+    3300008: kilt2
+    3300010: Mask
+    3300012: veer_left1
+    3300014: veer_right
     4300000: Mask
     4300002: hair1
     4300004: Brow_right
@@ -324,6 +340,5 @@ ModelImporter:
     feetSpacing: 0
     rootMotionBoneName: Hips
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
-  additionalBone: 1
+  animationType: 0
   userData: 

@@ -32,25 +32,25 @@ public static class AnimationControllerExtensions
 	}
 
 	
-	public static void RepositionRadially(this UnityEditorInternal.AnimatorController ac)
+	public static void RepositionRadially(this UnityEditorInternal.AnimatorController ac, bool recursive = true)
 	{
 		int layerCount = ac.layerCount;
 		for( int i = layerCount - 1; i >= 0; --i )
 		{
-			ac.GetLayer(i).stateMachine.RepositionRadially();
+			ac.GetLayer(i).stateMachine.RepositionRadially(recursive);
 		}
 	}
 	
-	public static void RepositionVertically(this UnityEditorInternal.AnimatorController ac)
+	public static void RepositionVertically(this UnityEditorInternal.AnimatorController ac, bool recursive = true)
 	{
 		int layerCount = ac.layerCount;
 		for( int i = layerCount - 1; i >= 0; --i )
 		{
-			ac.GetLayer(i).stateMachine.RepositionVertically();
+			ac.GetLayer(i).stateMachine.RepositionVertically(recursive);
 		}
 	}
 	
-	public static void RepositionRadially(this UnityEditorInternal.StateMachine sm)
+	public static void RepositionRadially(this UnityEditorInternal.StateMachine sm, bool recursive = true)
 	{
 		int stateCount = sm.stateCount;
 		int machineCount = sm.stateMachineCount;
@@ -71,11 +71,16 @@ public static class AnimationControllerExtensions
 		// position is around center point (up is negative y, below is positve y, left is negative x, right is positive x)
 
 
-		sm.anyStatePosition = new Vector3(0,0,0);
+		//sm.anyStatePosition = new Vector3(0,0,0);
 
 		int i = 0;
 		for( i = 0; i < stateCount; ++i )
 		{
+			if( sm.GetState(i).name == "idle" )
+			{
+				continue;
+			}
+
 			angle = currentCount * angleIncrement;
 			if( radiusFrom )
 				radius = radiusRange.from;
@@ -100,7 +105,9 @@ public static class AnimationControllerExtensions
 			
 			float cos = Mathf.Cos( Mathf.Deg2Rad * angle ) ;
 			sm.SetStateMachinePosition(i, new Vector3( (radius * cos) + (cos * itemWidth), radius * Mathf.Sin( Mathf.Deg2Rad * angle ), 0.0f ) );
-			sm.GetStateMachine(i).RepositionRadially();
+
+			if( recursive )
+				sm.GetStateMachine(i).RepositionRadially();
 
 			radiusFrom = !radiusFrom;
 			++currentCount;
@@ -110,7 +117,7 @@ public static class AnimationControllerExtensions
 
 	}
 	
-	public static void RepositionVertically(this UnityEditorInternal.StateMachine sm)
+	public static void RepositionVertically(this UnityEditorInternal.StateMachine sm, bool recursive = true)
 	{
 		int stateCount = sm.stateCount;
 		int machineCount = sm.stateMachineCount;
@@ -124,11 +131,16 @@ public static class AnimationControllerExtensions
 
 		int currentCount = 0;
 
-		sm.anyStatePosition = new Vector3(0,0,0);
+		//sm.anyStatePosition = new Vector3(0,0,0);
 		
 		int i = 0;
 		for( i = 0; i < stateCount; ++i )
 		{
+			if( sm.GetState(i).name == "idle" )
+			{
+				continue;
+			}
+
 			sm.GetState(i).position = new Vector3( itemWidth, topStart + (currentCount * itemHeight * 1.5f), 0.0f );
 
 			++currentCount;
@@ -137,7 +149,9 @@ public static class AnimationControllerExtensions
 		for( i = 0; i < machineCount; ++i )
 		{
 			sm.SetStateMachinePosition(i, new Vector3( itemWidth, topStart + (currentCount * itemHeight * 1.5f), 0.0f) );
-			sm.GetStateMachine(i).RepositionVertically();
+
+			if( recursive )
+				sm.GetStateMachine(i).RepositionVertically();
 			
 			++currentCount;
 		}
