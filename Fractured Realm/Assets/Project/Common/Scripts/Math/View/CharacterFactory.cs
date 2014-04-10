@@ -22,12 +22,17 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 	public FractionRenderer CreateRenderer(Fraction fraction)
 	{
 		FractionRenderer rend = new FractionRenderer();
+		FractionAnimator anim = new FractionAnimator();
 		
 		CreateRenderer( fraction.Numerator );
 		CreateRenderer( fraction.Denominator );
-		
+
+
 		rend.Fraction = fraction;
 		fraction.Renderer = rend;
+
+		rend.Animator = anim;
+		anim.Renderer = rend;
 		
 		return rend;
 	}
@@ -123,6 +128,7 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 		
 		GameObject nrGO = new GameObject("NR_" + number.Value);
 		NumberRenderer renderer = nrGO.AddComponent<NumberRenderer>();
+		NumberAnimator animator = nrGO.AddComponent<NumberAnimator>(); 
 		/*
 		renderer.Characters[0] = (Character) GameObject.Instantiate( pool[ number.ValueTo6 - 1 ] );
 		renderer.Characters[0].transform.eulerAngles = new Vector3(0, 180, 0);
@@ -151,8 +157,8 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 			renderer.Characters[1] = renderer.Characters[0];
 			renderer.Characters[1].transform.position += new Vector3(0, 3.5f, 0);
 			renderer.Characters[1].transform.localScale /= 2.0f;
-			renderer.Characters[1].GetComponent<Animator>().SetBool("float", true); // TODO: make floating a looping state!
-			renderer.Characters[1].GetComponent<Animator>().SetTrigger("float");
+			renderer.Characters[1].GetComponent<Animator>().SetBool("floating", true); // TODO: make floating a looping state!
+			renderer.Characters[1].GetComponent<Animator>().SetTrigger("floating");
 			renderer.Characters[1].ShowBody(false);
 			
 			
@@ -210,7 +216,7 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 		
 		// TODO: add actual pooling and re-use of objects!
 		value -= 1; // make it 0-based (use as index)
-		if( value < 0 || value >= pool.Length )
+		if( value < 0 || value >= pool.Length ) 
 		{
 			Debug.LogError("CharacterFactory:CreateCharacter : value is not valid : 0 < " + value + " < " + pool.Length);
 			
@@ -220,6 +226,18 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 		Character newCharacter = (Character) GameObject.Instantiate( pool[ value ] );
 		newCharacter.transform.eulerAngles = new Vector3(0, 180, 0);
 		newCharacter.Value = value;
+
+		/*
+		newCharacter.Animator = newCharacter.GetComponent<CharacterAnimator>();
+		if( newCharacter.Animator == null )
+		{
+			newCharacter.Animator = newCharacter.gameObject.AddComponent<CharacterAnimator>();
+		}
+		*/
+
+		if( newCharacter.Animator == null )
+			newCharacter.gameObject.AddComponent<CharacterAnimator>();
+
 		
 		return newCharacter;
 	}

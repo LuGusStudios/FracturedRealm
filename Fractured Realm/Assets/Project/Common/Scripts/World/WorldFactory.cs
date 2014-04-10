@@ -128,6 +128,24 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		
 		return world;
 	}
+
+	public void CreateFractions(Fraction[] fractions)
+	{
+		Fraction fr = new Fraction(fractions[0].Numerator.Value, fractions[0].Denominator.Value); 
+		
+		FractionRenderer frr = CharacterFactory.use.CreateRenderer( fr );
+		frr.Numerator.transform.position = new Vector3(0,0,0);
+		if( fractions[0].Denominator.Value != 0 )
+			frr.Denominator.transform.position = new Vector3(0,-5,0);
+		
+		
+		Fraction fr2 = new Fraction(fractions[1].Numerator.Value, fractions[1].Denominator.Value); 
+		
+		FractionRenderer frr2 = CharacterFactory.use.CreateRenderer( fr2 );
+		frr2.Numerator.transform.position = new Vector3(10,0,0);
+		if( fractions[1].Denominator.Value != 0 )
+			frr2.Denominator.transform.position = new Vector3(10,-5,0);
+	}
 	
 	public void FreeWorld(Character character)
 	{

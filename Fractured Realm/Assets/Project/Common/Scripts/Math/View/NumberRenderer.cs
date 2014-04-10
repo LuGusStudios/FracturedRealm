@@ -77,6 +77,12 @@ public class NumberRenderer : MonoBehaviour
 		}
 	}
 	
+	
+	public NumberAnimator Animator
+	{
+		get{ return GetComponent<NumberAnimator>(); }
+	}
+	
 	/*
 	// Use this for initialization
 	void Start () {

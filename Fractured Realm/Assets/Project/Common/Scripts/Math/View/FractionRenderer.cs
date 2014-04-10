@@ -15,7 +15,7 @@ namespace FR
 		NONE = 0,
 		NUMERATOR = 1,
 		DENOMINATOR = 2, 
-		BOTH = 3, // convenience value, same as NUMERATOR | DENOMINATOR. Intended that this is 3 and not a POW
+		BOTH = 3, // convenience value, same as NUMERATOR | DENOMINATOR. Intended that this is 3 and not a POW. Used to indicate the numbers up "above" 6 (the "main interaction characters" in the numbers)
 		
 		// for use when we have a Number with value > 6 
 		// then the NumberRenderer contains 2 characters, of which only one is the "interactor" and the other is the bystander
@@ -49,6 +49,13 @@ public class FractionRenderer
 		// ATTN: important that this be fetched through fraction every time!!!
 		// DO NOT BUFFER, will break much functionality / flexibility
 		get{ return _fraction.Denominator.Renderer; } 
+	}
+
+	protected FractionAnimator _animator = null;
+	public FractionAnimator Animator
+	{
+		get{ return _animator; }
+		set{ _animator = value; }
 	}
 	
 	

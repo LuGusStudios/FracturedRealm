@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-// In a very restricted world, this class should be called NumberRenderer
+// TODO: Should be refactored to CharacterRenderer?
 public class Character : MonoBehaviour 
 {
 	//public Number _number = null;
@@ -40,6 +40,19 @@ public class Character : MonoBehaviour
 	{
 		get{ return _numberRenderer; }
 		set{ _numberRenderer = value; }
+	}
+
+	/*
+	protected CharacterAnimator _animator = null;
+	public CharacterAnimator Animator
+	{
+		get{ return _animator; }
+		set{ _animator = value; }
+	}
+	*/
+	public CharacterAnimator Animator
+	{
+		get{ return GetComponent<CharacterAnimator>(); }
 	}
 	
 	// the actual value this character is rendering

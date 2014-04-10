@@ -716,7 +716,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400166, guid: f844ef6eada771e45b936a6b444c751d, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 9.91318226
+      value: 10.3436518
       objectReference: {fileID: 0}
     - target: {fileID: 400166, guid: f844ef6eada771e45b936a6b444c751d, type: 2}
       propertyPath: m_LocalPosition.y
@@ -778,6 +778,10 @@ Prefab:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: a8666a593ce5a4e8fa2551471aaa9b2c, type: 2}
+    - target: {fileID: 100166, guid: f844ef6eada771e45b936a6b444c751d, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f844ef6eada771e45b936a6b444c751d, type: 2}
   m_RootGameObject: {fileID: 706184681}
@@ -1360,13 +1364,14 @@ GameObject:
   - 95: {fileID: 706184683}
   - 114: {fileID: 706184684}
   - 65: {fileID: 706184685}
+  - 114: {fileID: 706184686}
   m_Layer: 0
   m_Name: Mask01Normal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &706184682
 Transform:
   m_ObjectHideFlags: 0
@@ -1374,7 +1379,7 @@ Transform:
   m_PrefabInternal: {fileID: 429099753}
   m_GameObject: {fileID: 706184681}
   m_LocalRotation: {x: 0, y: .981080472, z: 0, w: -.193600565}
-  m_LocalPosition: {x: 9.91318226, y: 0, z: 0}
+  m_LocalPosition: {x: 10.3436518, y: 0, z: 0}
   m_LocalScale: {x: .370000005, y: .370000005, z: .370000005}
   m_Children:
   - {fileID: 1012170960}
@@ -1421,6 +1426,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.11999989, y: 7.11999989, z: 3.39469647}
   m_Center: {x: 0, y: 3.65000033, z: -.272348762}
+--- !u!114 &706184686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 706184681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8de67d676f93443438710ed55afcc544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &706670231
 GameObject:
   m_ObjectHideFlags: 0
@@ -1475,6 +1491,230 @@ Transform:
   m_Children:
   - {fileID: 1241656820}
   m_Father: {fileID: 901674995}
+--- !u!1001 &724670423
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._numerator._fraction._numerator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._numerator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._numerator._fraction._denominator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._denominator._fraction._numerator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._denominator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._denominator._fraction._denominator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[0]._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._numerator._fraction._numerator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._numerator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._numerator._fraction._denominator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._denominator._fraction._numerator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._denominator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._denominator._fraction._denominator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._numerator._value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._numerator._value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._numerator._fraction._numerator._value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._numerator._fraction._numerator._fraction._numerator._value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._numerator._fraction._denominator._fraction._numerator._value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._denominator._fraction._numerator._value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._denominator._fraction._numerator._fraction._numerator._value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._denominator._fraction._denominator._fraction._numerator._value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._numerator._value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._numerator._fraction._numerator._value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._numerator._fraction._numerator._fraction._numerator._value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._numerator._fraction._denominator._fraction._numerator._value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._denominator._fraction._numerator._value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._denominator._fraction._numerator._fraction._numerator._value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._denominator._fraction._denominator._fraction._numerator._value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._numerator._fraction._numerator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._numerator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._numerator._fraction._denominator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._denominator._fraction._numerator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._denominator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._denominator._fraction._denominator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._numerator._fraction._numerator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._numerator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._numerator._fraction._denominator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._denominator._fraction._numerator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._denominator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._denominator._fraction._denominator._fraction._denominator._value
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+  m_RootGameObject: {fileID: 1918144660}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
 --- !u!1 &738250445
 GameObject:
   m_ObjectHideFlags: 0
@@ -2561,6 +2801,10 @@ Prefab:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: a8666a593ce5a4e8fa2551471aaa9b2c, type: 2}
+    - target: {fileID: 100182, guid: c2125b657bdbac6439a904fdd52d28da, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c2125b657bdbac6439a904fdd52d28da, type: 2}
   m_RootGameObject: {fileID: 1378828796}
@@ -4019,13 +4263,14 @@ GameObject:
   - 95: {fileID: 1378828798}
   - 114: {fileID: 1378828799}
   - 65: {fileID: 1378828800}
+  - 114: {fileID: 1378828801}
   m_Layer: 0
   m_Name: Mask06Normal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1378828797
 Transform:
   m_ObjectHideFlags: 0
@@ -4080,6 +4325,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 10.4952602, y: 7.57521057, z: 5.47794628}
   m_Center: {x: .0828092769, y: 3.87760568, z: -1.31397247}
+--- !u!114 &1378828801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1378828796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8de67d676f93443438710ed55afcc544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1384158250
 GameObject:
   m_ObjectHideFlags: 0
@@ -5456,7 +5712,312 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1911436668}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.1061058, y: 4.10168457, z: -13.9986801}
+  m_LocalPosition: {x: 5.1061058, y: -.770048141, z: -13.9986801}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!1 &1918144660
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+  m_PrefabInternal: {fileID: 724670423}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1918144664}
+  - 114: {fileID: 1918144663}
+  - 114: {fileID: 1918144662}
+  - 114: {fileID: 1918144661}
+  m_Layer: 0
+  m_Name: FRFactories
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1918144661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400004, guid: 30cafdf4131e44c14b412965da496799,
+    type: 2}
+  m_PrefabInternal: {fileID: 724670423}
+  m_GameObject: {fileID: 1918144660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cbe67e63a3094db08755159ef01d429, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectTypes: 01000000020000000300000004000000
+  effects:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &1918144662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799,
+    type: 2}
+  m_PrefabInternal: {fileID: 724670423}
+  m_GameObject: {fileID: 1918144660}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08ac408b4fcc24b69835ea6b31bd80d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldTypes: 01000000020000000300000004000000
+  worldTemplates:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: c9b888f51d9ca46d388770d34ddbd890, type: 2}
+  - {fileID: 11400000, guid: c9b888f51d9ca46d388770d34ddbd890, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  debug_initialFractions:
+  - _numerator:
+      _value: 1
+      _fraction:
+        _numerator:
+          _value: 1
+          _fraction:
+            _numerator:
+              _value: 1
+              _fraction:
+                _numerator:
+                  _value: 1
+                _denominator:
+                  _value: 0
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 0
+              _fraction:
+                _numerator:
+                  _value: 1
+                _denominator:
+                  _value: 0
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 1
+          _renderer: {fileID: 0}
+        _denominator:
+          _value: 0
+          _fraction:
+            _numerator:
+              _value: 1
+              _fraction:
+                _numerator:
+                  _value: 1
+                _denominator:
+                  _value: 0
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 0
+              _fraction:
+                _numerator:
+                  _value: 1
+                _denominator:
+                  _value: 0
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 0
+          _renderer: {fileID: 0}
+      _isNumerator: 1
+      _renderer: {fileID: 0}
+    _denominator:
+      _value: 0
+      _fraction:
+        _numerator:
+          _value: 1
+          _fraction:
+            _numerator:
+              _value: 1
+              _fraction:
+                _numerator:
+                  _value: 1
+                _denominator:
+                  _value: 0
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 0
+              _fraction:
+                _numerator:
+                  _value: 1
+                _denominator:
+                  _value: 0
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 1
+          _renderer: {fileID: 0}
+        _denominator:
+          _value: 0
+          _fraction:
+            _numerator:
+              _value: 1
+              _fraction:
+                _numerator:
+                  _value: 1
+                _denominator:
+                  _value: 0
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 0
+              _fraction:
+                _numerator:
+                  _value: 1
+                _denominator:
+                  _value: 0
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 0
+          _renderer: {fileID: 0}
+      _isNumerator: 0
+      _renderer: {fileID: 0}
+  - _numerator:
+      _value: 10
+      _fraction:
+        _numerator:
+          _value: 10
+          _fraction:
+            _numerator:
+              _value: 10
+              _fraction:
+                _numerator:
+                  _value: 10
+                _denominator:
+                  _value: 0
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 0
+              _fraction:
+                _numerator:
+                  _value: 10
+                _denominator:
+                  _value: 0
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 1
+          _renderer: {fileID: 0}
+        _denominator:
+          _value: 0
+          _fraction:
+            _numerator:
+              _value: 10
+              _fraction:
+                _numerator:
+                  _value: 10
+                _denominator:
+                  _value: 0
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 0
+              _fraction:
+                _numerator:
+                  _value: 10
+                _denominator:
+                  _value: 0
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 0
+          _renderer: {fileID: 0}
+      _isNumerator: 1
+      _renderer: {fileID: 0}
+    _denominator:
+      _value: 0
+      _fraction:
+        _numerator:
+          _value: 10
+          _fraction:
+            _numerator:
+              _value: 10
+              _fraction:
+                _numerator:
+                  _value: 10
+                _denominator:
+                  _value: 0
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 0
+              _fraction:
+                _numerator:
+                  _value: 10
+                _denominator:
+                  _value: 0
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 1
+          _renderer: {fileID: 0}
+        _denominator:
+          _value: 0
+          _fraction:
+            _numerator:
+              _value: 10
+              _fraction:
+                _numerator:
+                  _value: 10
+                _denominator:
+                  _value: 0
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 0
+              _fraction:
+                _numerator:
+                  _value: 10
+                _denominator:
+                  _value: 0
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 0
+          _renderer: {fileID: 0}
+      _isNumerator: 0
+      _renderer: {fileID: 0}
+  test: 5
+--- !u!114 &1918144663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400000, guid: 30cafdf4131e44c14b412965da496799,
+    type: 2}
+  m_PrefabInternal: {fileID: 724670423}
+  m_GameObject: {fileID: 1918144660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6ed7a09893da4ef285b1fad73d9a2b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Numerators:
+  - {fileID: 11400000, guid: f844ef6eada771e45b936a6b444c751d, type: 2}
+  - {fileID: 11400000, guid: a960f57b003184446a9e95a56b0ff848, type: 2}
+  - {fileID: 11400000, guid: 88ab7f4d5fa803f41af104f1f5f2d24e, type: 2}
+  - {fileID: 11400000, guid: 62a11ed2382781d4898d0dc8d30fcb5c, type: 2}
+  - {fileID: 11400000, guid: 0f0d0c30e305b9f4e843ad5d8d80c59a, type: 2}
+  - {fileID: 11400000, guid: c2125b657bdbac6439a904fdd52d28da, type: 2}
+  Denominators:
+  - {fileID: 11400000, guid: 7f3c73ddbae85cd419d977c827fde7de, type: 2}
+  - {fileID: 11400000, guid: dcf30e1ca07ca3244b4911279a3c1d17, type: 2}
+  - {fileID: 11400000, guid: 88d5079160a54424fb6a99d34db1fbe5, type: 2}
+  - {fileID: 11400000, guid: 12821f4267390694ca20092cf7b18edb, type: 2}
+  - {fileID: 11400000, guid: d6402e1b06830cd4aad56e3239daa198, type: 2}
+  - {fileID: 11400000, guid: b5d897e1132591c4eaa15e892918bd64, type: 2}
+--- !u!4 &1918144664
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+  m_PrefabInternal: {fileID: 724670423}
+  m_GameObject: {fileID: 1918144660}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
