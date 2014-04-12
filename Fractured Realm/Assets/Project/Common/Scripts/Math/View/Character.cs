@@ -74,6 +74,8 @@ public class Character : MonoBehaviour
 			transform.FindChild("global_controller1").gameObject.SetActive( show );
 		else if( transform.FindChild("kilt2") )
 			transform.FindChild("kilt2").renderer.enabled = show;
+		else if( transform.FindChild("kilt") )
+			transform.FindChild("kilt").renderer.enabled = show;
 			
 	}
 	

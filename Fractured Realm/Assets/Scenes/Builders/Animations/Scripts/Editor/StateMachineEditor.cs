@@ -223,6 +223,8 @@ public class StateMachineManipulatorWindow : EditorWindow
 			}
 
 
+
+
 			
 			StateMachine subState = baseLayer.stateMachine.FindSubStateMachine( animationFile.path );
 			if( subState == null )
@@ -251,6 +253,15 @@ public class StateMachineManipulatorWindow : EditorWindow
 			Transition stateToIdle = subState.AddTransition( newState, idleState );
 			// transition here is default exitTime 0.5, which is a little too small
 			stateToIdle.GetCondition(0).exitTime = 0.86f;
+
+
+			// if it's a looping animation, just stay in the state and use CrossFade to go back to Idle
+			if( (animationFile.asset as AnimationClip).wrapMode == WrapMode.Loop ||
+			   (animationFile.asset as AnimationClip).isLooping )
+			{
+				Debug.Log ( "Found looping state " + animationFile.asset.name );
+				stateToIdle.RemoveCondition(0);
+			}
 		}
 		
 		ac.RepositionRadially();

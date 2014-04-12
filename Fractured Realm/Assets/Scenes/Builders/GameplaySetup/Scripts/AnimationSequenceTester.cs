@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 
 
@@ -42,6 +43,19 @@ public class AnimationSequenceTester : MonoBehaviour
 	
 	}
 
+	protected IEnumerator FollowPath(NumberRenderer character)
+	{
+		Waypoint[] waypoints1 = GameObject.FindObjectsOfType<Waypoint>();
+
+		var waypoints = waypoints1.OrderBy(item => item.name);
+
+		foreach( Waypoint w in waypoints )
+		{
+			yield return character.Animator.RotateTowards( w.transform.position );
+			yield return character.Animator.MoveTo( w.transform.position );
+		}
+	}
+
 	CharacterOrientationInfo info0 = new CharacterOrientationInfo();
 	CharacterOrientationInfo info1 = new CharacterOrientationInfo();
 	CharacterOrientationInfo infox = new CharacterOrientationInfo();
@@ -64,6 +78,12 @@ public class AnimationSequenceTester : MonoBehaviour
 		{
 			characters[0].transform.eulerAngles = new Vector3(0, Random.Range(0,360), 0);
 			characters[1].transform.eulerAngles = new Vector3(0, Random.Range(0,360), 0);
+		}
+
+		
+		if( GUILayout.Button("Follow path") )
+		{
+			LugusCoroutines.use.StartRoutine( FollowPath(characters[0]) );
 		}
 
 		if( GUILayout.Button("Run to each other") )
@@ -152,9 +172,15 @@ public class AnimationSequenceTester : MonoBehaviour
 			}
 
 			else if( type == 1 )
-				yield return anim.RotateInDirection( Vector3.back ); // facing camera (is actually looking back)
+			{
+				//yield return anim.RotateInDirection( Vector3.back ); // facing camera (is actually looking back)
+				yield return anim.RotateTowards( Camera.main.transform.position );
+			}
 			else if( type == 2 )
-				yield return anim.RotateInDirection( Vector3.forward ); // looking away from camera
+			{
+				//yield return anim.RotateInDirection( Vector3.forward ); // looking away from camera
+				yield return anim.RotateInDirection( Camera.main.transform.forward );
+			}
 			else if( type == 3 )
 				yield return anim.RotateInDirection( Vector3.left ); // looking left
 			else if( type == 4 )

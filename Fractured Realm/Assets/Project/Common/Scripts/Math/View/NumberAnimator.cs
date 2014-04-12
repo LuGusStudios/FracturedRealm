@@ -20,7 +20,7 @@ public class NumberAnimator : MonoBehaviour
 	{
 		Coroutine output = null;
 
-		foreach( Character c in _renderer.Characters )
+		foreach( Character c in Renderer.Characters )
 		{
 			if( _renderer.interactionCharacter == c )
 				output = c.Animator.RotateTowards( target );
@@ -35,7 +35,7 @@ public class NumberAnimator : MonoBehaviour
 	{
 		Coroutine output = null;
 		
-		foreach( Character c in _renderer.Characters )
+		foreach( Character c in Renderer.Characters )
 		{
 			if( _renderer.interactionCharacter == c )
 				output = c.Animator.RotateInDirection( direction );
@@ -50,6 +50,11 @@ public class NumberAnimator : MonoBehaviour
 	public Coroutine MoveTo( Vector3 target )
 	{
 		gameObject.MoveTo( target ).Time ( 2.0f ).Execute();
+
+		foreach( Character c in Renderer.Characters )
+		{
+			c.Animator.CrossFade( FRAnimation.running, 0.05f );
+		}
 		
 		return StartCoroutine( MoveToRoutine(2.0f) );
 	}
@@ -57,6 +62,11 @@ public class NumberAnimator : MonoBehaviour
 	protected IEnumerator MoveToRoutine( float duration )
 	{
 		yield return new WaitForSeconds( duration );
+		
+		foreach( Character c in Renderer.Characters )
+		{
+			c.Animator.CrossFade( FRAnimation.idle, 0.05f );
+		}
 	}
 
 
