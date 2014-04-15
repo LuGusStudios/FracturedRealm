@@ -23,9 +23,12 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 	{
 		FractionRenderer rend = new FractionRenderer();
 		FractionAnimator anim = new FractionAnimator();
+
+		if( fraction.Numerator.Value != 0 )
+			CreateRenderer( fraction.Numerator );
 		
-		CreateRenderer( fraction.Numerator );
-		CreateRenderer( fraction.Denominator );
+		if( fraction.Denominator.Value != 0 )
+			CreateRenderer( fraction.Denominator );
 
 
 		rend.Fraction = fraction;
@@ -101,11 +104,17 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 	public void FreeRenderer(NumberRenderer renderer)
 	{
 		//Debug.Log ("CharacterFactory : FreeRenderer : " + renderer.gameObject.name);
-		GameObject.DestroyImmediate( renderer.gameObject );
+		GameObject.Destroy/*Immediate*/( renderer.gameObject );
 	}
 	
 	public NumberRenderer CreateRenderer(Number number)
 	{
+		if( number.Value == 0 )
+		{
+			Debug.LogError("CharacterFactory:CreateRenderer : number value was 0. No renderer created.");
+			return null;
+		}
+
 		/*
 		Character[] pool;
 		if( number.IsNumerator )
@@ -134,12 +143,18 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 		renderer.Characters[0].transform.eulerAngles = new Vector3(0, 180, 0);
 		renderer.Characters[0].Number = number;
 		*/
+
+		number.Renderer = renderer;
+		renderer.Number = number;
+
 		renderer.Characters[0] = CreateCharacter( number, number.ValueTo6 );
 		
 		if( renderer.Characters[0] == null )
 		{
 			// invalid Number.Value : do not render
 			
+			Debug.LogError("CharacterFactory:CreateRenderer : renderer.Characters[0] was null! Shouldn't happen!");
+
 			number.Renderer = null;
 			GameObject.Destroy( nrGO );
 			return null;
@@ -196,9 +211,7 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 		//Debug.Log ("TEST REFERENCE : " + renderer.Characters[0].name);
 		
 		// TODO: characters should automatically be rotated the correct way!
-		
-		number.Renderer = renderer;
-		renderer.Number = number;
+
 		
 		return renderer;
 	}
@@ -216,10 +229,9 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 		
 		// TODO: add actual pooling and re-use of objects!
 		value -= 1; // make it 0-based (use as index)
-		if( value < 0 || value >= pool.Length ) 
+		if( number.Value == 0 || value < 0 || value >= pool.Length ) 
 		{
-			Debug.LogError("CharacterFactory:CreateCharacter : value is not valid : 0 < " + value + " < " + pool.Length);
-			
+			Debug.LogError("CharacterFactory:CreateCharacter : value is not valid : 0 < " + value + " < " + pool.Length + ". No renderer created.");
 			return null;
 		}
 		

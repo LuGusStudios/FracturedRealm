@@ -64,6 +64,7 @@ public class OperationAdd : IOperation
 		// if we do have both fractions 
 		//if( state.StartFraction.Denominator != null && state.StopFraction.Denominator != null )
 		//{
+
 			// only allow of the Denominators are the same
 			if( state.StartFraction.Denominator.Value != state.StopFraction.Denominator.Value )
 				return false;

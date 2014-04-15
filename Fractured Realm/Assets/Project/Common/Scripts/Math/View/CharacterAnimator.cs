@@ -88,7 +88,7 @@ class CharacterOrientationInfo
 		// directly usable version of angle
 		// easy to use in a lerp to rotatte towards the target using code (as opposed to root motion in an animation)
 		// ex. c.transform.rotation = Quaternion.Lerp( c.transform.rotation, info.lookRotation, Time.deltaTime );
-		lookRotation = Quaternion.LookRotation( targetDirection );
+		lookRotation = Quaternion.LookRotation( targetDirection, subject.up );
 		
 		CalculateAnimationDegrees();
 	}
@@ -108,8 +108,9 @@ class CharacterOrientationInfo
 		xPosition = subject.InverseTransformPoint( directionPosition ).x;
 		
 		targetDirection = direction; // we can use direction directly, or we can use directionPosition - subject.position. Both are the same "direction", just different magnitudes
+
 		angle = Vector3.Angle( subject.forward, targetDirection );
-		lookRotation = Quaternion.LookRotation( targetDirection );
+		lookRotation = Quaternion.LookRotation( targetDirection, subject.up );
 		
 		
 		CalculateAnimationDegrees();
@@ -166,6 +167,14 @@ public class CharacterAnimator : MonoBehaviour
 		// NOTE: don't use LugusCoroutines here because we want this routine to stop should the Character be destroyed
 		//return LugusCoroutines.use.GetHandle().StartRoutine( RotateTowardsRoutine(target, Vector3.zero) );
 		return StartCoroutine( RotateTowardsRoutine(target, false) );
+	}
+	
+	public void RotateTowardsDirect(Vector3 target)
+	{
+		CharacterOrientationInfo info = new CharacterOrientationInfo();
+		info.Fill( this.transform, target );
+
+		this.transform.rotation = info.lookRotation;
 	}
 	
 	public Coroutine RotateInDirection(Vector3 direction)

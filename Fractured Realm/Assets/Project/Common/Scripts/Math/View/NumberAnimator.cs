@@ -30,6 +30,15 @@ public class NumberAnimator : MonoBehaviour
 
 		return output;
 	}
+
+	// TODO: make this a better interface (ex. duration = 0 on RotateTowards or sthing )
+	public void RotateTowardsDirect( Vector3 target )
+	{
+		foreach( Character c in Renderer.Characters )
+		{
+			c.Animator.RotateTowardsDirect( target );
+		}
+	}
 	
 	public Coroutine RotateInDirection(Vector3 direction)
 	{

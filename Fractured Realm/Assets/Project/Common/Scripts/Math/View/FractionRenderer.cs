@@ -28,6 +28,26 @@ namespace FR
 	}
 }
 
+public static class FRTargetExtensions
+{
+
+	public static bool Has( this FR.Target t, FR.Target testFor )
+	{
+		// ex. ((t & FR.Target.NUMERATOR) == FR.Target.NUMERATOR)
+		return (t & testFor) == testFor;
+	}
+
+	public static bool HasNumerator( this FR.Target t )
+	{
+		return t.Has ( FR.Target.NUMERATOR );
+	}
+	
+	public static bool HasDenominator( this FR.Target t )
+	{
+		return t.Has ( FR.Target.DENOMINATOR );
+	}
+}
+
 public class FractionRenderer
 {
 	protected Fraction _fraction = null;
@@ -41,14 +61,28 @@ public class FractionRenderer
 	{
 		// ATTN: important that this be fetched through fraction every time!!!
 		// DO NOT BUFFER, will break much functionality / flexibility
-		get{ return _fraction.Numerator.Renderer; } 
+		get
+		{ 
+			//if( _fraction.Numerator.Value != 0 )
+			if( _fraction != null && _fraction.Numerator != null )
+				return _fraction.Numerator.Renderer; 
+			else
+				return null;
+		} 
 	}
 	
 	public NumberRenderer Denominator
 	{
 		// ATTN: important that this be fetched through fraction every time!!!
 		// DO NOT BUFFER, will break much functionality / flexibility
-		get{ return _fraction.Denominator.Renderer; } 
+		get
+		{ 
+			//if( _fraction.Denominator.Value != 0 )
+			if( _fraction != null && _fraction.Denominator != null )
+				return _fraction.Denominator.Renderer; 
+			else
+				return null;
+		} 
 	}
 
 	protected FractionAnimator _animator = null;
@@ -101,31 +135,37 @@ public class FractionRenderer
 	}
 	*/
 			
-	protected List<Character> GetCharacters(FR.Target target)
+	public List<Character> GetCharacters(FR.Target target)
 	{
 		List<Character> output = new List<Character>();
 		
 		if( (target & FR.Target.NUMERATOR) == FR.Target.NUMERATOR )
 		{
-			if( (target & FR.Target.ALL_CHARACTERS) == FR.Target.ALL_CHARACTERS )
+			if( this.Numerator != null )
 			{
-				output.AddRange( this.Numerator.Characters );
-			}
-			else // default is only the interaction character
-			{
-				output.Add( this.Numerator.interactionCharacter );
+				if( (target & FR.Target.ALL_CHARACTERS) == FR.Target.ALL_CHARACTERS )
+				{
+					output.AddRange( this.Numerator.Characters );
+				}
+				else // default is only the interaction character
+				{
+					output.Add( this.Numerator.interactionCharacter );
+				}
 			}
 		}
 		
 		if( (target & FR.Target.DENOMINATOR) == FR.Target.DENOMINATOR )
 		{
-			if( (target & FR.Target.ALL_CHARACTERS) == FR.Target.ALL_CHARACTERS )
+			if( this.Denominator != null )
 			{
-				output.AddRange( this.Denominator.Characters );
-			}
-			else // default is only the interaction character
-			{
-				output.Add( this.Denominator.interactionCharacter );
+				if( (target & FR.Target.ALL_CHARACTERS) == FR.Target.ALL_CHARACTERS )
+				{
+					output.AddRange( this.Denominator.Characters );
+				}
+				else // default is only the interaction character
+				{
+					output.Add( this.Denominator.interactionCharacter );
+				}
 			}
 		}
 		

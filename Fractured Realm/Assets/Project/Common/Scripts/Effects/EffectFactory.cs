@@ -44,6 +44,24 @@ public class EffectFactory : LugusSingletonExisting<EffectFactory>
 		
 		return output;
 	}
+
+	public Effect[] CreateEffects( FR.Target selector, FR.EffectType type )
+	{
+		Effect[] output = new Effect[2];
+		//int index = GetEffectIndexForType(type);
+
+		if( selector.HasNumerator() )
+			output[0] = CreateEffectNormal(type);
+		else
+			output[0] = null;
+
+		if( selector.HasDenominator() )
+			output[1] = CreateEffectSpirit(type);
+		else
+			output[1] = null;
+		
+		return output;
+	}
 	
 	public Effect CreateEffectNormal(FR.EffectType type)
 	{

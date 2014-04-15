@@ -123,6 +123,10 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 	public void ProcessClick()
 	{
 		Transform hit = LugusInput.use.RayCastFromMouseDown( LugusCamera.numerator );
+
+		if( hit == null )
+			hit = LugusInput.use.RayCastFromMouseDown( LugusCamera.denominator );
+
 		if( hit == null )
 		{
 			ResetOperationState();
@@ -132,6 +136,14 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		Debug.Log ("Hitting + " + hit.name);
 		
 		Character character = hit.GetComponent<Character>();
+		
+		if( character == null )
+		{
+			hit = LugusInput.use.RayCastFromMouseDown( LugusCamera.denominator );
+			if( hit != null )
+				character = hit.GetComponent<Character>();
+		}
+
 		if( character == null )
 		{
 			ResetOperationState();

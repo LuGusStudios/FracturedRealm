@@ -158,15 +158,19 @@ public class AnimationSequenceTester : MonoBehaviour
 
 
 			CharacterAnimator anim = c.interactionCharacter.Animator;
+			
+			CharacterOrientationInfo orientationInfo = new CharacterOrientationInfo();
 
 			if( type == 0 )
 			{
 				if( c == characters[0] )
 				{
+					orientationInfo.Fill( c.interactionCharacter.transform, characters[1].transform.position );
 					yield return anim.RotateTowards( characters[1].transform.position );
 				}
 				else
 				{
+					orientationInfo.Fill( c.interactionCharacter.transform, characters[0].transform.position );
 					yield return anim.RotateTowards( characters[0].transform.position );
 				}
 			}
@@ -206,10 +210,16 @@ public class AnimationSequenceTester : MonoBehaviour
 			while( animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.75f )
 				yield return null;
 			
+
+			// NOTE: this only works if we apply it directly to a Character
+			// if we apply it to a NumberGO, it doesn't take into account that the character is already 180degrees rotated
 			/*
 			Quaternion targetRotation = orientationInfo.lookRotation;//Quaternion.LookRotation( targetDir );
 			Debug.LogError("Target rotation is " + targetRotation.eulerAngles + " from targetDir " + orientationInfo.targetDirection );
-			
+
+			Debug.LogError("OrInfo : " + orientationInfo.angle + " // " + orientationInfo.lookRotation.eulerAngles + " // " + orientationInfo.targetDirection + " // " + orientationInfo.animationDegrees + " // " + orientationInfo.xPosition);
+
+
 			float startTime = Time.time;
 			while( Vector3.Angle( c.transform.forward, orientationInfo.targetDirection ) > 1.0f && (Time.time - startTime < 2.0f) )
 			{

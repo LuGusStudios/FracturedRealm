@@ -20,27 +20,27 @@ public class OperationVisualizerAdd : IOperationVisualizer
 		
 		FractionRenderer Runner = current.StartFraction.Renderer;
 		FractionRenderer Receiver = current.StopFraction.Renderer;
-		
-		
-		Runner.AnimationFireBool(FR.Target.BOTH, "turnLeft");
-		
-		yield return WaitForAnimationState.New( Runner.Numerator.interactionCharacter, "Base Layer.idle");
-		
-		Runner.Numerator.transform.eulerAngles = new Vector3(0, 30, 0);
-		Runner.Denominator.transform.eulerAngles = new Vector3(0, 30, 0);
+
+
+		//Runner.AnimationFireBool(FR.Target.BOTH, "turnLeft");
+		//yield return WaitForAnimationState.New( Runner.Numerator.interactionCharacter, "Base Layer.idle");
+
+		Runner.Animator.RotateTowards( FR.Target.BOTH, Receiver );
+		yield return Receiver.Animator.RotateTowards( FR.Target.BOTH,  Runner );
+
+
 			
-		Runner.AnimationSetBool(FR.Target.BOTH, "running", true);
+		//Runner.AnimationSetBool(FR.Target.BOTH, "running", true);
 		
-		Runner.Numerator.gameObject.MoveTo( Receiver.Numerator.transform.position ).Time (2.0f).Execute();
-		Runner.Denominator.gameObject.MoveTo( Receiver.Denominator.transform.position ).Time (2.0f).Execute();
-		
+		//Runner.Numerator.gameObject.MoveTo( Receiver.Numerator.transform.position ).Time (2.0f).Execute();
+		//Runner.Denominator.gameObject.MoveTo( Receiver.Denominator.transform.position ).Time (2.0f).Execute();
+
+		Runner.Animator.MoveTo( FR.Target.BOTH,  Receiver );
 		
 		// wait until they arrive at the target
 		yield return new WaitForSeconds(1.8f);
-		
-		Effect[] hits = EffectFactory.use.CreateEffects( FR.EffectType.FIRE_HIT );
-		hits[0].transform.position = Receiver.Numerator.transform.position + new Vector3(0,50,-100);
-		hits[1].transform.position = Receiver.Denominator.transform.position + new Vector3(0,50,-100);
+
+		Receiver.Animator.SpawnEffect( FR.Target.BOTH, FR.EffectType.JOIN_HIT );
 		
 		// wait untill the height of the hit effect (covering all)
 		yield return new WaitForSeconds(0.2f);
@@ -48,21 +48,24 @@ public class OperationVisualizerAdd : IOperationVisualizer
 		current.StartFraction.Numerator.Value = target.StartFraction.Numerator.Value;
 		current.StartFraction.Denominator.Value = target.StartFraction.Denominator.Value;
 		
+		if( Runner.Numerator.Number.Value != 0 )
+			Runner.Numerator.NumberValueChanged();
 		
-		Runner.Numerator.NumberValueChanged();
-		Runner.Denominator.NumberValueChanged();
+		if( Runner.Denominator.Number.Value != 0 )
+			Runner.Denominator.NumberValueChanged();
 		
 		//CharacterFactory.use.ReplaceRenderer( Runner.Numerator,   current.StartFraction.Numerator );
 		//CharacterFactory.use.ReplaceRenderer( Runner.Denominator, current.StartFraction.Denominator );
 		
-		Runner.Numerator.interactionCharacter.transform.eulerAngles = new Vector3(0, 180, 0);
-		Runner.Denominator.interactionCharacter.transform.eulerAngles = new Vector3(0, 180, 0);
+		//Runner.Numerator.interactionCharacter.transform.eulerAngles = new Vector3(0, 180, 0);
+		//Runner.Denominator.interactionCharacter.transform.eulerAngles = new Vector3(0, 180, 0);
 		
 		CharacterFactory.use.FreeRenderer( Receiver );
 		//CharacterFactory.use.FreeRenderer( Receiver.Numerator );
 		//CharacterFactory.use.FreeRenderer( Receiver.Denominator );
 		
-		
+		Runner.Animator.RotateTowardsCamera();
+
 		
 		/* OLD VERSION : just for reference!
 

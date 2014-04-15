@@ -32,14 +32,16 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 		
 		//OLD: current.StopFraction.Numerator.Renderer.interactionCharacter.GetComponent<Animator>().FireBool("TurnRight");
 		//OLD: current.StopFraction.Denominator.Renderer.interactionCharacter.GetComponent<Animator>().FireBool("TurnRight");
-		
-		Smallest.AnimationFireBool(FR.Target.BOTH, "turnRight");
+
+		yield return Smallest.Animator.RotateTowards( FR.Target.BOTH, Biggest );
+
+		//Smallest.AnimationFireBool(FR.Target.BOTH, "turnRight");
 		
 		//OLD: yield return Stop.Numerator.StartCoroutine( Stop.AnimationWaitForState(Stop.Numerator.interactionCharacter, "Base Layer.Idle") );
-		yield return WaitForAnimationState.New(Smallest.Numerator.interactionCharacter, "Base Layer.idle");
+		//yield return WaitForAnimationState.New(Smallest.Numerator.interactionCharacter, "Base Layer.idle");
 		
-		Smallest.Numerator.transform.eulerAngles -= new Vector3(0, 30, 0);
-		Smallest.Denominator.transform.eulerAngles -= new Vector3(0, 30, 0);
+		//Smallest.Numerator.transform.eulerAngles -= new Vector3(0, 30, 0);
+		//Smallest.Denominator.transform.eulerAngles -= new Vector3(0, 30, 0);
 		
 		//OLD: current.StopFraction.Numerator.Renderer.interactionCharacter.GetComponent<Animator>().FireBool("CastFireball");
 		Smallest.AnimationFireBool(FR.Target.NUMERATOR, "castFireball");
@@ -48,9 +50,9 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 		
 		Effect fireball = EffectFactory.use.CreateEffectNormal( FR.EffectType.FIRE_BALL );
 		// TODO: make start at hand-palm
-		fireball.transform.position = Smallest.Numerator.transform.position + new Vector3(0, 60, 0);
+		fireball.transform.position = Smallest.Numerator.transform.position + new Vector3(0, 0.5f, 0);
 		fireball.transform.eulerAngles = new Vector3(0, 270, 0);
-		fireball.gameObject.MoveTo( Biggest.Numerator.transform.position + new Vector3(0, 60, 0)).Time(1.0f).Execute();
+		fireball.gameObject.MoveTo( Biggest.Numerator.transform.position + new Vector3(0, 0.5f, 0)).Time(1.0f).Execute();
 		
 		yield return new WaitForSeconds(1.0f);
 		
@@ -113,12 +115,14 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 			{
 				firstTime = false;
 				
-				Biggest.AnimationFireBool(FR.Target.BOTH, "turnLeft");
+				//Biggest.AnimationFireBool(FR.Target.BOTH, "turnLeft");
+
+				yield return Biggest.Animator.RotateTowards( FR.Target.BOTH, Smallest );
+
+				//WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
 				
-				yield return WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
-				
-				Biggest.Numerator.transform.eulerAngles = new Vector3(0, 30, 0);
-				Biggest.Denominator.transform.eulerAngles = new Vector3(0, 30, 0);
+				//Biggest.Numerator.transform.eulerAngles = new Vector3(0, 30, 0);
+				//Biggest.Denominator.transform.eulerAngles = new Vector3(0, 30, 0);
 			}
 			
 			
@@ -129,9 +133,9 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 			
 			fireball = EffectFactory.use.CreateEffectNormal( FR.EffectType.FIRE_BALL );
 			// TODO: make start at hand-palm
-			fireball.transform.position = Biggest.Numerator.transform.position + new Vector3(0, 60, 0);
+			fireball.transform.position = Biggest.Numerator.transform.position + new Vector3(0, 0.5f, 0);
 			fireball.transform.eulerAngles = new Vector3(0, 90, 0);
-			fireball.gameObject.MoveTo( Smallest.Numerator.transform.position + new Vector3(0, 60, 0)).Time(1.0f).Execute();
+			fireball.gameObject.MoveTo( Smallest.Numerator.transform.position + new Vector3(0, 0.5f, 0)).Time(1.0f).Execute();
 			
 			yield return new WaitForSeconds(1.0f);
 			
@@ -140,12 +144,12 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 			fireball.Free ();
 		
 			hit = EffectFactory.use.CreateEffectNormal( FR.EffectType.FIRE_HIT );
-			hit.transform.position = Smallest.Numerator.transform.position + new Vector3(0,50,-100);
+			hit.transform.position = Smallest.Numerator.transform.position + new Vector3(0, 0.5f, -1.0f);
 			
 			yield return new WaitForSeconds(0.2f);
 			
 			Smallest.Numerator.Number.Value -= 1; 
-			
+
 			if( Smallest.Numerator.Number.Value < 1 )
 			{
 				CharacterFactory.use.FreeRenderer( Smallest );
@@ -171,11 +175,13 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 			} 
 		}
 		 
-		yield return WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
-		
+		//yield return WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
+
+		yield return Biggest.Animator.RotateTowardsCamera();
+
 		Debug.Log ("OperationVisualizerSubtract : finished 1  :turning right");
-		Biggest.AnimationFireBool(FR.Target.BOTH, "turnRight");
-		yield return WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
+		//Biggest.AnimationFireBool(FR.Target.BOTH, "turnRight");
+		//yield return WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
 	
 		
 		CheckOutcome(current, target);

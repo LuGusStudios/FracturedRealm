@@ -16,10 +16,23 @@ public class NumberRenderer : MonoBehaviour
 	{
 		if( _characters != null )
 			return;
-		
-		_characters = new Character[2];
-		_characters[0] = null;
-		_characters[1] = null;
+
+		if( _number == null )
+		{
+			Debug.LogError("NumberRenderer:InitiateRenderers : _number was null! Assign _number before trying to use characters!");
+			return;
+		}
+		if( _number.ValuePast6 == 0 )
+		{
+			_characters = new Character[1];
+			_characters[0] = null;
+		}
+		else
+		{
+			_characters = new Character[2];
+			_characters[0] = null;
+			_characters[1] = null;
+		}
 	}
 	
 	public Character interactionCharacter
@@ -49,11 +62,11 @@ public class NumberRenderer : MonoBehaviour
 	}
 	*/
 	
-	public void NumberValueChanged()
+	public NumberRenderer NumberValueChanged()
 	{
 		// this renderer object is effectively removed by this call!
 		// as the CharacterFactory will create a completely new NumberRenderer for the new value
-		CharacterFactory.use.ReplaceRenderer(this, _number);
+		return CharacterFactory.use.ReplaceRenderer(this, _number);
 	}
 	
 	protected Number _number = null;
