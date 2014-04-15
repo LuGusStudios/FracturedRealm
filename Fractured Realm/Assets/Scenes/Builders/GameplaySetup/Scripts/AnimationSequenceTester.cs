@@ -51,8 +51,8 @@ public class AnimationSequenceTester : MonoBehaviour
 
 		foreach( Waypoint w in waypoints )
 		{
-			yield return character.Animator.RotateTowards( w.transform.position );
-			yield return character.Animator.MoveTo( w.transform.position );
+			yield return character.Animator.RotateTowards( w.transform.position ).Coroutine;
+			yield return character.Animator.MoveTo( w.transform.position ).Coroutine;
 		}
 	}
 
@@ -166,29 +166,29 @@ public class AnimationSequenceTester : MonoBehaviour
 				if( c == characters[0] )
 				{
 					orientationInfo.Fill( c.interactionCharacter.transform, characters[1].transform.position );
-					yield return anim.RotateTowards( characters[1].transform.position );
+					yield return anim.RotateTowards( characters[1].transform.position ).Coroutine;
 				}
 				else
 				{
 					orientationInfo.Fill( c.interactionCharacter.transform, characters[0].transform.position );
-					yield return anim.RotateTowards( characters[0].transform.position );
+					yield return anim.RotateTowards( characters[0].transform.position ).Coroutine;
 				}
 			}
 
 			else if( type == 1 )
 			{
 				//yield return anim.RotateInDirection( Vector3.back ); // facing camera (is actually looking back)
-				yield return anim.RotateTowards( Camera.main.transform.position );
+				yield return anim.RotateTowards( Camera.main.transform.position ).Coroutine;
 			}
 			else if( type == 2 )
 			{
 				//yield return anim.RotateInDirection( Vector3.forward ); // looking away from camera
-				yield return anim.RotateInDirection( Camera.main.transform.forward );
+				yield return anim.RotateInDirection( Camera.main.transform.forward ).Coroutine;
 			}
 			else if( type == 3 )
-				yield return anim.RotateInDirection( Vector3.left ); // looking left
+				yield return anim.RotateInDirection( Vector3.left ).Coroutine; // looking left
 			else if( type == 4 )
-				yield return anim.RotateInDirection( Vector3.right ); // looking right
+				yield return anim.RotateInDirection( Vector3.right ).Coroutine; // looking right
 
 			
 			//while( !animator.IsInTransition(0) )

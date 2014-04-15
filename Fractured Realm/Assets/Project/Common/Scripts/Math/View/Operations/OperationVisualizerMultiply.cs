@@ -95,10 +95,13 @@ public class OperationVisualizerMultiply : IOperationVisualizer
 			//Debug.LogError("OrInfo : " + info.angle + " // " + info.lookRotation.eulerAngles + " // " + info.targetDirection + " // " + info.animationDegrees + " // " + info.xPosition + " // " + Runner.interactionCharacter.transform.up );
 			
 			//yield return Runner.Animator.RotateTowards( Receiver.Numerator.transform.position );
-			
+
+
+			// TODO: replace this part with a call to an appropriate VisualizerAdd()?
+
 			Runner.Animator.RotateTowardsDirect( Receiver.transform.position );
 			
-			yield return Runner.Animator.MoveTo( Receiver.transform.position );
+			yield return Runner.Animator.MoveTo( Receiver.transform.position ).Coroutine;
 			
 			
 			// wait until they arrive at the target
@@ -180,7 +183,7 @@ public class OperationVisualizerMultiply : IOperationVisualizer
 
 			Runner.Animator.RotateTowardsDirect( Receiver.Numerator.transform.position );
 
-			yield return Runner.Animator.MoveTo( Receiver.Numerator.transform.position );
+			yield return Runner.Animator.MoveTo( Receiver.Numerator.transform.position ).Coroutine;
 		
 		
 			// wait until they arrive at the target

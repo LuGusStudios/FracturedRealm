@@ -35,79 +35,74 @@ public class FractionAnimator
 		}
 	}
 
-	public Coroutine MoveTo( FR.Target selector, FractionRenderer target )
+	public ILugusCoroutineHandle MoveTo( FR.Target selector, FractionRenderer target )
 	{
-		Coroutine output = null;
+		LugusCoroutineWaiter waiter = new LugusCoroutineWaiter();
 
 		Vector3 targetNumeratorPos, targetDenominatorPos;
 		GetOpponentPositions( target, out targetNumeratorPos, out targetDenominatorPos );
 
 		if( _renderer.Fraction.Numerator.Value != 0 && selector.HasNumerator() )
 		{
-			output = _renderer.Fraction.Numerator.Renderer.Animator.MoveTo( targetNumeratorPos );
+			waiter.Add ( _renderer.Fraction.Numerator.Renderer.Animator.MoveTo( targetNumeratorPos ) );
 		}
 
 		if( _renderer.Fraction.Denominator.Value != 0 && selector.HasDenominator() )
 		{
-			if( output == null )
-				output = _renderer.Fraction.Denominator.Renderer.Animator.MoveTo( targetDenominatorPos );
-			else
-				_renderer.Fraction.Denominator.Renderer.Animator.MoveTo( targetDenominatorPos );
+			waiter.Add ( _renderer.Fraction.Denominator.Renderer.Animator.MoveTo( targetDenominatorPos ) );
 		}
 
-		return output;
+		return waiter.Start();
 	}
 
-	public Coroutine RotateTowards(FR.Target selector,  FractionRenderer target )
+	public ILugusCoroutineHandle RotateTowards(FR.Target selector,  FractionRenderer target )
 	{
-		Coroutine output = null;
+		//ILugusCoroutineHandle output = null;
+		LugusCoroutineWaiter waiter = new LugusCoroutineWaiter();
 		
 		Vector3 targetNumeratorPos, targetDenominatorPos;
 		GetOpponentPositions( target, out targetNumeratorPos, out targetDenominatorPos );
 
 		if( _renderer.Fraction.Numerator.Value != 0 && selector.HasNumerator() )
 		{
-			output = _renderer.Fraction.Numerator.Renderer.Animator.RotateTowards( targetNumeratorPos );
+			waiter.Add ( _renderer.Fraction.Numerator.Renderer.Animator.RotateTowards( targetNumeratorPos ) );
 		}
 		
 		if( _renderer.Fraction.Denominator.Value != 0 && selector.HasDenominator() )
 		{
-			if( output == null )
-				output = _renderer.Fraction.Denominator.Renderer.Animator.RotateTowards( targetDenominatorPos );
-			else
-				_renderer.Fraction.Denominator.Renderer.Animator.RotateTowards( targetDenominatorPos );
+
+			waiter.Add ( _renderer.Fraction.Denominator.Renderer.Animator.RotateTowards( targetDenominatorPos ) );
 		}
 		
-		return output;
+		return waiter.Start();
 	}
 	
-	public Coroutine RotateTowards( FR.Target selector, Vector3 target )
+	public ILugusCoroutineHandle RotateTowards( FR.Target selector, Vector3 target )
 	{
-		Coroutine output = null;
+		LugusCoroutineWaiter waiter = new LugusCoroutineWaiter();
 		
 		if( _renderer.Fraction.Numerator.Value != 0 && selector.HasNumerator() )
 		{
-			output = _renderer.Fraction.Numerator.Renderer.Animator.RotateTowards( target );
+			waiter.Add ( _renderer.Fraction.Numerator.Renderer.Animator.RotateTowards( target ) );
 		}
 		
 		if( _renderer.Fraction.Denominator.Value != 0 && selector.HasDenominator() )
 		{
-			if( output == null )
-				output = _renderer.Fraction.Denominator.Renderer.Animator.RotateTowards( target );
-			else
-				_renderer.Fraction.Denominator.Renderer.Animator.RotateTowards( target );
+			waiter.Add ( _renderer.Fraction.Denominator.Renderer.Animator.RotateTowards( target ) );
 		}
 		
-		return output;
+		return waiter.Start();
 	}
 
-	public Coroutine RotateTowardsCamera()
+	public ILugusCoroutineHandle RotateTowardsCamera()
 	{
-		RotateTowards( FR.Target.NUMERATOR, LugusCamera.numerator.transform.position );
-		return RotateTowards( FR.Target.DENOMINATOR, LugusCamera.denominator.transform.position );
+		return LugusCoroutineUtil.WaitForFinish( 
+                	RotateTowards( FR.Target.NUMERATOR, LugusCamera.numerator.transform.position ),
+                	RotateTowards( FR.Target.DENOMINATOR, LugusCamera.denominator.transform.position) 
+               );
 	}
 
-	public Coroutine SpawnEffect( FR.Target selector, FR.EffectType effectType )
+	public ILugusCoroutineHandle SpawnEffect( FR.Target selector, FR.EffectType effectType )
 	{
 		
 		Effect[] hits = EffectFactory.use.CreateEffects( selector, effectType );
@@ -134,18 +129,8 @@ public class FractionAnimator
 				duration = durationTemp;
 		}
 
-		ILugusCoroutineHandle handle = LugusCoroutines.use.GetHandle();
-		return handle.StartRoutine( WaitForSecondsRoutine(duration) );
-	}
 
-	protected IEnumerator WaitForSecondsRoutine( float duration )
-	{
-		if( duration > 0 )
-		{
-			yield return new WaitForSeconds( duration );
-		}
-
-		yield break;
+		return LugusCoroutines.use.StartRoutine( LugusCoroutineUtil.DelayRoutine(duration) );
 	}
 
 }

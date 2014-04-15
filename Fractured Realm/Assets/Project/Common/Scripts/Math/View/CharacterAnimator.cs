@@ -162,11 +162,11 @@ public class CharacterAnimator : MonoBehaviour
 
 	protected Animator _animator = null;
 
-	public Coroutine RotateTowards(Vector3 target)
+	public ILugusCoroutineHandle RotateTowards(Vector3 target)
 	{
 		// NOTE: don't use LugusCoroutines here because we want this routine to stop should the Character be destroyed
 		//return LugusCoroutines.use.GetHandle().StartRoutine( RotateTowardsRoutine(target, Vector3.zero) );
-		return StartCoroutine( RotateTowardsRoutine(target, false) );
+		return this.gameObject.StartLugusRoutine( RotateTowardsRoutine(target, false) );
 	}
 	
 	public void RotateTowardsDirect(Vector3 target)
@@ -177,10 +177,10 @@ public class CharacterAnimator : MonoBehaviour
 		this.transform.rotation = info.lookRotation;
 	}
 	
-	public Coroutine RotateInDirection(Vector3 direction)
+	public ILugusCoroutineHandle RotateInDirection(Vector3 direction)
 	{
 		//return LugusCoroutines.use.GetHandle().StartRoutine( RotateTowardsRoutine(null, direction) );
-		return StartCoroutine( RotateTowardsRoutine(direction, true) );
+		return this.gameObject.StartLugusRoutine( RotateTowardsRoutine(direction, true) );
 	}
 
 	public IEnumerator RotateTowardsRoutine(Vector3 target, bool direction)

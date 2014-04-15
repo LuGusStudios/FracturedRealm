@@ -16,9 +16,9 @@ public class NumberAnimator : MonoBehaviour
 		set{ _renderer = value; }
 	}
 
-	public Coroutine RotateTowards( Vector3 target )
+	public ILugusCoroutineHandle RotateTowards( Vector3 target )
 	{
-		Coroutine output = null;
+		ILugusCoroutineHandle output = null;
 
 		foreach( Character c in Renderer.Characters )
 		{
@@ -40,9 +40,9 @@ public class NumberAnimator : MonoBehaviour
 		}
 	}
 	
-	public Coroutine RotateInDirection(Vector3 direction)
+	public ILugusCoroutineHandle RotateInDirection(Vector3 direction)
 	{
-		Coroutine output = null;
+		ILugusCoroutineHandle output = null;
 		
 		foreach( Character c in Renderer.Characters )
 		{
@@ -56,7 +56,7 @@ public class NumberAnimator : MonoBehaviour
 	}
 
 
-	public Coroutine MoveTo( Vector3 target )
+	public ILugusCoroutineHandle MoveTo( Vector3 target )
 	{
 		gameObject.MoveTo( target ).Time ( 2.0f ).Execute();
 
@@ -65,7 +65,7 @@ public class NumberAnimator : MonoBehaviour
 			c.Animator.CrossFade( FRAnimation.running, 0.05f );
 		}
 		
-		return StartCoroutine( MoveToRoutine(2.0f) );
+		return this.gameObject.StartLugusRoutine( MoveToRoutine(2.0f) );
 	}
 
 	protected IEnumerator MoveToRoutine( float duration )

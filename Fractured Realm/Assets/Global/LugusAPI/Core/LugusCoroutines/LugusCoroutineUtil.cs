@@ -1,5 +1,57 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
+// ex. usage
+// LugusCoroutineWaiter waiter = new LugusCoroutineWaiter();
+// waiter.Add( routine1 );
+// waiter.Add( routine2 );
+// waiter.Start() or for example: yield return waiter.Start().Coroutine;
+public class LugusCoroutineWaiter
+{
+	protected List<ILugusCoroutineHandle> routines = new List<ILugusCoroutineHandle>();
+
+	protected bool started = false;
+
+	public void Add( ILugusCoroutineHandle routine )
+	{
+		if( started )
+		{
+			Debug.LogError("LugusCoroutineWaiter:Add : cannot add routines to already started waiter!");
+			return;
+		}
+
+		routines.Add( routine );
+	}
+
+	public ILugusCoroutineHandle Start()
+	{
+		return LugusCoroutines.use.StartRoutine( WaitRoutine() );
+	}
+
+	protected IEnumerator WaitRoutine()
+	{
+		bool go = true;
+
+		while( go )
+		{
+			yield return null;
+
+			go = false;
+
+			for( int i = 0; i < routines.Count; ++i )
+			{
+				if( routines[i].Running )
+				{
+					go = true;
+					break;
+				}
+			}
+		}
+
+		yield break;
+	}
+}
 
 public class LugusCoroutineUtil 
 {

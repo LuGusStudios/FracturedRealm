@@ -33,7 +33,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 		//OLD: current.StopFraction.Numerator.Renderer.interactionCharacter.GetComponent<Animator>().FireBool("TurnRight");
 		//OLD: current.StopFraction.Denominator.Renderer.interactionCharacter.GetComponent<Animator>().FireBool("TurnRight");
 
-		yield return Smallest.Animator.RotateTowards( FR.Target.BOTH, Biggest );
+		yield return Smallest.Animator.RotateTowards( FR.Target.BOTH, Biggest ).Coroutine;
 
 		//Smallest.AnimationFireBool(FR.Target.BOTH, "turnRight");
 		
@@ -117,7 +117,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 				
 				//Biggest.AnimationFireBool(FR.Target.BOTH, "turnLeft");
 
-				yield return Biggest.Animator.RotateTowards( FR.Target.BOTH, Smallest );
+				yield return Biggest.Animator.RotateTowards( FR.Target.BOTH, Smallest ).Coroutine;
 
 				//WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
 				
@@ -177,7 +177,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 		 
 		//yield return WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
 
-		yield return Biggest.Animator.RotateTowardsCamera();
+		yield return Biggest.Animator.RotateTowardsCamera().Coroutine;
 
 		Debug.Log ("OperationVisualizerSubtract : finished 1  :turning right");
 		//Biggest.AnimationFireBool(FR.Target.BOTH, "turnRight");

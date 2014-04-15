@@ -84,7 +84,7 @@ public class OperationVisualizerDivide : IOperationVisualizer
 		// we only need to visualize it the same way we do a multiplication
 		IOperationVisualizer mulViz = MathInputManager.use.GetVisualizer( FR.OperationType.MULTIPLY );
 		
-		yield return LugusInput.use.StartCoroutine( mulViz.Visualize(current, target) );
+		yield return LugusCoroutines.use.StartRoutine( mulViz.Visualize(current, target) ).Coroutine;
 		
 		// 4. ...
 		// 5. Profit!

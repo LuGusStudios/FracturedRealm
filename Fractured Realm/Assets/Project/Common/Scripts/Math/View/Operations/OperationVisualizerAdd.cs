@@ -25,8 +25,11 @@ public class OperationVisualizerAdd : IOperationVisualizer
 		//Runner.AnimationFireBool(FR.Target.BOTH, "turnLeft");
 		//yield return WaitForAnimationState.New( Runner.Numerator.interactionCharacter, "Base Layer.idle");
 
-		Runner.Animator.RotateTowards( FR.Target.BOTH, Receiver );
-		yield return Receiver.Animator.RotateTowards( FR.Target.BOTH,  Runner );
+
+		yield return LugusCoroutineUtil.WaitForFinish( 
+                      	Runner.Animator.RotateTowards( FR.Target.BOTH, Receiver ),
+		                Receiver.Animator.RotateTowards( FR.Target.BOTH,  Runner ) 
+              		);
 
 
 			
