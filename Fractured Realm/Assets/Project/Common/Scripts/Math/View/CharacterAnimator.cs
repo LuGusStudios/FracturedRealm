@@ -164,8 +164,6 @@ public class CharacterAnimator : MonoBehaviour
 
 	public ILugusCoroutineHandle RotateTowards(Vector3 target)
 	{
-		// NOTE: don't use LugusCoroutines here because we want this routine to stop should the Character be destroyed
-		//return LugusCoroutines.use.GetHandle().StartRoutine( RotateTowardsRoutine(target, Vector3.zero) );
 		return this.gameObject.StartLugusRoutine( RotateTowardsRoutine(target, false) );
 	}
 	
@@ -210,7 +208,8 @@ public class CharacterAnimator : MonoBehaviour
 		}
 
 		animationName += info.animationDegrees;
-		Debug.Log("CharacterAnimator:RotateTowardsRoutine : Rotating "+ info.positionType +" by " + info.angle + " degrees with animation degrees " + info.animationDegrees + " and anim " + animationName );
+
+		//Debug.Log("CharacterAnimator:RotateTowardsRoutine : Rotating "+ info.positionType +" by " + info.angle + " degrees with animation degrees " + info.animationDegrees + " and anim " + animationName );
 
 
 

@@ -111,6 +111,8 @@ public class LugusCoroutineHandleDefault : MonoBehaviour, ILugusCoroutineHandle
 		{
 			Debug.LogWarning("LugusCoroutineHandle : there was already a routine running on this un-claimed Handle! Starting new one anyway...");
 		}
+
+		_forceStop = false;
 		
 		return this.StartCoroutine( RoutineRunner(subject) );
 	}

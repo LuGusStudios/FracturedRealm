@@ -104,13 +104,24 @@ public class FractionAnimator
 
 	public ILugusCoroutineHandle SpawnEffect( FR.Target selector, FR.EffectType effectType )
 	{
-		
+		// if no numerator or denominator present, we don't need to spawn a effect for them
+		if( _renderer.Fraction.Numerator.Value == 0 && selector.HasNumerator() )
+		{
+			selector = selector & ~FR.Target.NUMERATOR;
+		}
+
+		if( _renderer.Fraction.Denominator.Value == 0 && selector.HasDenominator() )
+		{
+			selector = selector & ~FR.Target.DENOMINATOR;
+		}
+
+
 		Effect[] hits = EffectFactory.use.CreateEffects( selector, effectType );
 
 		float duration = float.MinValue;
 		float durationTemp = 0;
 
-		if( _renderer.Fraction.Numerator.Value != 0 && selector.HasNumerator() )
+		if( selector.HasNumerator() )
 		{
 			hits[0].transform.position = _renderer.Numerator.transform.position + new Vector3(0, 0.5f, -1.0f);
 
@@ -120,7 +131,7 @@ public class FractionAnimator
 		}
 
 		
-		if( _renderer.Fraction.Denominator.Value != 0 && selector.HasDenominator() )
+		if( selector.HasDenominator() )
 		{
 			hits[1].transform.position = _renderer.Denominator.transform.position + new Vector3(0, 0.5f, -1.0f);
 			

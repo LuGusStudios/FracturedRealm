@@ -50,15 +50,19 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 			Debug.LogError("CharacterFactory:ReplaceRenderer: This only works when replacing the renderer for the same number!");
 		}
 		
-		NumberRenderer newRenderer = CreateRenderer(newValue);
-		newRenderer.transform.parent = renderer.transform.parent;
-		newRenderer.transform.position = renderer.transform.position;
-		newRenderer.transform.rotation = renderer.transform.rotation;
-		
-		
-		newRenderer.interactionCharacter.transform.position = renderer.interactionCharacter.transform.position;
-		newRenderer.interactionCharacter.transform.rotation = renderer.interactionCharacter.transform.rotation;
-		
+		NumberRenderer newRenderer = null;
+
+		if( newValue.Value != 0 )
+		{
+			newRenderer = CreateRenderer(newValue);
+			newRenderer.transform.parent = renderer.transform.parent;
+			newRenderer.transform.position = renderer.transform.position;
+			newRenderer.transform.rotation = renderer.transform.rotation;
+			
+			
+			newRenderer.interactionCharacter.transform.position = renderer.interactionCharacter.transform.position;
+			newRenderer.interactionCharacter.transform.rotation = renderer.interactionCharacter.transform.rotation;
+		}
 		
 		/*
 		if( newRenderer.Characters[0] != null && renderer.Characters[0] != null )
@@ -103,6 +107,9 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 	
 	public void FreeRenderer(NumberRenderer renderer)
 	{
+		if( renderer == null )
+			return;
+
 		//Debug.Log ("CharacterFactory : FreeRenderer : " + renderer.gameObject.name);
 		GameObject.Destroy/*Immediate*/( renderer.gameObject );
 	}
@@ -231,8 +238,12 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 		value -= 1; // make it 0-based (use as index)
 		if( number.Value == 0 || value < 0 || value >= pool.Length ) 
 		{
-			Debug.LogError("CharacterFactory:CreateCharacter : value is not valid : 0 < " + value + " < " + pool.Length + ". No renderer created.");
-			return null;
+			Debug.LogError("CharacterFactory:CreateCharacter : value is not valid : 0 < " + value + " < " + pool.Length + ". Value clamped.");
+
+			if( number.Value == 0 || value < 0 )
+				value = 1;
+			else if( value >= pool.Length )
+				value = pool.Length - 1;
 		}
 		
 		Character newCharacter = (Character) GameObject.Instantiate( pool[ value ] );

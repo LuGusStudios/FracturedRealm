@@ -34,10 +34,10 @@ public class OperationVisualizerDivide : IOperationVisualizer
 		// move original renderers down and up
 		// moving up is a longer way than moving down!
 		Vector3 numeratorUp = Switcher.Numerator.transform.position;
-		Vector3 numeratorDown = numeratorUp - new Vector3(0, 6, 0);
+		Vector3 numeratorDown = numeratorUp - new Vector3(0, 6, 0); // TODO: update these "magic numbers"
 		
 		Vector3 denominatorDown = Switcher.Denominator.transform.position;
-		Vector3 denominatorUp = denominatorDown + new Vector3(0, 8, 0);
+		Vector3 denominatorUp = denominatorDown + new Vector3(0, 8, 0);// TODO: update these "magic numbers"
 		
 		Switcher.Numerator.gameObject.MoveTo( numeratorDown ).Time (2.0f).Execute();
 		Switcher.Denominator.gameObject.MoveTo( denominatorUp ).Time (2.0f).Execute(); 

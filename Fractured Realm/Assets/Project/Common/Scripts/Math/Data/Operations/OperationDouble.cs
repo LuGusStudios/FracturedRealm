@@ -17,7 +17,16 @@ public class OperationDouble : IOperation
 	{
 		if( state.StopFraction == null )
 		{
-			return true;
+			// double value cannot surpass 12
+			if( state.StartFraction.Numerator.Value * 2 <= 12 &&
+			   state.StartFraction.Denominator.Value * 2 <= 12 )
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 		else
 		{

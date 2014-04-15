@@ -16,9 +16,32 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 	public override IEnumerator Visualize(OperationState current, OperationState target)
 	{ 
 		Debug.Log ("OperationVisualizerSubtract : Visualize : " + current + " TO " + target);
-		
+
+
 		FractionRenderer Smallest = current.StartFraction.Renderer;
 		FractionRenderer Biggest = current.StopFraction.Renderer;
+
+		// in the case where we only have denominators (both are automatically the same)
+		// we have to do an alternative animation, since they won't fight each other
+		// for now, we just use the default Add behaviour in this case
+		// TODO: change this to a specific subtract animation to make the difference clear
+
+		// note: no need to check for Biggest to have Numerator -> both are of the same type or wouldn't pass IOperation validation in the first place
+		if( !FRTargetExtensions.TargetFromFraction(Smallest.Fraction).HasNumerator() )
+		{
+			
+			IOperationVisualizer addViz = MathInputManager.use.GetVisualizer( FR.OperationType.ADD );
+			
+			yield return LugusCoroutines.use.StartRoutine( addViz.Visualize(current, target) ).Coroutine;
+
+			CheckOutcome(current, target);
+			Debug.Log ("OperationVisualizerSubtract : finished version for just Denominators");
+
+			yield break;
+		}
+
+
+
 		
 		if( Biggest.Numerator.Number.Value < Smallest.Numerator.Number.Value )
 		{
@@ -101,7 +124,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 			fireball.Free ();
 		 
 			Effect hit = EffectFactory.use.CreateEffectNormal( FR.EffectType.FIRE_HIT );
-			hit.transform.position = Biggest.Numerator.transform.position + new Vector3(0,50,-100);
+			hit.transform.position = Biggest.Numerator.transform.position + new Vector3(0,0.5f,-1.0f);
 			
 			yield return new WaitForSeconds(0.2f);
 			
@@ -155,7 +178,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 				CharacterFactory.use.FreeRenderer( Smallest );
 			}
 			else
-			{
+			{ 
 				Smallest.Numerator.NumberValueChanged();
 				//CharacterFactory.use.ReplaceRenderer( Smallest.Numerator, Smallest.Numerator.Number);
 				Debug.LogError("Subtract : New Smallest = " + Smallest.Numerator.Number.Value);
@@ -183,7 +206,10 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 		//Biggest.AnimationFireBool(FR.Target.BOTH, "turnRight");
 		//yield return WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
 	
-		
+		current.StartFraction.Numerator.Value = Biggest.Fraction.Numerator.Value;
+		current.StartFraction.Denominator.Value = Biggest.Fraction.Denominator.Value;
+
+
 		CheckOutcome(current, target);
 		Debug.Log ("OperationVisualizerSubtract : finished");
 		yield break; 

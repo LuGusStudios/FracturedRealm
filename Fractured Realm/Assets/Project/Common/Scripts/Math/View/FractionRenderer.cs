@@ -46,6 +46,19 @@ public static class FRTargetExtensions
 	{
 		return t.Has ( FR.Target.DENOMINATOR );
 	}
+	
+	public static FR.Target TargetFromFraction( Fraction fr )
+	{
+		FR.Target output = FR.Target.NONE;
+
+		if( fr.Numerator.Value != 0 )
+			output |= FR.Target.NUMERATOR;
+
+		if( fr.Denominator.Value != 0 )
+			output |= FR.Target.DENOMINATOR;
+
+		return output;
+	}
 }
 
 public class FractionRenderer
