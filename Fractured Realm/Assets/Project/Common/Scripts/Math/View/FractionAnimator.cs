@@ -17,10 +17,10 @@ public class FractionAnimator
 		denominatorPos = numeratorPos;
 
 		if( target.Fraction.Numerator.Value != 0 )
-			numeratorPos = target.Fraction.Numerator.Renderer.transform.position;
+			numeratorPos = target.Fraction.Numerator.Renderer.interactionCharacter.Body.transform.position.y( target.Fraction.Numerator.Renderer.transform.position.y );
 		
 		if( target.Fraction.Denominator.Value != 0 )
-			denominatorPos = target.Fraction.Denominator.Renderer.transform.position;
+			denominatorPos = target.Fraction.Denominator.Renderer.interactionCharacter.Body.transform.position.y( target.Fraction.Denominator.Renderer.transform.position.y );
 		
 		if(_renderer.Fraction.Numerator.Value != 0 && target.Fraction.Numerator.Value == 0 )
 		{
@@ -142,6 +142,47 @@ public class FractionAnimator
 
 
 		return LugusCoroutines.use.StartRoutine( LugusCoroutineUtil.DelayRoutine(duration) );
+	}
+
+	
+	
+	public void CrossFade( FR.Target selector, string animationName, float fadeDuration = 0.05f )
+	{
+		if( _renderer.Fraction.Numerator.Value != 0 && selector.HasNumerator() )
+		{
+			_renderer.Numerator.Animator.CrossFade( animationName, fadeDuration );
+		}
+		
+		if( _renderer.Fraction.Denominator.Value != 0 && selector.HasDenominator() )
+		{
+			_renderer.Denominator.Animator.CrossFade( animationName, fadeDuration );
+		}
+	}
+	
+	public void CrossFade( FR.Target selector, FRAnimationData animation, float fadeDuration = 0.05f )
+	{
+		if( _renderer.Fraction.Numerator.Value != 0 && selector.HasNumerator() )
+		{
+			_renderer.Numerator.Animator.CrossFade( animation, fadeDuration );
+		}
+		
+		if( _renderer.Fraction.Denominator.Value != 0 && selector.HasDenominator() )
+		{
+			_renderer.Denominator.Animator.CrossFade( animation, fadeDuration );
+		}
+	}
+	
+	public void CrossFade( FR.Target selector, FRAnimation animation, float fadeDuration = 0.05f )
+	{
+		if( _renderer.Fraction.Numerator.Value != 0 && selector.HasNumerator() )
+		{
+			_renderer.Numerator.Animator.CrossFade( animation, fadeDuration );
+		}
+		
+		if( _renderer.Fraction.Denominator.Value != 0 && selector.HasDenominator() )
+		{
+			_renderer.Denominator.Animator.CrossFade( animation, fadeDuration );
+		}
 	}
 
 }

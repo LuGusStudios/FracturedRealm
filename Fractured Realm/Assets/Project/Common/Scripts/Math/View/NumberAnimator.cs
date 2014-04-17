@@ -78,6 +78,31 @@ public class NumberAnimator : MonoBehaviour
 		}
 	}
 
+	
+	public void CrossFade( string animationName, float fadeDuration )
+	{
+		foreach( Character c in Renderer.Characters )
+		{
+			c.Animator.CrossFade( animationName, fadeDuration );
+		}
+	}
+	
+	public void CrossFade( FRAnimationData animation, float fadeDuration )
+	{
+		foreach( Character c in Renderer.Characters )
+		{
+			c.Animator.CrossFade( animation, fadeDuration );
+		}
+	}
+	
+	public void CrossFade( FRAnimation animation, float fadeDuration )
+	{
+		foreach( Character c in Renderer.Characters )
+		{
+			c.Animator.CrossFade( animation, fadeDuration );
+		}
+	}
+
 
 	
 	public void SetupLocal()

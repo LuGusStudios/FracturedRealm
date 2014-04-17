@@ -63,7 +63,64 @@ public class Character : MonoBehaviour
 		get{ return _value; }
 		set{ _value = value; }
 	}
+
+	protected Transform _head = null;
+	public Transform Head
+	{
+		get
+		{
+			if( _head == null )
+			{
+				_head = transform.FindChildRecursively("Head");
+			}
+
+			return _head;
+		}
+	}
 	
+	protected Transform _body = null;
+	public Transform Body
+	{
+		get
+		{
+			if( _body == null )
+			{
+				_body = transform.FindChildRecursively("Hips");
+			}
+			
+			return _body;
+		}
+	}
+	
+	protected Transform _leftHand = null;
+	public Transform LeftHand
+	{
+		get
+		{
+			if( _leftHand == null )
+			{
+				_leftHand = transform.FindChildRecursively("LeftHand");
+			}
+			
+			return _leftHand;
+		}
+	}
+	
+	protected Transform _rightHand = null;
+	public Transform RightHand
+	{
+		get
+		{
+			if( _rightHand == null )
+			{
+				_rightHand = transform.FindChildRecursively("RightHand");
+			}
+			
+			return _rightHand;
+		}
+	}
+
+
 	
 	public void ShowBody(bool show)
 	{

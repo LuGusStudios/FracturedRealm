@@ -88,7 +88,7 @@ class CharacterOrientationInfo
 		// directly usable version of angle
 		// easy to use in a lerp to rotatte towards the target using code (as opposed to root motion in an animation)
 		// ex. c.transform.rotation = Quaternion.Lerp( c.transform.rotation, info.lookRotation, Time.deltaTime );
-		lookRotation = Quaternion.LookRotation( targetDirection, subject.up );
+		lookRotation = Quaternion.LookRotation( targetDirection, Vector3.up );
 		
 		CalculateAnimationDegrees();
 	}
@@ -110,7 +110,7 @@ class CharacterOrientationInfo
 		targetDirection = direction; // we can use direction directly, or we can use directionPosition - subject.position. Both are the same "direction", just different magnitudes
 
 		angle = Vector3.Angle( subject.forward, targetDirection );
-		lookRotation = Quaternion.LookRotation( targetDirection, subject.up );
+		lookRotation = Quaternion.LookRotation( targetDirection, Vector3.up );
 		
 		
 		CalculateAnimationDegrees();
@@ -132,7 +132,9 @@ class CharacterOrientationInfo
 		// lastly, take the index + 1 and multiply by 10 to get the desired rotation and fetch the correct animation
 		
 		animationDegrees = 0;
-		
+
+		float originalAngle = angle;
+
 		if( angle > 90.0f )
 			angle = 90.0f; // TODO: Fix this so we can also do correct animations for rotations > 180 degrees (extra animations or chaining animations)
 		
@@ -141,6 +143,8 @@ class CharacterOrientationInfo
 			int bucketIndex = Mathf.FloorToInt( (angle - 5.0f) / 10.0f );
 			animationDegrees = (bucketIndex + 1) * 10;
 		}
+
+		angle = originalAngle;
 	}
 }
 
@@ -209,7 +213,7 @@ public class CharacterAnimator : MonoBehaviour
 
 		animationName += info.animationDegrees;
 
-		//Debug.Log("CharacterAnimator:RotateTowardsRoutine : Rotating "+ info.positionType +" by " + info.angle + " degrees with animation degrees " + info.animationDegrees + " and anim " + animationName );
+		Debug.Log("CharacterAnimator:RotateTowardsRoutine : Rotating "+ info.positionType +" by " + info.angle + " degrees with animation degrees " + info.animationDegrees + " and anim " + animationName + " // " + this.transform.name );
 
 
 
@@ -238,13 +242,49 @@ public class CharacterAnimator : MonoBehaviour
 		{
 			yield return null;
 		}
-
-
+		
 		while( animator.GetCurrentAnimatorStateInfo(turnAnimation.layer).normalizedTime < 0.85f )
 			yield return null;
 
+		// our animations are a maximum of 90 degrees rotation per time
+		// if we have to rotate more than 90 degrees, we need to rotate again...
+		if( info.angle <= 90.0f )
+		{
+			// nothing to do here, we're done
+		}
+		else
+		{
+			if( info.angle - 90.0f <= 5.0f ) // if smaller than 5 degrees, we manually lerp the rotation (no animation available) (See below)
+			{
+				//yield return gameObject.StartLugusRoutine( RotateTowardsLerp(info.lookRotation) );
+			}
+			else
+			{
+				// if more than 5 degreest still to turn, call this function recursively
+				// we have already rotated 90 degrees by now, so the leftover value should be 
+				yield return gameObject.StartLugusRoutine( RotateTowardsRoutine(target, direction) ).Coroutine;
+			}
+		}
+
+		// now that we have rotated, we might still be off by a couple of degrees (5 max) due to the animations
+		// just interpolate to correct, but allow other animations to start already
+
+		gameObject.StartLugusRoutine( RotateTowardsLerp( info.lookRotation, 1.0f) );
 
 		yield break;
+	}
+
+	protected IEnumerator RotateTowardsLerp(Quaternion targetRotation, float duration)
+	{
+		float startTime = Time.time;
+		Quaternion originalRotation = transform.rotation;
+
+		while( Time.time - startTime < duration )
+		{
+			transform.rotation = Quaternion.Lerp( originalRotation, targetRotation, (Time.time - startTime) / duration );
+
+			yield return null;
+		}
 	}
 
 	public void CrossFade( string animationName, float fadeDuration )

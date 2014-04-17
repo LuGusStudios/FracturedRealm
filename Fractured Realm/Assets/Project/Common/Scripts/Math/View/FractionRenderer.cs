@@ -105,7 +105,8 @@ public class FractionRenderer
 		set{ _animator = value; }
 	}
 	
-	
+
+	/*
 	// OLD: fraction.Numerator.Renderer.interactionCharacter.GetComponent<Animator>().FireBool("TurnRight");
 	// NEW: fractionRenderer.AnimationFireBool(FR.Target.NUMERATOR, "TurnRight");
 	public void AnimationFireBool(FR.Target target, string boolName)
@@ -129,6 +130,7 @@ public class FractionRenderer
 			c.GetComponent<Animator>().SetBool(boolName, v);
 		}
 	}
+	*/
 	
 	/*
 	public IEnumerator AnimationWaitForState(Character subject, string stateName)
