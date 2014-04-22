@@ -103,9 +103,22 @@ public class OperationIcon : MonoBehaviour
 		}
 	}
 
-	protected Vector3 GetNextRendererPosition()
+	public Vector3 GetNextRendererPosition()
 	{
-		return this.transform.position.yAdd( Renderers.Count * rendererYOffset ).zAdd( Renderers.Count * rendererZOffset);
+		return this.transform.position.xAdd(UnityEngine.Random.Range(-0.1f, 0.1f)).yAdd( Renderers.Count * rendererYOffset ).zAdd( Renderers.Count * rendererZOffset);
+	}
+
+	public Vector3 GetTopRendererPosition()
+	{
+		return this.transform.position.xAdd(UnityEngine.Random.Range(-0.1f, 0.1f)).yAdd( (Renderers.Count - 1) * rendererYOffset ).zAdd( (Renderers.Count - 1) * rendererZOffset);
+	}
+
+	public Transform GetTopRenderer()
+	{
+		if( Renderers != null && Renderers.Count > 0 )
+			return Renderers[ Renderers.Count - 1 ];
+		else
+			return null;
 	}
 
 	void Awake()
@@ -142,9 +155,9 @@ public class OperationIcon : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if( button.pressed ) 
-		{
-			MathInputManager.use.SelectOperation( this.type );
-		}
+		//if( button.pressed ) 
+		//{
+		//	MathManager.use.SelectOperation( this.type );
+		//}
 	}
 }

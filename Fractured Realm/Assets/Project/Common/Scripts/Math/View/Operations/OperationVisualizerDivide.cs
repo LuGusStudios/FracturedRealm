@@ -82,7 +82,7 @@ public class OperationVisualizerDivide : IOperationVisualizer
 		
 		// Note: no need to go through the multiplay IOperation itself: the correct result was calculated by the divide Operation
 		// we only need to visualize it the same way we do a multiplication
-		IOperationVisualizer mulViz = MathInputManager.use.GetVisualizer( FR.OperationType.MULTIPLY );
+		IOperationVisualizer mulViz = MathManager.use.GetVisualizer( FR.OperationType.MULTIPLY );
 		
 		yield return LugusCoroutines.use.StartRoutine( mulViz.Visualize(current, target) ).Coroutine;
 		
