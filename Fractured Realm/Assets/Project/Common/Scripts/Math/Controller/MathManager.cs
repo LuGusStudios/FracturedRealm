@@ -88,13 +88,22 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 		bool ok = currentOperation.AcceptState( currentState );
 
 		if( !ok )
+		{
+			Debug.LogError("MathManager:Target1Selected : operation doesn't accept state ");
 			return false;
+		}
 		else
 		{
 			if( currentOperation.RequiresTwoFractions() )
+			{
+				Debug.LogError("MathManager:Target1Selected : operation requires 2 fractions ");
 				return false;
+			}
 			else
+			{
+				Debug.LogError("MathManager:Target1Selected : operation requires 1 fraction ");
 				return true;
+			}
 		}
 	}
 
@@ -128,14 +137,23 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 		
 		bool ok = currentOperation.AcceptState( currentState );
 
+		if( !ok )
+		{
+			Debug.LogError("MathManager:OnTarget2Selected : operation doesn't accept state ");
+		}
+
 		return ok;
 	}
 
 	public void ProcessCurrentOperation()
 	{
 		Debug.LogError ("ProcessCurrentOperation " + currentOperation.type);
-		
-		
+
+		this.gameObject.StartLugusRoutine( ProcessCurrentOperationRoutine() );
+	}
+
+	protected IEnumerator ProcessCurrentOperationRoutine()
+	{
 		OperationState outcome = currentOperation.Process( currentState );
 		
 		IOperationVisualizer visualizer = GetVisualizer( currentState.Type );
@@ -146,13 +164,15 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 		}
 		else
 		{
-			StartCoroutine( visualizer.Visualize(currentState, outcome) );
+			yield return gameObject.StartLugusRoutine( visualizer.Visualize(currentState, outcome) ).Coroutine;
 		}
-
+		
 		if( onOperationCompleted != null )
 			onOperationCompleted( currentOperation );
 		
 		ResetOperationState();
+
+		yield break;
 	}
 
 

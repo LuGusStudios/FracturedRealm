@@ -16,13 +16,13 @@ public class OperationIcon : MonoBehaviour
 	public int OperationAmount
 	{
 		get{ return _operationAmount; }
-		set{ _operationAmount = value; UpdateRenderers(); }
+		set{ int prevAmount = _operationAmount; _operationAmount = value; UpdateRenderers(prevAmount); }
 	}
 
 	protected Transform iconRendererTemplate = null;
 	protected List<Transform> Renderers = new List<Transform>(); 
 
-	public void UpdateRenderers()
+	public void UpdateRenderers(int previousAmount)
 	{
 		if( iconRendererTemplate == null )
 		{
@@ -52,6 +52,8 @@ public class OperationIcon : MonoBehaviour
 		}
 
 
+		int animationStartIndex = -1;
+
 		if( _operationAmount == -1 || _operationAmount == 0 )
 		{
 			// infinite uses
@@ -70,30 +72,71 @@ public class OperationIcon : MonoBehaviour
 			{
 				iconRendererTemplate.localScale = new Vector3(0,0,0);
 			}
+
+			animationStartIndex = 0; // normal animation, show the one icon
 		}
 		else
 		{
 			int leftOver = _operationAmount - Renderers.Count;
-			for( int i = 0; i < leftOver; ++i )
+
+			if( leftOver > 0 )
 			{
-				Transform renderer = (Transform) GameObject.Instantiate( iconRendererTemplate );
-				renderer.transform.position = GetNextRendererPosition();
-				renderer.transform.parent = this.transform;
+				// one or more operations were added
+				for( int i = 0; i < leftOver; ++i )
+				{
+					Transform renderer = (Transform) GameObject.Instantiate( iconRendererTemplate );
+					renderer.transform.position = GetNextRendererPosition();
+					renderer.transform.parent = this.transform;
 
-				renderer.transform.name = "Renderer" + (Renderers.Count);
 
-				Renderers.Add( renderer );
+					renderer.transform.name = "Renderer" + (Renderers.Count);
+
+					Renderers.Add( renderer );
+				}
+
+				animationStartIndex = Mathf.Max ( 0, previousAmount - 1 ); // only animate the new ones
+			}
+			else if( leftOver < 0 )
+			{
+				// one or more were removed
+				// destroying/hiding the renderers themselves should be done by the user of this class
+				// this only updates the internal structure
+				Renderers = new List<Transform>();
+				for( int i = 0; i < _operationAmount; ++i )
+				{
+					Transform renderer = transform.FindChild( "Renderer" + i );
+					if( renderer == null )
+					{
+						Debug.LogError ("OperationIcon:UpdateRenderers : could not find renderer " + i + " after lowering operationAmount");
+					}
+					else
+					{
+						Renderers.Add( renderer );
+					}
+				}
+				
+				animationStartIndex = Renderers.Count; // no animation needed
+			}
+			else
+			{
+				Debug.LogError("OperationIcon:UpdateRenderers called without change in operationAmount! " + previousAmount + " // " + _operationAmount + " - " + Renderers.Count + " = " + leftOver);
+				animationStartIndex = Mathf.Max ( 0, previousAmount - 1 ); //Renderers.Count; // no animation needed
 			}
 		}
 
 		if( _operationAmount != 0 )
 		{
 			int j = 0;
-			foreach( Transform renderer in Renderers )
+			for( j = animationStartIndex; j < Renderers.Count; ++j )
 			{
+				Transform renderer = Renderers[j];
+
 				renderer.transform.localScale = Vector3.zero;
+
+				renderer.transform.eulerAngles = new Vector3(0,0,0);
+				renderer.transform.Rotate( new Vector3(0, 0, UnityEngine.Random.Range(-20.0f, 20.0f)) );
+
 				renderer.gameObject.ScaleTo( new Vector3(1,1,1) ).Time (1.0f).Delay(j * 0.3f).EaseType( iTween.EaseType.easeOutBounce ).Execute();
-				j++;
 			}
 
 			// resize collider
@@ -123,6 +166,8 @@ public class OperationIcon : MonoBehaviour
 
 	void Awake()
 	{
+		_operationAmount = -1;
+
 		button = GetComponent<Button>();
 		if( button == null )
 		{

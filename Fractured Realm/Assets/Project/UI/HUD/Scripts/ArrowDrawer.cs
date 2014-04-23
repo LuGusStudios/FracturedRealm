@@ -11,6 +11,21 @@ public class ArrowDrawer : MonoBehaviour
 	public Material positiveMaterial = null;
 	public Material negativeMaterial = null;
 	
+	public Transform startTransform = null;
+	public Transform targetTransform = null;
+
+	void Awake()
+	{
+		if( startTransform == null )
+		{
+			startTransform = transform.FindChild("Start");
+		}
+
+		if( targetTransform == null )
+		{
+			targetTransform = transform.FindChild("Target");
+		}
+	}
 
 	// Use this for initialization
 	void Start () 
@@ -38,8 +53,57 @@ public class ArrowDrawer : MonoBehaviour
 	{
 		GetComponent<MeshFilter>().mesh.Clear();
 	}
+
+	public void CreateArrow(bool positive = true)
+	{
+		CreateArrow( startTransform.position, targetTransform.position, positive );
+	}
+
+	public void MoveTowards(Vector3 target, float time = 1.0f )
+	{
+		this.gameObject.StartLugusRoutine( MoveTowardsRoutine(target, time) );
+	}
+
+	public IEnumerator MoveTowardsRoutine(Vector3 target, float time = 1.0f)
+	{
+		targetTransform.gameObject.MoveTo( target ).Time ( time ).Execute();
+
+		float startTime = Time.time;
+		while( Time.time - startTime < time )
+		{
+			CreateArrow(true);
+			yield return null;
+		}
+
+		// small times (0.3f or less) would otherwhise sometimes stop short of the target
+		targetTransform.gameObject.StopTweens();
+		targetTransform.position = target;
+		CreateArrow(true);
+	}
 	
-	public void CreateArrow(Vector3 startScreen, Vector3 endScreen, bool positive)
+	public void CollapseTowards(Vector3 target, float time = 1.0f )
+	{
+		this.gameObject.StartLugusRoutine( CollapseTowardsRoutine(target, time) );
+	}
+	
+	public IEnumerator CollapseTowardsRoutine(Vector3 target, float time = 1.0f)
+	{
+		startTransform.gameObject.MoveTo( target ).Time ( time ).Execute();
+		
+		float startTime = Time.time;
+		while( Time.time - startTime < time )
+		{
+			CreateArrow(true);
+			yield return null;
+		}
+		
+		// small times (0.3f or less) would otherwhise sometimes stop short of the target
+		startTransform.gameObject.StopTweens();
+		startTransform.position = target;
+		CreateArrow(true);
+	}
+	
+	public void CreateArrowScreen(Vector3 startScreen, Vector3 endScreen, bool positive)
 	{
 		if( positive )
 			renderer.material = positiveMaterial;
@@ -54,8 +118,12 @@ public class ArrowDrawer : MonoBehaviour
 				
 		if( Vector3.Distance(start, end) < 1.0f )
 			return;
-		
-		
+
+		CreateArrow( start, end, positive );
+	}
+
+	public void CreateArrow( Vector3 start, Vector3 end, bool positive ) // start and end in WORLD coordinates
+	{
 		// NOTE: The debug.Draw functions will appear offset by the parent transform. This is normal!
 		start = transform.InverseTransformPoint(start);
 		end = transform.InverseTransformPoint(end);
@@ -108,7 +176,9 @@ public class ArrowDrawer : MonoBehaviour
 		}
 		
 		float bottomHeight = 0.5f;
-		float topHeight = 0.5f;
+		float topHeight = 1.0f;//0.5f;
+
+		topHeight = Mathf.Min( Vector3.Distance(start, end), topHeight );
 		
 		// step 2: calculate the 4 innermost corners
 		// 1st we need to find position along the line between start and end at appropriate positions
