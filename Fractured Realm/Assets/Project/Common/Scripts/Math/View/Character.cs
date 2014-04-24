@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-// In a very restricted world, this class should be called NumberRenderer
+// TODO: Should be refactored to CharacterRenderer?
 public class Character : MonoBehaviour 
 {
 	//public Number _number = null;
@@ -41,6 +41,19 @@ public class Character : MonoBehaviour
 		get{ return _numberRenderer; }
 		set{ _numberRenderer = value; }
 	}
+
+	/*
+	protected CharacterAnimator _animator = null;
+	public CharacterAnimator Animator
+	{
+		get{ return _animator; }
+		set{ _animator = value; }
+	}
+	*/
+	public CharacterAnimator Animator
+	{
+		get{ return GetComponent<CharacterAnimator>(); }
+	}
 	
 	// the actual value this character is rendering
 	// is not always equal to Number.Value!!! (from 7, a Number is rendererd using 2 characters)
@@ -50,7 +63,64 @@ public class Character : MonoBehaviour
 		get{ return _value; }
 		set{ _value = value; }
 	}
+
+	protected Transform _head = null;
+	public Transform Head
+	{
+		get
+		{
+			if( _head == null )
+			{
+				_head = transform.FindChildRecursively("Head");
+			}
+
+			return _head;
+		}
+	}
 	
+	protected Transform _body = null;
+	public Transform Body
+	{
+		get
+		{
+			if( _body == null )
+			{
+				_body = transform.FindChildRecursively("Hips");
+			}
+			
+			return _body;
+		}
+	}
+	
+	protected Transform _leftHand = null;
+	public Transform LeftHand
+	{
+		get
+		{
+			if( _leftHand == null )
+			{
+				_leftHand = transform.FindChildRecursively("LeftHand");
+			}
+			
+			return _leftHand;
+		}
+	}
+	
+	protected Transform _rightHand = null;
+	public Transform RightHand
+	{
+		get
+		{
+			if( _rightHand == null )
+			{
+				_rightHand = transform.FindChildRecursively("RightHand");
+			}
+			
+			return _rightHand;
+		}
+	}
+
+
 	
 	public void ShowBody(bool show)
 	{
@@ -61,6 +131,8 @@ public class Character : MonoBehaviour
 			transform.FindChild("global_controller1").gameObject.SetActive( show );
 		else if( transform.FindChild("kilt2") )
 			transform.FindChild("kilt2").renderer.enabled = show;
+		else if( transform.FindChild("kilt") )
+			transform.FindChild("kilt").renderer.enabled = show;
 			
 	}
 	

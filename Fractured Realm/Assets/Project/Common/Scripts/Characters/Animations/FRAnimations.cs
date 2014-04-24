@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public enum FRAnimation
 {
@@ -49,8 +50,24 @@ public enum FRAnimation
 	smallMaskLookNeutral = -165200520,
 	floating = -1029462549,
 	running = -1961299755,
-	turnLeft = 1132539592,
-	turnRight = 1646604341,
+	turnLeft10 = 2124953321,
+	turnLeft20 = 1434805546,
+	turnLeft30 = 1285444715,
+	turnLeft40 = 64996012,
+	turnLeft50 = 449115117,
+	turnLeft60 = 837394478,
+	turnLeft70 = 686985583,
+	turnLeft80 = -1351971424,
+	turnLeft90 = -1234060063,
+	turnRight10 = 632665566,
+	turnRight20 = 244901405,
+	turnRight30 = 394516316,
+	turnRight40 = 1489125787,
+	turnRight50 = 1104769242,
+	turnRight60 = 1794384665,
+	turnRight70 = 1945047640,
+	turnRight80 = -193524073,
+	turnRight90 = -311672874,
 	featherPlop = -1930819229,
 	headbang = -529993720,
 	violentShake = 269461105,
@@ -91,11 +108,36 @@ public enum FRAnimation
 public class FRAnimations
 {
 
-	public Dictionary<int, FRAnimationData> animations = new Dictionary<int, FRAnimationData>();
-
-	public FRAnimations()
+	public static FRAnimation TypeFromString( string animationName )
 	{
+		try
+		{
+			return (FRAnimation) Enum.Parse( typeof(FRAnimation), animationName ); 
 
+		}
+		catch( ArgumentException e )
+		{
+			return FRAnimation.NONE;
+		}
+	}
+	
+	protected static Dictionary<int, FRAnimationData> _animations = null;
+	public static Dictionary<int, FRAnimationData> animations
+	{
+		get
+		{
+			if( _animations == null )
+			{
+				_animations = new Dictionary<int, FRAnimationData>();
+				FillDictionary();
+			}
+
+			return _animations;
+		}
+	}
+
+	public static void FillDictionary()
+	{
 		FRAnimationData animation = null;
 
 		animation = new FRAnimationData();
@@ -103,7 +145,7 @@ public class FRAnimations
 		animation.hash = -178524345;
 		animation.parentName = "Base Layer";
 		animation.layer = 0;
-		animations.Add(-178524345, animation); 
+		animations.Add(-178524345, animation);
 
 		animation = new FRAnimationData();
 		animation.name = "lowFiveReceiveLefttHand";
@@ -400,18 +442,130 @@ public class FRAnimations
 		animations.Add(-1961299755, animation);
 
 		animation = new FRAnimationData();
-		animation.name = "turnLeft";
-		animation.hash = 1132539592;
+		animation.name = "turnLeft10";
+		animation.hash = 2124953321;
 		animation.parentName = "/Movements";
 		animation.layer = 0;
-		animations.Add(1132539592, animation);
+		animations.Add(2124953321, animation);
 
 		animation = new FRAnimationData();
-		animation.name = "turnRight";
-		animation.hash = 1646604341;
+		animation.name = "turnLeft20";
+		animation.hash = 1434805546;
 		animation.parentName = "/Movements";
 		animation.layer = 0;
-		animations.Add(1646604341, animation);
+		animations.Add(1434805546, animation);
+
+		animation = new FRAnimationData();
+		animation.name = "turnLeft30";
+		animation.hash = 1285444715;
+		animation.parentName = "/Movements";
+		animation.layer = 0;
+		animations.Add(1285444715, animation);
+
+		animation = new FRAnimationData();
+		animation.name = "turnLeft40";
+		animation.hash = 64996012;
+		animation.parentName = "/Movements";
+		animation.layer = 0;
+		animations.Add(64996012, animation);
+
+		animation = new FRAnimationData();
+		animation.name = "turnLeft50";
+		animation.hash = 449115117;
+		animation.parentName = "/Movements";
+		animation.layer = 0;
+		animations.Add(449115117, animation);
+
+		animation = new FRAnimationData();
+		animation.name = "turnLeft60";
+		animation.hash = 837394478;
+		animation.parentName = "/Movements";
+		animation.layer = 0;
+		animations.Add(837394478, animation);
+
+		animation = new FRAnimationData();
+		animation.name = "turnLeft70";
+		animation.hash = 686985583;
+		animation.parentName = "/Movements";
+		animation.layer = 0;
+		animations.Add(686985583, animation);
+
+		animation = new FRAnimationData();
+		animation.name = "turnLeft80";
+		animation.hash = -1351971424;
+		animation.parentName = "/Movements";
+		animation.layer = 0;
+		animations.Add(-1351971424, animation);
+
+		animation = new FRAnimationData();
+		animation.name = "turnLeft90";
+		animation.hash = -1234060063;
+		animation.parentName = "/Movements";
+		animation.layer = 0;
+		animations.Add(-1234060063, animation);
+
+		animation = new FRAnimationData();
+		animation.name = "turnRight10";
+		animation.hash = 632665566;
+		animation.parentName = "/Movements";
+		animation.layer = 0;
+		animations.Add(632665566, animation);
+
+		animation = new FRAnimationData();
+		animation.name = "turnRight20";
+		animation.hash = 244901405;
+		animation.parentName = "/Movements";
+		animation.layer = 0;
+		animations.Add(244901405, animation);
+
+		animation = new FRAnimationData();
+		animation.name = "turnRight30";
+		animation.hash = 394516316;
+		animation.parentName = "/Movements";
+		animation.layer = 0;
+		animations.Add(394516316, animation);
+
+		animation = new FRAnimationData();
+		animation.name = "turnRight40";
+		animation.hash = 1489125787;
+		animation.parentName = "/Movements";
+		animation.layer = 0;
+		animations.Add(1489125787, animation);
+
+		animation = new FRAnimationData();
+		animation.name = "turnRight50";
+		animation.hash = 1104769242;
+		animation.parentName = "/Movements";
+		animation.layer = 0;
+		animations.Add(1104769242, animation);
+
+		animation = new FRAnimationData();
+		animation.name = "turnRight60";
+		animation.hash = 1794384665;
+		animation.parentName = "/Movements";
+		animation.layer = 0;
+		animations.Add(1794384665, animation);
+
+		animation = new FRAnimationData();
+		animation.name = "turnRight70";
+		animation.hash = 1945047640;
+		animation.parentName = "/Movements";
+		animation.layer = 0;
+		animations.Add(1945047640, animation);
+
+		animation = new FRAnimationData();
+		animation.name = "turnRight80";
+		animation.hash = -193524073;
+		animation.parentName = "/Movements";
+		animation.layer = 0;
+		animations.Add(-193524073, animation);
+
+		animation = new FRAnimationData();
+		animation.name = "turnRight90";
+		animation.hash = -311672874;
+		animation.parentName = "/Movements";
+		animation.layer = 0;
+		animations.Add(-311672874, animation);
 
 		animation = new FRAnimationData();
 		animation.name = "featherPlop";
@@ -659,6 +813,11 @@ public class FRAnimations
 		animations.Add(1167298089, animation);
 
 
+	}
+
+	public FRAnimations()
+	{
+		FillDictionary();
 	}
 }
 

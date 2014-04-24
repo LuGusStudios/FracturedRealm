@@ -34,13 +34,13 @@ public class OperationVisualizerDivide : IOperationVisualizer
 		// move original renderers down and up
 		// moving up is a longer way than moving down!
 		Vector3 numeratorUp = Switcher.Numerator.transform.position;
-		Vector3 numeratorDown = numeratorUp - new Vector3(0, 400, 0);
+		Vector3 numeratorDown = numeratorUp - new Vector3(0, 6, 0); // TODO: update these "magic numbers"
 		
 		Vector3 denominatorDown = Switcher.Denominator.transform.position;
-		Vector3 denominatorUp = denominatorDown + new Vector3(0, 400, 0);
+		Vector3 denominatorUp = denominatorDown + new Vector3(0, 8, 0);// TODO: update these "magic numbers"
 		
 		Switcher.Numerator.gameObject.MoveTo( numeratorDown ).Time (2.0f).Execute();
-		Switcher.Denominator.gameObject.MoveTo( denominatorUp ).Time (2.0f).Execute();
+		Switcher.Denominator.gameObject.MoveTo( denominatorUp ).Time (2.0f).Execute(); 
 		
 		// create new renderers (don't couple them to the correct Numbers yet)
 		// TODO: check if these get the correct parent (i.e. WORLD, etc.)
@@ -84,7 +84,7 @@ public class OperationVisualizerDivide : IOperationVisualizer
 		// we only need to visualize it the same way we do a multiplication
 		IOperationVisualizer mulViz = MathInputManager.use.GetVisualizer( FR.OperationType.MULTIPLY );
 		
-		yield return LugusInput.use.StartCoroutine( mulViz.Visualize(current, target) );
+		yield return LugusCoroutines.use.StartRoutine( mulViz.Visualize(current, target) ).Coroutine;
 		
 		// 4. ...
 		// 5. Profit!

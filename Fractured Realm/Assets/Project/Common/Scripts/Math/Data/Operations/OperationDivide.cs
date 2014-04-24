@@ -41,7 +41,14 @@ public class OperationDivide : IOperation
 		
 		if( !Fraction.AreAlike( state.StartFraction, state.StopFraction ) )
 			return false;
-		
+
+		// can only divide "full" fractions : no 0 values
+		if( state.StartFraction.Numerator.Value == 0 || state.StartFraction.Denominator.Value == 0 ||
+		    state.StopFraction.Numerator.Value == 0 || state.StopFraction.Denominator.Value == 0 )
+		{
+			return false;
+		}
+
 		return true;
 	} 
 	

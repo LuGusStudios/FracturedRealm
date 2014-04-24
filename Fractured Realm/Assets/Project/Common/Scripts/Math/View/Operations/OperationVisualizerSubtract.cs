@@ -12,13 +12,132 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 	{
 		this.type = FR.OperationType.SUBTRACT; 
 	}
-	
+
+	protected IEnumerator VisualizeDenominatorsOnly(OperationState current, OperationState target )
+	{
+		IOperationVisualizer addViz = MathInputManager.use.GetVisualizer( FR.OperationType.ADD );
+		
+		yield return LugusCoroutines.use.StartRoutine( addViz.Visualize(current, target) ).Coroutine;
+		
+		CheckOutcome(current, target);
+		Debug.Log ("OperationVisualizerSubtract : finished version for just Denominators");
+	}
+
+	protected IEnumerator VisualizeSingleAttack( FractionRenderer Attacker, FractionRenderer Defender )
+	{
+		yield return Attacker.Animator.RotateTowards( FR.Target.BOTH, Defender ).Coroutine;
+		
+		Attacker.Animator.CrossFade(FR.Target.NUMERATOR, FRAnimation.castFireball); 
+		
+		yield return new WaitForSeconds(1.0f);
+		
+		Effect fireball = EffectFactory.use.CreateEffectNormal( FR.EffectType.FIRE_BALL );
+
+		fireball.transform.position = Attacker.Numerator.interactionCharacter.LeftHand.transform.position;
+		fireball.gameObject.MoveTo( Defender.Numerator.interactionCharacter.Head.transform.position).Time(1.0f).Execute();
+		
+		yield return new WaitForSeconds(1.0f);
+
+		fireball.Free ();
+
+		Effect hit = EffectFactory.use.CreateEffectNormal( FR.EffectType.FIRE_HIT );
+		hit.transform.position = Defender.Numerator.interactionCharacter.Head.transform.position + new Vector3(0,0.0f,-1.0f);
+		
+		yield return new WaitForSeconds(0.2f);
+		
+		
+		Defender.Numerator.Number.Value -= 1;
+		Defender.Numerator.NumberValueChanged(); // will automatically freeRenderer on Numerator on smallest on the last attack
+
+		
+		if( Defender.Numerator.Number.Value < 1 )
+		{ 
+			CharacterFactory.use.FreeRenderer( Defender.Denominator );
+		}
+	}
+
 	public override IEnumerator Visualize(OperationState current, OperationState target)
-	{ 
+	{
 		Debug.Log ("OperationVisualizerSubtract : Visualize : " + current + " TO " + target);
+		
 		
 		FractionRenderer Smallest = current.StartFraction.Renderer;
 		FractionRenderer Biggest = current.StopFraction.Renderer;
+		
+		// in the case where we only have denominators (both are automatically the same)
+		// we have to do an alternative animation, since they won't fight each other
+		// for now, we just use the default Add behaviour in this case
+		// TODO: change this to a specific subtract animation to make the difference clear
+		
+		// note: no need to check for Biggest to have Numerator -> both are of the same type or wouldn't pass IOperation validation in the first place
+		if( !FRTargetExtensions.TargetFromFraction(Smallest.Fraction).HasNumerator() )
+		{
+			yield return LugusCoroutines.use.StartRoutine( VisualizeDenominatorsOnly(current, target) ).Coroutine;
+			yield break;
+		}
+		
+		
+		
+		
+		if( Biggest.Numerator.Number.Value < Smallest.Numerator.Number.Value )
+		{
+			FractionRenderer temp = Smallest;
+			Smallest = Biggest;
+			Biggest = temp;
+		}
+
+		while( Biggest.Numerator.Number.Value > target.StartFraction.Numerator.Value )
+		{
+			yield return LugusCoroutines.use.StartRoutine( VisualizeSingleAttack(Smallest, Biggest) ).Coroutine;
+
+			yield return LugusCoroutines.use.StartRoutine( VisualizeSingleAttack(Biggest, Smallest) ).Coroutine;
+
+			if( Smallest.Fraction.Numerator.Value < 1 )
+			{
+				// we're done!
+				// should break automatically... biggest.Value = startFraction.Value
+			}
+
+		}
+
+		
+		//yield return WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
+		
+		yield return Biggest.Animator.RotateTowardsCamera().Coroutine;
+
+		
+		current.StartFraction.Numerator.Value = Biggest.Fraction.Numerator.Value;
+		current.StartFraction.Denominator.Value = Biggest.Fraction.Denominator.Value;
+		
+		
+		CheckOutcome(current, target);
+		Debug.Log ("OperationVisualizerSubtract : finished");
+		yield break; 
+	}
+
+
+	public IEnumerator VisualizeOLD(OperationState current, OperationState target)
+	{ 
+		Debug.Log ("OperationVisualizerSubtract : Visualize : " + current + " TO " + target);
+
+
+		FractionRenderer Smallest = current.StartFraction.Renderer;
+		FractionRenderer Biggest = current.StopFraction.Renderer;
+
+		// in the case where we only have denominators (both are automatically the same)
+		// we have to do an alternative animation, since they won't fight each other
+		// for now, we just use the default Add behaviour in this case
+		// TODO: change this to a specific subtract animation to make the difference clear
+
+		// note: no need to check for Biggest to have Numerator -> both are of the same type or wouldn't pass IOperation validation in the first place
+		if( !FRTargetExtensions.TargetFromFraction(Smallest.Fraction).HasNumerator() )
+		{
+			yield return LugusCoroutines.use.StartRoutine( VisualizeDenominatorsOnly(current, target) ).Coroutine;
+			yield break;
+		}
+
+
+
 		
 		if( Biggest.Numerator.Number.Value < Smallest.Numerator.Number.Value )
 		{
@@ -29,28 +148,17 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 		
 		// TODO: deselect characters if need be 
 		
-		
-		//OLD: current.StopFraction.Numerator.Renderer.interactionCharacter.GetComponent<Animator>().FireBool("TurnRight");
-		//OLD: current.StopFraction.Denominator.Renderer.interactionCharacter.GetComponent<Animator>().FireBool("TurnRight");
-		
-		Smallest.AnimationFireBool(FR.Target.BOTH, "turnRight");
-		
-		//OLD: yield return Stop.Numerator.StartCoroutine( Stop.AnimationWaitForState(Stop.Numerator.interactionCharacter, "Base Layer.Idle") );
-		yield return WaitForAnimationState.New(Smallest.Numerator.interactionCharacter, "Base Layer.idle");
-		
-		Smallest.Numerator.transform.eulerAngles -= new Vector3(0, 30, 0);
-		Smallest.Denominator.transform.eulerAngles -= new Vector3(0, 30, 0);
-		
-		//OLD: current.StopFraction.Numerator.Renderer.interactionCharacter.GetComponent<Animator>().FireBool("CastFireball");
-		Smallest.AnimationFireBool(FR.Target.NUMERATOR, "castFireball");
-		
+
+		yield return Smallest.Animator.RotateTowards( FR.Target.BOTH, Biggest ).Coroutine;
+
+		Smallest.Animator.CrossFade(FR.Target.NUMERATOR, FRAnimation.castFireball); 
+
 		yield return new WaitForSeconds(1.0f);
 		
 		Effect fireball = EffectFactory.use.CreateEffectNormal( FR.EffectType.FIRE_BALL );
 		// TODO: make start at hand-palm
-		fireball.transform.position = Smallest.Numerator.transform.position + new Vector3(0, 60, 0);
-		fireball.transform.eulerAngles = new Vector3(0, 270, 0);
-		fireball.gameObject.MoveTo( Biggest.Numerator.transform.position + new Vector3(0, 60, 0)).Time(1.0f).Execute();
+		fireball.transform.position = Smallest.Numerator.transform.position + new Vector3(0, 0.5f, 0);
+		fireball.gameObject.MoveTo( Biggest.Numerator.transform.position + new Vector3(0, 0.5f, 0)).Time(1.0f).Execute();
 		
 		yield return new WaitForSeconds(1.0f);
 		
@@ -99,7 +207,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 			fireball.Free ();
 		 
 			Effect hit = EffectFactory.use.CreateEffectNormal( FR.EffectType.FIRE_HIT );
-			hit.transform.position = Biggest.Numerator.transform.position + new Vector3(0,50,-100);
+			hit.transform.position = Biggest.Numerator.transform.position + new Vector3(0,0.5f,-1.0f);
 			
 			yield return new WaitForSeconds(0.2f);
 			
@@ -113,25 +221,29 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 			{
 				firstTime = false;
 				
-				Biggest.AnimationFireBool(FR.Target.BOTH, "turnLeft");
+				//Biggest.AnimationFireBool(FR.Target.BOTH, "turnLeft");
+
+				yield return Biggest.Animator.RotateTowards( FR.Target.BOTH, Smallest ).Coroutine;
+
+				//WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
 				
-				yield return WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
-				
-				Biggest.Numerator.transform.eulerAngles = new Vector3(0, 30, 0);
-				Biggest.Denominator.transform.eulerAngles = new Vector3(0, 30, 0);
+				//Biggest.Numerator.transform.eulerAngles = new Vector3(0, 30, 0);
+				//Biggest.Denominator.transform.eulerAngles = new Vector3(0, 30, 0);
 			}
 			
 			
 			// 1. Biggest attacks : sends fireball to smallest
-			Biggest.AnimationFireBool(FR.Target.NUMERATOR, "CastFireball");
-		
+			//Biggest.AnimationFireBool(FR.Target.NUMERATOR, "CastFireball");
+			
+			Biggest.Animator.CrossFade(FR.Target.NUMERATOR, FRAnimation.castFireball); 
+
 			yield return new WaitForSeconds(1.0f);
 			
 			fireball = EffectFactory.use.CreateEffectNormal( FR.EffectType.FIRE_BALL );
 			// TODO: make start at hand-palm
-			fireball.transform.position = Biggest.Numerator.transform.position + new Vector3(0, 60, 0);
+			fireball.transform.position = Biggest.Numerator.transform.position + new Vector3(0, 0.5f, 0);
 			fireball.transform.eulerAngles = new Vector3(0, 90, 0);
-			fireball.gameObject.MoveTo( Smallest.Numerator.transform.position + new Vector3(0, 60, 0)).Time(1.0f).Execute();
+			fireball.gameObject.MoveTo( Smallest.Numerator.transform.position + new Vector3(0, 0.5f, 0)).Time(1.0f).Execute();
 			
 			yield return new WaitForSeconds(1.0f);
 			
@@ -140,25 +252,27 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 			fireball.Free ();
 		
 			hit = EffectFactory.use.CreateEffectNormal( FR.EffectType.FIRE_HIT );
-			hit.transform.position = Smallest.Numerator.transform.position + new Vector3(0,50,-100);
+			hit.transform.position = Smallest.Numerator.transform.position + new Vector3(0, 0.5f, -1.0f);
 			
 			yield return new WaitForSeconds(0.2f);
 			
 			Smallest.Numerator.Number.Value -= 1; 
-			
+
 			if( Smallest.Numerator.Number.Value < 1 )
 			{
 				CharacterFactory.use.FreeRenderer( Smallest );
 			}
 			else
-			{
+			{ 
 				Smallest.Numerator.NumberValueChanged();
 				//CharacterFactory.use.ReplaceRenderer( Smallest.Numerator, Smallest.Numerator.Number);
 				Debug.LogError("Subtract : New Smallest = " + Smallest.Numerator.Number.Value);
 				
 				// 3. Smallest attacks : sends fireball to biggest
-				Smallest.AnimationFireBool(FR.Target.NUMERATOR, "CastFireball");
+				//Smallest.AnimationFireBool(FR.Target.NUMERATOR, "CastFireball");
 			 
+				Smallest.Animator.CrossFade(FR.Target.NUMERATOR, FRAnimation.castFireball); 
+
 				yield return new WaitForSeconds(1.0f); 
 				
 				fireball = EffectFactory.use.CreateEffectNormal( FR.EffectType.FIRE_BALL );
@@ -171,13 +285,18 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 			} 
 		}
 		 
-		yield return WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
-		
+		//yield return WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
+
+		yield return Biggest.Animator.RotateTowardsCamera().Coroutine;
+
 		Debug.Log ("OperationVisualizerSubtract : finished 1  :turning right");
-		Biggest.AnimationFireBool(FR.Target.BOTH, "turnRight");
-		yield return WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
+		//Biggest.AnimationFireBool(FR.Target.BOTH, "turnRight");
+		//yield return WaitForAnimationState.New(Biggest.Numerator.interactionCharacter, "Base Layer.Idle");
 	
-		
+		current.StartFraction.Numerator.Value = Biggest.Fraction.Numerator.Value;
+		current.StartFraction.Denominator.Value = Biggest.Fraction.Denominator.Value;
+
+
 		CheckOutcome(current, target);
 		Debug.Log ("OperationVisualizerSubtract : finished");
 		yield break; 

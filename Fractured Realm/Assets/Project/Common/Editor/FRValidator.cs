@@ -85,7 +85,20 @@ public class FRValidator : EditorWindow
 		
 		GUILayout.EndVertical();
 		GUILayout.EndHorizontal();
+
 		
+		if( GUILayout.Button("Spawn Numbers") )
+		{
+			Fraction[] fractions = new Fraction[2];
+			fractions[0] = new Fraction( fr1_numerator, fr1_denominator );
+			fractions[1] = new Fraction( fr2_numerator, fr2_denominator );
+			
+			WorldFactory.use.debug_initialFractions = fractions;
+			EditorUtility.SetDirty(WorldFactory.use);
+			
+			WorldFactory.use.CreateFractions(fractions);
+		}
+
 		if( GUILayout.Button("Create Forest") )
 		{
 			Fraction[] fractions = new Fraction[2];

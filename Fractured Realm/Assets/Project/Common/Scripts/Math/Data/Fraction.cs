@@ -21,6 +21,9 @@ public class Fraction
 		this.Denominator.Fraction = this;
 		
 		this.Numerator.IsNumerator = true;
+		this.Numerator.IsDenominator = false;
+		
+		this.Denominator.IsNumerator = false;
 		this.Denominator.IsDenominator = true;
 	}
 	

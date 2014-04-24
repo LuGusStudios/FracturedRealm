@@ -22,12 +22,20 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 	public FractionRenderer CreateRenderer(Fraction fraction)
 	{
 		FractionRenderer rend = new FractionRenderer();
+		FractionAnimator anim = new FractionAnimator();
+
+		if( fraction.Numerator.Value != 0 )
+			CreateRenderer( fraction.Numerator );
 		
-		CreateRenderer( fraction.Numerator );
-		CreateRenderer( fraction.Denominator );
-		
+		if( fraction.Denominator.Value != 0 )
+			CreateRenderer( fraction.Denominator );
+
+
 		rend.Fraction = fraction;
 		fraction.Renderer = rend;
+
+		rend.Animator = anim;
+		anim.Renderer = rend;
 		
 		return rend;
 	}
@@ -42,15 +50,19 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 			Debug.LogError("CharacterFactory:ReplaceRenderer: This only works when replacing the renderer for the same number!");
 		}
 		
-		NumberRenderer newRenderer = CreateRenderer(newValue);
-		newRenderer.transform.parent = renderer.transform.parent;
-		newRenderer.transform.position = renderer.transform.position;
-		newRenderer.transform.rotation = renderer.transform.rotation;
-		
-		
-		newRenderer.interactionCharacter.transform.position = renderer.interactionCharacter.transform.position;
-		newRenderer.interactionCharacter.transform.rotation = renderer.interactionCharacter.transform.rotation;
-		
+		NumberRenderer newRenderer = null;
+
+		if( newValue.Value != 0 )
+		{
+			newRenderer = CreateRenderer(newValue);
+			newRenderer.transform.parent = renderer.transform.parent;
+			newRenderer.transform.position = renderer.transform.position;
+			newRenderer.transform.rotation = renderer.transform.rotation;
+			
+			
+			newRenderer.interactionCharacter.transform.position = renderer.interactionCharacter.transform.position;
+			newRenderer.interactionCharacter.transform.rotation = renderer.interactionCharacter.transform.rotation;
+		}
 		
 		/*
 		if( newRenderer.Characters[0] != null && renderer.Characters[0] != null )
@@ -95,12 +107,21 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 	
 	public void FreeRenderer(NumberRenderer renderer)
 	{
+		if( renderer == null )
+			return;
+
 		//Debug.Log ("CharacterFactory : FreeRenderer : " + renderer.gameObject.name);
-		GameObject.DestroyImmediate( renderer.gameObject );
+		GameObject.Destroy/*Immediate*/( renderer.gameObject );
 	}
 	
 	public NumberRenderer CreateRenderer(Number number)
 	{
+		if( number.Value == 0 )
+		{
+			Debug.LogError("CharacterFactory:CreateRenderer : number value was 0. No renderer created.");
+			return null;
+		}
+
 		/*
 		Character[] pool;
 		if( number.IsNumerator )
@@ -123,17 +144,24 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 		
 		GameObject nrGO = new GameObject("NR_" + number.Value);
 		NumberRenderer renderer = nrGO.AddComponent<NumberRenderer>();
+		NumberAnimator animator = nrGO.AddComponent<NumberAnimator>(); 
 		/*
 		renderer.Characters[0] = (Character) GameObject.Instantiate( pool[ number.ValueTo6 - 1 ] );
 		renderer.Characters[0].transform.eulerAngles = new Vector3(0, 180, 0);
 		renderer.Characters[0].Number = number;
 		*/
+
+		number.Renderer = renderer;
+		renderer.Number = number;
+
 		renderer.Characters[0] = CreateCharacter( number, number.ValueTo6 );
 		
 		if( renderer.Characters[0] == null )
 		{
 			// invalid Number.Value : do not render
 			
+			Debug.LogError("CharacterFactory:CreateRenderer : renderer.Characters[0] was null! Shouldn't happen!");
+
 			number.Renderer = null;
 			GameObject.Destroy( nrGO );
 			return null;
@@ -151,8 +179,8 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 			renderer.Characters[1] = renderer.Characters[0];
 			renderer.Characters[1].transform.position += new Vector3(0, 3.5f, 0);
 			renderer.Characters[1].transform.localScale /= 2.0f;
-			renderer.Characters[1].GetComponent<Animator>().SetBool("float", true); // TODO: make floating a looping state!
-			renderer.Characters[1].GetComponent<Animator>().SetTrigger("float");
+			renderer.Characters[1].GetComponent<Animator>().SetBool("floating", true); // TODO: make floating a looping state!
+			renderer.Characters[1].GetComponent<Animator>().SetTrigger("floating");
 			renderer.Characters[1].ShowBody(false);
 			
 			
@@ -190,9 +218,7 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 		//Debug.Log ("TEST REFERENCE : " + renderer.Characters[0].name);
 		
 		// TODO: characters should automatically be rotated the correct way!
-		
-		number.Renderer = renderer;
-		renderer.Number = number;
+
 		
 		return renderer;
 	}
@@ -210,16 +236,31 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 		
 		// TODO: add actual pooling and re-use of objects!
 		value -= 1; // make it 0-based (use as index)
-		if( value < 0 || value >= pool.Length )
+		if( number.Value == 0 || value < 0 || value >= pool.Length ) 
 		{
-			Debug.LogError("CharacterFactory:CreateCharacter : value is not valid : 0 < " + value + " < " + pool.Length);
-			
-			return null;
+			Debug.LogError("CharacterFactory:CreateCharacter : value is not valid : 0 < " + value + " < " + pool.Length + ". Value clamped.");
+
+			if( number.Value == 0 || value < 0 )
+				value = 1;
+			else if( value >= pool.Length )
+				value = pool.Length - 1;
 		}
 		
 		Character newCharacter = (Character) GameObject.Instantiate( pool[ value ] );
 		newCharacter.transform.eulerAngles = new Vector3(0, 180, 0);
 		newCharacter.Value = value;
+
+		/*
+		newCharacter.Animator = newCharacter.GetComponent<CharacterAnimator>();
+		if( newCharacter.Animator == null )
+		{
+			newCharacter.Animator = newCharacter.gameObject.AddComponent<CharacterAnimator>();
+		}
+		*/
+
+		if( newCharacter.Animator == null )
+			newCharacter.gameObject.AddComponent<CharacterAnimator>();
+
 		
 		return newCharacter;
 	}

@@ -20,18 +20,23 @@ public class OperationVisualizerSimplify : IOperationVisualizer
 		// TODO: deselect characters if need be
 		
 		FractionRenderer fraction = current.StartFraction.Renderer;
-		
-		Effect[] hits = EffectFactory.use.CreateEffects( FR.EffectType.FIRE_HIT );
-		hits[0].transform.position = fraction.Numerator.transform.position + new Vector3(0,50,-100);
-		hits[1].transform.position = fraction.Denominator.transform.position + new Vector3(0,50,-100);
+
+		fraction.Animator.SpawnEffect( FR.Target.BOTH, FR.EffectType.FIRE_HIT );
 		
 		yield return new WaitForSeconds(0.2f);
 		
-		fraction.Numerator.Number.Value = target.StartFraction.Numerator.Value;
-		fraction.Denominator.Number.Value = target.StartFraction.Denominator.Value;
+		if( fraction.Fraction.Numerator.Value != 0 )
+		{
+			fraction.Fraction.Numerator.Value = target.StartFraction.Numerator.Value;
+			fraction.Numerator.NumberValueChanged();
+		}
 		
-		fraction.Numerator.NumberValueChanged();
-		fraction.Denominator.NumberValueChanged();
+		if( fraction.Fraction.Denominator.Value != 0 )
+		{
+			fraction.Fraction.Denominator.Value = target.StartFraction.Denominator.Value;
+			fraction.Denominator.NumberValueChanged();
+		}
+
 		
 		//CharacterFactory.use.ReplaceRenderer( fraction.Numerator, fraction.Numerator.Number);
 		//CharacterFactory.use.ReplaceRenderer( fraction.Denominator, fraction.Denominator.Number);

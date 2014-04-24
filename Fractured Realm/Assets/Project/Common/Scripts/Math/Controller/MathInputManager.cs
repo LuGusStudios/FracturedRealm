@@ -13,7 +13,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 	protected List<IOperationVisualizer> operationVisualizers = new List<IOperationVisualizer>();
 	
 	// FIXME: move this to a GUI-manager like-thing
-	protected List<Transform> operationIcons = new List<Transform>();
+	protected List<OperationIcon> operationIcons;// = new List<OperationIcon>();
 
 	void Awake () 
 	{
@@ -33,7 +33,24 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		
 		//currentOperation = operations[0];
 	}
-	
+
+	public void Start()
+	{
+		InitializeOperationIcons();
+	}
+
+	protected void InitializeOperationIcons()
+	{
+		operationIcons = new List<OperationIcon>();
+		operationIcons.AddRange ( GameObject.FindObjectsOfType<OperationIcon>() );
+		
+		foreach( OperationIcon icon in operationIcons )
+		{
+			icon.OperationAmount = Random.Range(-1, 6);
+		}
+	}
+	                                    
+
 	public IOperation GetOperation(FR.OperationType type)
 	{
 		IOperation output = null;
@@ -123,6 +140,10 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 	public void ProcessClick()
 	{
 		Transform hit = LugusInput.use.RayCastFromMouseDown( LugusCamera.numerator );
+
+		if( hit == null )
+			hit = LugusInput.use.RayCastFromMouseDown( LugusCamera.denominator );
+
 		if( hit == null )
 		{
 			ResetOperationState();
@@ -132,6 +153,14 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		Debug.Log ("Hitting + " + hit.name);
 		
 		Character character = hit.GetComponent<Character>();
+		
+		if( character == null )
+		{
+			hit = LugusInput.use.RayCastFromMouseDown( LugusCamera.denominator );
+			if( hit != null )
+				character = hit.GetComponent<Character>();
+		}
+
 		if( character == null )
 		{
 			ResetOperationState();
@@ -234,7 +263,12 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 	{
 		if( !acceptInput) 
 			return;
-		
+
+		if( LugusInput.use.KeyDown(KeyCode.S) ) // "spawn"
+		{
+			InitializeOperationIcons();
+		}
+
 		// we need to have selected an operation to be able to continue
 		if( currentOperation == null )
 			return;
