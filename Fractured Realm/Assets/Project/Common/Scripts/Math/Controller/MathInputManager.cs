@@ -75,7 +75,10 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		
 		foreach( OperationIcon icon in operationIcons )
 		{
-			icon.OperationAmount = Random.Range(-1, 6);
+			if( icon.type == FR.OperationType.SIMPLIFY || icon.type == FR.OperationType.DOUBLE )
+				icon.OperationAmount = -1;
+			else
+				icon.OperationAmount = Random.Range(0, 3);
 		}
 	}
 
@@ -122,7 +125,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		}
 		else if( newState == InputState.DISABLED )
 		{
-			// TODO: hide arrows?
+			currentOperationIcon = null;
 		}
 
 		Debug.Log("MathInputManager:ChangeState : changed from " + oldState + " to " + newState );
@@ -138,9 +141,23 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		{
 			InitializeOperationIcons();
 		}
-		if( LugusInput.use.KeyDown(KeyCode.D) ) // "spawn"
+		if( LugusInput.use.KeyDown(KeyCode.D) )
 		{
 			operationIcons[0].OperationAmount += 2;
+		}
+		if( LugusInput.use.KeyDown(KeyCode.F) )
+		{
+			operationIcons[0].GetTopRenderer().gameObject.MoveTo( new Vector3(LugusUtil.UIWidth, LugusUtil.UIHeight,0) ).Time(1.0f).Execute();
+			Destroy( operationIcons[0].GetTopRenderer().gameObject, 2.0f );
+			operationIcons[0].OperationAmount -= 1;
+			
+			operationIcons[0].GetTopRenderer().gameObject.MoveTo( new Vector3(LugusUtil.UIWidth, LugusUtil.UIHeight,0) ).Time(1.0f).Execute();
+			Destroy( operationIcons[0].GetTopRenderer().gameObject, 2.0f );
+			operationIcons[0].OperationAmount -= 1;
+		}
+		if( LugusInput.use.KeyDown(KeyCode.G) )
+		{
+			operationIcons[0].OperationAmount = -1;
 		}
 		
 		// we need to have selected an operation to be able to continue
@@ -283,6 +300,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		{
 			// TODO: test : if down is close enough to end of first arrow (and we're target 2)
 			// we will revert back to TARGET1 phase, because the user probably wants to re-align the arrow
+			arrow.MakePositive();
 		}
 		else if( LugusInput.use.dragging )
 		{
@@ -353,13 +371,13 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 
 			Debug.LogWarning("Character hit for operation : " + character.name);
 
-			bool operationComplete = false;
+			FR.OperationMessage operationResult = FR.OperationMessage.None;
 			if( state == InputState.TARGET1 )
-				operationComplete = MathManager.use.OnTarget1Selected( character.Number.Fraction );
+				operationResult = MathManager.use.OnTarget1Selected( character.Number.Fraction );
 			else if( state == InputState.TARGET2 )
-				operationComplete = MathManager.use.OnTarget2Selected( character.Number.Fraction );
+				operationResult = MathManager.use.OnTarget2Selected( character.Number.Fraction );
 
-			if( operationComplete )
+			if( operationResult == FR.OperationMessage.None )
 			{
 				// TODO: hide arrows
 				// TODO: hide operationIconRenderer
@@ -383,6 +401,8 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 					iconRenderer.gameObject.MoveTo( iconRenderer.position.y( LugusUtil.UIHeight + 3.0f ) ).Time ( 1.3f ).EaseType(iTween.EaseType.easeInBack).Execute();
 
 					currentOperationIcon.OperationAmount -= 1;
+					
+					GameObject.Destroy( iconRenderer.gameObject, 1.5f );
 				}
 				else
 				{
@@ -390,18 +410,22 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 					iconRenderer.gameObject.MoveTo( currentOperationIcon.GetTopRendererPosition() ).Time ( 1.3f ).EaseType(iTween.EaseType.easeInBack).Execute();
 				}
 
-				GameObject.Destroy( iconRenderer, 1.5f );
-
-
 
 				ChangeState( InputState.DISABLED );
 				MathManager.use.onOperationCompleted += OnOperationCompleted;
 
 				MathManager.use.ProcessCurrentOperation();
 			}
-			else
+			else if( operationResult == FR.OperationMessage.Error_Requires2Fractions )
 			{
 				ChangeState( InputState.TARGET2 );
+			}
+			else
+			{
+				// there was an error.
+				// stay with target1, make arrow red
+				Debug.LogWarning("THERE WAS ERROR. NEGATIVE ARROW BABY");
+				arrow.MakeNegative();
 			}
 		}
 		else

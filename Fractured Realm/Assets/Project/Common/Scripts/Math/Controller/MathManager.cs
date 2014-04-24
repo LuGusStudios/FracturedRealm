@@ -75,7 +75,7 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 		currentState = null;
 	}
 
-	public bool OnTarget1Selected(Fraction fr)
+	public FR.OperationMessage OnTarget1Selected(Fraction fr)
 	{
 		currentState = new OperationState(currentOperation.type, fr, null); 
 		
@@ -89,42 +89,39 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 
 		if( !ok )
 		{
-			Debug.LogError("MathManager:Target1Selected : operation doesn't accept state ");
-			return false;
+			return currentOperation.lastMessage;
 		}
 		else
 		{
 			if( currentOperation.RequiresTwoFractions() )
 			{
-				Debug.LogError("MathManager:Target1Selected : operation requires 2 fractions ");
-				return false;
+				return FR.OperationMessage.Error_Requires2Fractions;
 			}
 			else
 			{
-				Debug.LogError("MathManager:Target1Selected : operation requires 1 fraction ");
-				return true;
+				return FR.OperationMessage.None;
 			}
 		}
 	}
 
-	public bool OnTarget2Selected(Fraction fr)
+	public FR.OperationMessage OnTarget2Selected(Fraction fr)
 	{
 		if( currentState == null || currentState.StartFraction == null )
 		{
 			Debug.LogError("MathManager:OnTarget2Selected : currentState was invalid to accept 2nd target!");
-			return false;
+			return FR.OperationMessage.Error_Requires2Fractions;
 		}
 
 		if( currentState.StartFraction == fr )
 		{
 			Debug.LogWarning("MathManager:OnTarget2Selected : cannot select the same target twice. Ignoring");
-			return false;
+			return FR.OperationMessage.Error_IdenticalTargets;
 		}
 
 		if( !currentOperation.RequiresTwoFractions() )
 		{
 			Debug.LogError("MathManager:OnTarget2Selected : RequiresTwoFractions() is false, yet it didn't execute after select 1...");
-			return false;
+			return FR.OperationMessage.Error_Requires1Fraction;
 		}
 
 
@@ -140,9 +137,12 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 		if( !ok )
 		{
 			Debug.LogError("MathManager:OnTarget2Selected : operation doesn't accept state ");
+			return currentOperation.lastMessage;
 		}
-
-		return ok;
+		else
+		{
+			return FR.OperationMessage.None;
+		}
 	}
 
 	public void ProcessCurrentOperation()

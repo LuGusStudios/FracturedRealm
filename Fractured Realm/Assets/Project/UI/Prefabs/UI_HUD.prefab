@@ -869,7 +869,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08f2c7d67d76041dcbe5b223223a9a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -901,7 +901,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08f2c7d67d76041dcbe5b223223a9a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 4
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -933,7 +933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08f2c7d67d76041dcbe5b223223a9a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 6
 --- !u!114 &11400010
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -965,7 +965,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08f2c7d67d76041dcbe5b223223a9a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 5
 --- !u!114 &11400014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -997,7 +997,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08f2c7d67d76041dcbe5b223223a9a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 6
 --- !u!114 &11400018
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1029,7 +1029,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08f2c7d67d76041dcbe5b223223a9a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 2
 --- !u!114 &11400022
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1062,7 +1062,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   positiveMaterial: {fileID: 2100000, guid: 8b9ec10823e6f43b1add357ae7b3d89d, type: 2}
-  negativeMaterial: {fileID: 2100000, guid: 8b9ec10823e6f43b1add357ae7b3d89d, type: 2}
+  negativeMaterial: {fileID: 2100000, guid: acaf05a305388431ab7449e3f10ab4bd, type: 2}
   startTransform: {fileID: 0}
   targetTransform: {fileID: 0}
 --- !u!114 &11400026
@@ -1077,7 +1077,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   positiveMaterial: {fileID: 2100000, guid: 8b9ec10823e6f43b1add357ae7b3d89d, type: 2}
-  negativeMaterial: {fileID: 2100000, guid: 8b9ec10823e6f43b1add357ae7b3d89d, type: 2}
+  negativeMaterial: {fileID: 2100000, guid: acaf05a305388431ab7449e3f10ab4bd, type: 2}
   startTransform: {fileID: 0}
   targetTransform: {fileID: 0}
 --- !u!114 &11400028
@@ -1092,7 +1092,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   positiveMaterial: {fileID: 2100000, guid: 8b9ec10823e6f43b1add357ae7b3d89d, type: 2}
-  negativeMaterial: {fileID: 2100000, guid: 8b9ec10823e6f43b1add357ae7b3d89d, type: 2}
+  negativeMaterial: {fileID: 2100000, guid: acaf05a305388431ab7449e3f10ab4bd, type: 2}
   startTransform: {fileID: 0}
   targetTransform: {fileID: 0}
 --- !u!212 &21200000
