@@ -21,15 +21,15 @@ public class FRCameraEditor : Editor
 
 		if( GUILayout.Button("Numerator") )
 		{
-			subject.SetMode( FRCamera.Mode.Numerator );
+			HUDManager.use.SetMode( FR.Target.NUMERATOR );
 		}
 		else if( GUILayout.Button("Denominator") )
 		{
-			subject.SetMode( FRCamera.Mode.Denominator );
+			HUDManager.use.SetMode( FR.Target.DENOMINATOR );
 		}
 		else if( GUILayout.Button("Both") )
 		{
-			subject.SetMode( FRCamera.Mode.Both );
+			HUDManager.use.SetMode( FR.Target.BOTH );
 		}
 		/*
 		showDefault = EditorGUILayout.Foldout(showDefault, "Show original");

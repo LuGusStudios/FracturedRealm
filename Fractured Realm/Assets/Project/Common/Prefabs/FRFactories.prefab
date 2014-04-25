@@ -77,50 +77,50 @@ MonoBehaviour:
   - {fileID: 0}
   debug_initialFractions:
   - _numerator:
-      _value: 5
+      _value: 6
       _fraction:
         _numerator:
-          _value: 5
+          _value: 6
           _fraction:
             _numerator:
-              _value: 5
+              _value: 6
               _fraction:
                 _numerator:
-                  _value: 5
+                  _value: 6
                 _denominator:
-                  _value: 3
+                  _value: 4
               _isNumerator: 1
               _renderer: {fileID: 0}
             _denominator:
-              _value: 3
+              _value: 4
               _fraction:
                 _numerator:
-                  _value: 5
+                  _value: 6
                 _denominator:
-                  _value: 3
+                  _value: 4
               _isNumerator: 0
               _renderer: {fileID: 0}
           _isNumerator: 1
           _renderer: {fileID: 0}
         _denominator:
-          _value: 3
+          _value: 4
           _fraction:
             _numerator:
-              _value: 5
+              _value: 6
               _fraction:
                 _numerator:
-                  _value: 5
+                  _value: 6
                 _denominator:
-                  _value: 3
+                  _value: 4
               _isNumerator: 1
               _renderer: {fileID: 0}
             _denominator:
-              _value: 3
+              _value: 4
               _fraction:
                 _numerator:
-                  _value: 5
+                  _value: 6
                 _denominator:
-                  _value: 3
+                  _value: 4
               _isNumerator: 0
               _renderer: {fileID: 0}
           _isNumerator: 0
@@ -128,50 +128,50 @@ MonoBehaviour:
       _isNumerator: 1
       _renderer: {fileID: 0}
     _denominator:
-      _value: 3
+      _value: 4
       _fraction:
         _numerator:
-          _value: 5
+          _value: 6
           _fraction:
             _numerator:
-              _value: 5
+              _value: 6
               _fraction:
                 _numerator:
-                  _value: 5
+                  _value: 6
                 _denominator:
-                  _value: 3
+                  _value: 4
               _isNumerator: 1
               _renderer: {fileID: 0}
             _denominator:
-              _value: 3
+              _value: 4
               _fraction:
                 _numerator:
-                  _value: 5
+                  _value: 6
                 _denominator:
-                  _value: 3
+                  _value: 4
               _isNumerator: 0
               _renderer: {fileID: 0}
           _isNumerator: 1
           _renderer: {fileID: 0}
         _denominator:
-          _value: 3
+          _value: 4
           _fraction:
             _numerator:
-              _value: 5
+              _value: 6
               _fraction:
                 _numerator:
-                  _value: 5
+                  _value: 6
                 _denominator:
-                  _value: 3
+                  _value: 4
               _isNumerator: 1
               _renderer: {fileID: 0}
             _denominator:
-              _value: 3
+              _value: 4
               _fraction:
                 _numerator:
-                  _value: 5
+                  _value: 6
                 _denominator:
-                  _value: 3
+                  _value: 4
               _isNumerator: 0
               _renderer: {fileID: 0}
           _isNumerator: 0

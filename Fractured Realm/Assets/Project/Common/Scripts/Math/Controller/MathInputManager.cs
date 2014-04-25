@@ -63,22 +63,57 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 
 	public void Start()
 	{
-		InitializeOperationIcons();
+		InitializeOperationIcons(666);
 
 		ChangeState( InputState.IDLE );
 	}
 
-	protected void InitializeOperationIcons()
+	public void InitializeOperationIcons(int amount)
 	{
 		operationIcons = new List<OperationIcon>();
 		operationIcons.AddRange ( GameObject.FindObjectsOfType<OperationIcon>() );
 		
 		foreach( OperationIcon icon in operationIcons )
 		{
+			icon.Clear();
+
 			if( icon.type == FR.OperationType.SIMPLIFY || icon.type == FR.OperationType.DOUBLE )
 				icon.OperationAmount = -1;
-			else
+			else if( amount == 666 )
 				icon.OperationAmount = Random.Range(0, 3);
+			else
+				icon.OperationAmount = amount;
+		}
+	}
+
+	public void SetMode( FR.Target mode )
+	{
+		// when called from inside editor :)
+		if( currentOperationRendererLocation == null )
+			Awake ();
+
+
+		Transform operationButtons = HUDManager.use.transform.FindChild("OperationButtons");
+
+		if( mode == FR.Target.BOTH )
+		{
+			currentOperationRendererLocation.position = new Vector3(10.24f, 13.80313f ,0.0f);
+
+			operationButtons.position = new Vector3(0, 0, 0);
+		}
+		
+		else if( mode == FR.Target.NUMERATOR)
+		{
+			currentOperationRendererLocation.position = new Vector3(10.24f, 13.80313f ,0.0f);
+
+			operationButtons.position = new Vector3(0, -6.003259f, 0);
+		}
+		
+		else if( mode == FR.Target.DENOMINATOR )
+		{
+			currentOperationRendererLocation.position = new Vector3(10.24f, 13.80313f ,0.0f);
+
+			operationButtons.position = new Vector3(0, -6.003259f, 0);
 		}
 	}
 
@@ -110,12 +145,16 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 				arrow1.renderer.enabled = true;
 				arrow2.renderer.enabled = true;
 
+				arrow1.MakePositive();
+				arrow2.MakePositive();
+
 				arrow1.MoveTowards( arrow1DefaultTarget, 0.4f );
 				arrow2.MoveTowards( arrow2DefaultTarget, 0.4f );
 			}
 			else
 			{
 				arrow3.renderer.enabled = true;
+				arrow3.MakePositive();
 				arrow3.MoveTowards( arrow3DefaultTarget, 0.4f );
 			}
 		}
@@ -139,7 +178,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		
 		if( LugusInput.use.KeyDown(KeyCode.S) ) // "spawn"
 		{
-			InitializeOperationIcons();
+			InitializeOperationIcons(666);
 		}
 		if( LugusInput.use.KeyDown(KeyCode.D) )
 		{
@@ -166,17 +205,22 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		
 		if( LugusInput.use.down || LugusInput.use.dragging || LugusInput.use.up )
 		{
-			//if( state == InputState.IDLE )
-			//{
-				ProcessOperationSelect();
-			//}
-			if( state == InputState.TARGET1 || state == InputState.TARGET2 )
+			Debug.LogWarning(Time.frameCount + " : One of the mouse inputs was true." + this.state);
+
+			if( state != InputState.DISABLED )
 			{
-				ProcessTargetSelect();
-			}
-			else if( state == InputState.DISABLED )
-			{
-				// do nothing here
+				//if( state == InputState.IDLE )
+				//{
+					ProcessOperationSelect();
+				//}
+				if( state == InputState.TARGET1 || state == InputState.TARGET2 )
+				{
+					ProcessTargetSelect();
+				}
+				else if( state == InputState.DISABLED )
+				{
+					// do nothing here
+				}
 			}
 		}
 	}
@@ -190,7 +234,14 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		{
 			Transform hit = LugusInput.use.RayCastFromMouse( LugusCamera.ui );
 			if( hit == null )
+			{
+				Debug.LogError("No operation hit ! " + LugusInput.use.lastPoint);
 				return;
+			}
+			else
+			{
+				Debug.LogError("DID operation hit ! " + LugusInput.use.lastPoint);
+			}
 
 			OperationIcon clickedIcon = null;
 
@@ -426,6 +477,9 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 				// stay with target1, make arrow red
 				Debug.LogWarning("THERE WAS ERROR. NEGATIVE ARROW BABY");
 				arrow.MakeNegative();
+
+				errorShowStartTime = Time.time; 
+				errorMessage = operationResult;
 			}
 		}
 		else
@@ -542,9 +596,23 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 	}
 	*/
 
+	public float errorShowStartTime = -10.0f;
+	public FR.OperationMessage errorMessage = FR.OperationMessage.None;
 	
 	void OnGUI()
 	{
+		if( Time.time - errorShowStartTime < 3.0f )
+		{
+			GUILayout.BeginArea( new Rect(Screen.width / 2.0f - 100, Screen.height - 100, 200, 50), GUI.skin.box );	
+			GUILayout.BeginVertical();
+
+			GUILayout.Label("ERROR : " +  errorMessage );// + "\n" + Time.time + " - " + errorShowStartTime + " = "  + (Time.time - errorShowStartTime));
+
+			
+			GUILayout.EndVertical();
+			GUILayout.EndArea();
+		}
+
 		if( !LugusDebug.debug )
 			return;
 		

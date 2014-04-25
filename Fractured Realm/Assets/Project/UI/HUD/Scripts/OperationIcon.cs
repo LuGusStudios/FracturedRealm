@@ -19,6 +19,18 @@ public class OperationIcon : MonoBehaviour
 		set{ int prevAmount = _operationAmount; _operationAmount = value; UpdateRenderers(prevAmount); }
 	}
 
+	public void Clear()
+	{
+		// remove existing renderers (if any)
+		for( int i = 0; i < Renderers.Count; ++i )
+		{
+			Destroy ( Renderers[i].gameObject );
+		}
+		
+		Renderers = new List<Transform>();
+		_operationAmount = 0;
+	}
+
 	protected Transform iconRendererTemplate = null;
 	protected List<Transform> Renderers = new List<Transform>(); 
 

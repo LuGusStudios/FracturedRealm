@@ -213,7 +213,7 @@ public class CharacterAnimator : MonoBehaviour
 
 		animationName += info.animationDegrees;
 
-		Debug.Log("CharacterAnimator:RotateTowardsRoutine : Rotating "+ info.positionType +" by " + info.angle + " degrees with animation degrees " + info.animationDegrees + " and anim " + animationName + " // " + this.transform.name );
+		//Debug.Log("CharacterAnimator:RotateTowardsRoutine : Rotating "+ info.positionType +" by " + info.angle + " degrees with animation degrees " + info.animationDegrees + " and anim " + animationName + " // " + this.transform.name );
 
 
 

@@ -12,7 +12,7 @@ public class LugusInput : LugusSingletonRuntime<LugusInputDefault>
 
 public class LugusInputDefault : MonoBehaviour
 {
-	protected bool acceptInput = true;
+	public bool acceptInput = true;
 	
 	public bool dragging = false;
 	public bool down = false;
@@ -93,6 +93,7 @@ public class LugusInputDefault : MonoBehaviour
 	
 	public Transform RaycastFromScreenPoint(Camera camera, Vector3 screenPoint)
 	{
+		Debug.LogWarning("Raycasting from " + screenPoint);
 		
 		//if( inputPoints.Count == 0 ) 
 		//	return null;
@@ -126,7 +127,10 @@ public class LugusInputDefault : MonoBehaviour
 	
 	public Vector3 ScreenTo3DPoint( Transform referenceObject )
 	{
-		return ScreenTo3DPoint( Input.mousePosition, referenceObject );
+		if( acceptInput )
+			return ScreenTo3DPoint( Input.mousePosition, referenceObject );
+		else // allow for mouse-spoofing!
+			return ScreenTo3DPoint( lastPoint, referenceObject );
 	}
 	
 	public Vector3 ScreenTo3DPoint( Vector3 screenPoint, Transform referenceObject )
@@ -295,12 +299,13 @@ public class LugusInputDefault : MonoBehaviour
 	{
 		ProcessMouse();
 
-
-		if( Input.GetKeyDown(KeyCode.Tab) ) 
+		if( LugusDebug.allowDebugging)
 		{
-			LugusDebug.debug = !LugusDebug.debug;
+			if( Input.GetKeyDown(KeyCode.Tab) ) 
+			{
+				LugusDebug.debug = !LugusDebug.debug;
+			}
 		}
-
 	}
 	
 	public bool KeyDown(KeyCode key)
@@ -316,6 +321,30 @@ public class LugusInputDefault : MonoBehaviour
 	public bool Key(KeyCode key)
 	{
 		return Input.GetKey(key);
+	}
+
+	public bool KeyDownDebug(KeyCode key)
+	{
+		if( !LugusDebug.allowDebugging )
+			return false;
+		else
+			return KeyDown(key);
+	}
+	
+	public bool KeyUpDebug(KeyCode key)
+	{
+		if( !LugusDebug.allowDebugging )
+			return false;
+		else
+			return KeyUp(key);
+	}
+	
+	public bool KeyDebug(KeyCode key)
+	{
+		if( !LugusDebug.allowDebugging )
+			return false;
+		else
+			return Key(key);
 	}
 
 	void Awake()

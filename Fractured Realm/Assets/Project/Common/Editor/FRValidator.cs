@@ -122,6 +122,22 @@ public class FRValidator : EditorWindow
 			
 			WorldFactory.use.CreateWorld(FR.WorldType.DESERT, fractions);
 		}
+		
+		GUILayout.Label("-------------------");
+		GUILayout.Label("-------------------");
+		GUILayout.Label("-------------------");
+
+		if( Application.isPlaying )
+		{
+			if( GUILayout.Button("Test ADD") )
+			{
+				Fraction[] fractions = new Fraction[2];
+				fractions[0] = new Fraction( fr1_numerator, fr1_denominator );
+				fractions[1] = new Fraction( fr2_numerator, fr2_denominator );
+
+				FROperationTester.use.TestAdd( fractions[0], fractions[1] );
+			}
+		}
 	}
 	
 	public void ValidateCharacterFactory()

@@ -1,19 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FRCamera : MonoBehaviour 
+public class FRCamera : LugusSingletonExisting<FRCamera> 
 {
-	public enum Mode
-	{
-		NONE = -1,
-		Numerator = 1,
-		Denominator = 2,
-		Both = 3
-	}
+	public FR.Target mode = FR.Target.BOTH;
 
-	public Mode mode = Mode.Both;
-
-	public void SetMode(Mode newMode )
+	public void SetMode(FR.Target newMode )
 	{
 		//Debug.LogError("FRCamera setting mode " + newMode + " from " + this.mode + ". " + LugusCamera.numerator );
 
@@ -22,7 +14,7 @@ public class FRCamera : MonoBehaviour
 
 		mode = newMode;
 
-		if( mode == Mode.Both )
+		if( mode == FR.Target.BOTH )
 		{
 			LugusCamera.numerator.gameObject.SetActive(true);
 			LugusCamera.numerator.fieldOfView = 30;
@@ -38,7 +30,7 @@ public class FRCamera : MonoBehaviour
             SetCharactersPosition(4f);
 		}
 
-		else if( mode == Mode.Numerator )
+		else if( mode == FR.Target.NUMERATOR)
 		{
 			LugusCamera.numerator.gameObject.SetActive(true);
 
@@ -60,7 +52,7 @@ public class FRCamera : MonoBehaviour
             SetCharactersPosition(2f);
 		}
 
-		else if( mode == Mode.Denominator )
+		else if( mode == FR.Target.DENOMINATOR )
 		{
 			LugusCamera.denominator.gameObject.SetActive(true);
 			
@@ -89,4 +81,5 @@ public class FRCamera : MonoBehaviour
             character.transform.position = new Vector3(character.transform.position.x, character.transform.position.y, zPosition);
         }
     }
+
 }

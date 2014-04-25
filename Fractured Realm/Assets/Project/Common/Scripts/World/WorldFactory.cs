@@ -49,7 +49,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		if( debug_initialFractions == null || debug_initialFractions.Length == 0 )
 		{
 			debug_initialFractions = new Fraction[2];
-			debug_initialFractions[0] = new Fraction(1,11);
+			debug_initialFractions[0] = new Fraction(4,2);
 			debug_initialFractions[1] = new Fraction(7,4);
 		}
 		
