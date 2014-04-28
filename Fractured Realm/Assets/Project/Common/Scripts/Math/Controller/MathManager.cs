@@ -4,14 +4,29 @@ using System.Collections.Generic;
 
 public class MathManager : LugusSingletonRuntime<MathManager>  
 {
+	public enum MathState
+	{
+		None = -1,
+
+		Idle = 1,
+		OperationSelected = 2, // waiting for OperationSelected
+		Target1Selected = 3, // waiting for Target2Selected
+		Target2Selected = 4, // waiting for Visualizing
+		Visualizing = 5 // waiting until visualisation is completed
+	}
+
+
 	[HideInInspector]
 	public IOperation currentOperation = null;
 	
 	protected List<IOperation> operations = new List<IOperation>();
 	protected List<IOperationVisualizer> operationVisualizers = new List<IOperationVisualizer>();
 
+	
+	public MathState state = MathState.None;
+	public FR.OperationMessage lastOperationMessage = FR.OperationMessage.None;
 
-	public OperationState currentState = null;
+	public OperationState operationInfo = null;
 
 	public delegate void OnOperationCompleted(IOperation operation);
 	public OnOperationCompleted onOperationCompleted;
@@ -31,7 +46,35 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 		operationVisualizers.Add( new OperationVisualizerDouble() );
 		operationVisualizers.Add( new OperationVisualizerMultiply() );
 		operationVisualizers.Add( new OperationVisualizerDivide() );
+
+		Reset();
 	}
+
+	public void ChangeState(MathState newState)
+	{
+		MathState oldState = state;
+		state = newState;
+
+		if( oldState == MathState.Idle && newState != MathState.OperationSelected )
+		{
+			Debug.LogError("MathManager:ChangeState : idle should go to OperationSelected, instead of " + newState);
+		}
+		else if( oldState == MathState.OperationSelected && newState != MathState.Target1Selected )
+		{
+			Debug.LogError("MathManager:ChangeState : OperationSelected should go to target1Selected, instead of " + newState);
+		}
+		else if( oldState == MathState.Target1Selected && newState != MathState.Target2Selected && newState != MathState.Visualizing )
+		{
+			Debug.LogError("MathManager:ChangeState : target1Selected should go to target2 or visualizing, instead of " + newState);
+		}
+		else if( oldState == MathState.Visualizing && newState != MathState.Idle )
+		{
+			Debug.LogError("MathManager:ChangeState : Visualizing should go to idle, instead of " + newState);
+		}
+
+		Debug.Log("MathManager:ChangeState : changed from " + oldState + " to " + newState );
+	}
+
 
 	public IOperation GetOperation(FR.OperationType type)
 	{
@@ -68,109 +111,135 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 		}
 		
 		Debug.Log("Selected operation : " + currentOperation.type);	
+		
+		ChangeState( MathState.OperationSelected );
 	}
 
-	public void ResetOperationState()
+	public void Reset()
 	{
-		currentState = null;
+		operationInfo = null;
+		ChangeState( MathState.Idle );
 	}
 
 	public FR.OperationMessage OnTarget1Selected(Fraction fr)
 	{
-		currentState = new OperationState(currentOperation.type, fr, null); 
+		lastOperationMessage = FR.OperationMessage.None;
+
+		operationInfo = new OperationState(currentOperation.type, fr, null); 
 		
 		if( FRTargetExtensions.TargetFromFraction(fr).HasNumerator() )
-			currentState.StartNumber = fr.Numerator;
+			operationInfo.StartNumber = fr.Numerator;
 		else
-			currentState.StartNumber = fr.Denominator;
+			operationInfo.StartNumber = fr.Denominator;
 
 		
-		bool ok = currentOperation.AcceptState( currentState );
+		bool ok = currentOperation.AcceptState( operationInfo );
 
 		if( !ok )
 		{
-			return currentOperation.lastMessage;
+			lastOperationMessage = currentOperation.lastMessage;
+
+			// state not accepted -> stay in Idle
 		}
 		else
 		{
 			if( currentOperation.RequiresTwoFractions() )
 			{
-				return FR.OperationMessage.Error_Requires2Fractions;
+				lastOperationMessage = FR.OperationMessage.Error_Requires2Fractions;
 			}
 			else
 			{
-				return FR.OperationMessage.None;
+				lastOperationMessage = FR.OperationMessage.None;
 			}
+
+			ChangeState( MathState.Target1Selected );
 		}
+
+		return lastOperationMessage;
 	}
 
 	public FR.OperationMessage OnTarget2Selected(Fraction fr)
 	{
-		if( currentState == null || currentState.StartFraction == null )
+		lastOperationMessage = FR.OperationMessage.None;
+
+		if( operationInfo == null || operationInfo.StartFraction == null )
 		{
 			Debug.LogError("MathManager:OnTarget2Selected : currentState was invalid to accept 2nd target!");
-			return FR.OperationMessage.Error_Requires2Fractions;
+			lastOperationMessage = FR.OperationMessage.Error_Requires2Fractions;
 		}
 
-		if( currentState.StartFraction == fr )
+		if( operationInfo.StartFraction == fr )
 		{
 			Debug.LogWarning("MathManager:OnTarget2Selected : cannot select the same target twice. Ignoring");
-			return FR.OperationMessage.Error_IdenticalTargets;
+			lastOperationMessage = FR.OperationMessage.Error_IdenticalTargets;
 		}
 
 		if( !currentOperation.RequiresTwoFractions() )
 		{
 			Debug.LogError("MathManager:OnTarget2Selected : RequiresTwoFractions() is false, yet it didn't execute after select 1...");
-			return FR.OperationMessage.Error_Requires1Fraction;
+			lastOperationMessage = FR.OperationMessage.Error_Requires1Fraction;
 		}
 
+		if( lastOperationMessage != FR.OperationMessage.None )
+			return lastOperationMessage;
 
-		currentState.StopFraction = fr;
+
+
+		operationInfo.StopFraction = fr;
 		if( FRTargetExtensions.TargetFromFraction(fr).HasNumerator() )
-			currentState.StopNumber = fr.Numerator;
+			operationInfo.StopNumber = fr.Numerator;
 		else
-			currentState.StopNumber = fr.Denominator;
+			operationInfo.StopNumber = fr.Denominator;
 		
 		
-		bool ok = currentOperation.AcceptState( currentState );
+		bool ok = currentOperation.AcceptState( operationInfo );
 
 		if( !ok )
 		{
 			Debug.LogError("MathManager:OnTarget2Selected : operation doesn't accept state ");
-			return currentOperation.lastMessage;
+			lastOperationMessage = currentOperation.lastMessage;
+
+			// state not accepted -> stay with target1
 		}
 		else
 		{
-			return FR.OperationMessage.None;
+			lastOperationMessage = FR.OperationMessage.None;
+			ChangeState( MathState.Target2Selected );
 		}
+
+		return lastOperationMessage;
 	}
 
 	public void ProcessCurrentOperation()
 	{
-		Debug.LogError ("ProcessCurrentOperation " + currentOperation.type);
+		lastOperationMessage = FR.OperationMessage.None;
+
+		//Debug.LogError ("ProcessCurrentOperation " + currentOperation.type);
 
 		this.gameObject.StartLugusRoutine( ProcessCurrentOperationRoutine() );
 	}
 
 	protected IEnumerator ProcessCurrentOperationRoutine()
 	{
-		OperationState outcome = currentOperation.Process( currentState );
+		ChangeState( MathState.Visualizing );
+
+		OperationState outcome = currentOperation.Process( operationInfo );
 		
-		IOperationVisualizer visualizer = GetVisualizer( currentState.Type );
+		IOperationVisualizer visualizer = GetVisualizer( operationInfo.Type );
 		
 		if( visualizer == null ) 
 		{
-			Debug.LogError("MathInputManager:ProcessCurrentOperation : no visualizer found for " + currentState.Type);
+			Debug.LogError("MathInputManager:ProcessCurrentOperation : no visualizer found for " + operationInfo.Type);
 		}
 		else
 		{
-			yield return gameObject.StartLugusRoutine( visualizer.Visualize(currentState, outcome) ).Coroutine;
+			yield return gameObject.StartLugusRoutine( visualizer.Visualize(operationInfo, outcome) ).Coroutine;
 		}
 		
 		if( onOperationCompleted != null )
 			onOperationCompleted( currentOperation );
 		
-		ResetOperationState();
+		Reset();
 
 		yield break;
 	}

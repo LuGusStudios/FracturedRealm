@@ -54,7 +54,7 @@ public class OperationIcon : MonoBehaviour
 		//	Renderers.Add( iconRendererTemplate );
 		//}
 
-		Debug.Log ("OperationIcon : UpdateRenderers : " + this.type + " -> " + _operationAmount + " // " + Renderers.Count );
+		//Debug.Log ("OperationIcon : UpdateRenderers : " + this.type + " -> " + _operationAmount + " // " + Renderers.Count );
 
 
 		if( _operationAmount == 0 )
@@ -128,7 +128,8 @@ public class OperationIcon : MonoBehaviour
 			if( leftOver > 0 ) 
 			{
 				// one or more operations were added
-				Debug.LogWarning("Icon " + this.name + " : add extra operations : " + leftOver + " = " + _operationAmount + " - " + Renderers.Count + ". Prev : " + previousAmount);
+				//Debug.LogWarning("Icon " + this.name + " : add extra operations : " + leftOver + " = " + _operationAmount + " - " + Renderers.Count + ". Prev : " + previousAmount);
+
 				for( int i = 0; i < leftOver; ++i )
 				{
 					Transform renderer = (Transform) GameObject.Instantiate( iconRendererTemplate );

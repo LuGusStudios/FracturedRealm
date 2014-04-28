@@ -93,7 +93,7 @@ public class LugusInputDefault : MonoBehaviour
 	
 	public Transform RaycastFromScreenPoint(Camera camera, Vector3 screenPoint)
 	{
-		Debug.LogWarning("Raycasting from " + screenPoint);
+		//Debug.LogWarning("Raycasting from " + screenPoint);
 		
 		//if( inputPoints.Count == 0 ) 
 		//	return null;
@@ -299,7 +299,7 @@ public class LugusInputDefault : MonoBehaviour
 	{
 		ProcessMouse();
 
-		if( LugusDebug.allowDebugging)
+		if( LugusDebug.allowDebugging )
 		{
 			if( Input.GetKeyDown(KeyCode.Tab) ) 
 			{
@@ -359,7 +359,7 @@ public class LugusInputDefault : MonoBehaviour
 		if( !LugusDebug.debug )
 			return;
 		
-		if( GUI.Button( new Rect(200, Screen.height - 30, 200, 30), "Toggle debug") )
+		if( GUI.Button( new Rect(Screen.width / 2.0f - 100.0f, Screen.height - 30, 200, 30), "Close debug") )
 		{
 			LugusDebug.debug = !LugusDebug.debug;
 		}

@@ -16,7 +16,9 @@ public class FRCameraEditor : Editor
 	public override void OnInspectorGUI()
 	{
 		FRCamera subject = (FRCamera) target;
-		
+
+		DrawDefaultInspector();
+
 		//EditorGUIUtility.LookLikeInspector();
 
 		if( GUILayout.Button("Numerator") )

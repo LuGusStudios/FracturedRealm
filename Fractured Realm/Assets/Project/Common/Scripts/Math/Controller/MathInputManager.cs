@@ -205,7 +205,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		
 		if( LugusInput.use.down || LugusInput.use.dragging || LugusInput.use.up )
 		{
-			Debug.LogWarning(Time.frameCount + " : One of the mouse inputs was true." + this.state);
+			//Debug.LogWarning(Time.frameCount + " : One of the mouse inputs was true." + this.state);
 
 			if( state != InputState.DISABLED )
 			{
@@ -235,13 +235,13 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 			Transform hit = LugusInput.use.RayCastFromMouse( LugusCamera.ui );
 			if( hit == null )
 			{
-				Debug.LogError("No operation hit ! " + LugusInput.use.lastPoint);
+				//Debug.LogError("No operation hit ! " + LugusInput.use.lastPoint);
 				return;
 			}
-			else
-			{
-				Debug.LogError("DID operation hit ! " + LugusInput.use.lastPoint);
-			}
+			//else
+			//{
+			//	Debug.LogError("DID operation hit ! " + LugusInput.use.lastPoint);
+			//}
 
 			OperationIcon clickedIcon = null;
 
@@ -617,13 +617,22 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 			return;
 		
 		
-		GUILayout.BeginArea( new Rect(0, 100, 300, 300) );	
+		GUILayout.BeginArea( new Rect(Screen.width / 2.0f - 150.0f, 100, 300, 300) );	
 		GUILayout.BeginVertical();
 		
 		GUILayout.Box("Current operation : " + MathManager.use.currentOperation);
 		
-		if( MathManager.use.currentState != null )
-			GUILayout.Box("Current state : " + MathManager.use.currentState.StartFraction + " -> " + MathManager.use.currentState.StopFraction);
+		GUILayout.Box("Current state : " + MathManager.use.state);
+
+		if( MathManager.use.operationInfo != null )
+		{
+			GUILayout.Box("Current fractions : " + MathManager.use.operationInfo.StartFraction + " -> " + MathManager.use.operationInfo.StopFraction);
+		}
+
+		if( MathManager.use.lastOperationMessage != FR.OperationMessage.None )
+		{
+			GUILayout.Box("\nCurrent message : " + MathManager.use.lastOperationMessage + "\n");
+		}
 		
 		GUILayout.EndVertical();
 		GUILayout.EndArea();

@@ -45,4 +45,31 @@ public class HUDManager : LugusSingletonExisting<HUDManager>
 			SetMode( FR.Target.BOTH );
 		}
 	}
+	
+	public void OnGUI()
+	{
+		if( !LugusDebug.debug )
+			return;
+		
+		GUILayout.BeginArea( new Rect( Screen.width - 275, Screen.height - 50, 275, 50 ) );
+		GUILayout.BeginHorizontal();
+		
+		if( GUILayout.Button("\nBOTH\n") )
+		{
+			SetMode( FR.Target.BOTH );
+		}
+		
+		if( GUILayout.Button("\nNUMERATOR\n") )
+		{
+			SetMode( FR.Target.NUMERATOR );
+		}
+		
+		if( GUILayout.Button("\nDENOMINATOR\n") )
+		{
+			SetMode( FR.Target.DENOMINATOR );
+		}
+		
+		GUILayout.EndHorizontal();
+		GUILayout.EndArea();
+	}
 }

@@ -20,6 +20,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 	{
 		// TODO: CHANGE!
 		CreateWorld(FR.WorldType.DESERT);
+		HUDManager.use.SetMode( FR.Target.BOTH );
 		
 	}
 	
@@ -93,11 +94,13 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		if( fr.Numerator.Value != 0 )
 		{
 			frr.Numerator.transform.parent = world.numerator.transform;
+			frr.Numerator.SpawnPosition = world.numerator.SpawnLeft.position;
 			frr.Numerator.transform.position = world.numerator.SpawnLeft.position;
 		}
 		if( fr.Denominator.Value != 0 )
 		{
 			frr.Denominator.transform.parent = world.denominator.transform;
+			frr.Denominator.SpawnPosition = world.denominator.SpawnLeft.position;
 			frr.Denominator.transform.position = world.denominator.SpawnLeft.position;
 		}
 		
@@ -119,11 +122,13 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		if( fr2.Numerator.Value != 0 )
 		{
 			frr2.Numerator.transform.parent = world.numerator.transform;
+			frr2.Numerator.SpawnPosition = world.numerator.SpawnRight.position;
 			frr2.Numerator.transform.position = world.numerator.SpawnRight.position;
 		}
 		if( fr2.Denominator.Value != 0 )
 		{
 			frr2.Denominator.transform.parent = world.denominator.transform;
+			frr2.Denominator.SpawnPosition = world.denominator.SpawnRight.position;
 			frr2.Denominator.transform.position = world.denominator.SpawnRight.position;
 		}
 		

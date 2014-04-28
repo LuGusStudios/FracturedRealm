@@ -109,8 +109,9 @@ namespace FR
 
 		Error_ResultTooLarge = 32, // results should never be > 12 in this setup
 		Error_SimplificationImpossible = 64, // ex. 5/3 cannot be simplified
+		Error_RequiresEvenNumbers = 256, // ex. 5/3 cannot be simplified
 
-		Errors = 255, // convenience value to check if message is an error. if( OperationMessage.Errors & myMessage == myMessage ) { error } NOTE: check for .None separately!!!
+		Errors = 511, // convenience value to check if message is an error. if( OperationMessage.Errors & myMessage == myMessage ) { error } NOTE: check for .None separately!!!
 
 
 

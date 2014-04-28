@@ -30,7 +30,7 @@ public class OperationSimplify : IOperation
 			}
 			else
 			{
-				this.lastMessage = FR.OperationMessage.Error_ResultTooLarge;
+				this.lastMessage = FR.OperationMessage.Error_RequiresEvenNumbers;
 				result = false;
 			}
 		}

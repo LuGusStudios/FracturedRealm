@@ -3,9 +3,15 @@ using System.Collections;
 
 public class FRCamera : LugusSingletonExisting<FRCamera> 
 {
-	public FR.Target mode = FR.Target.BOTH;
+	public FR.Target mode = FR.Target.NONE;
 
-	public void SetMode(FR.Target newMode )
+	public void Awake()
+	{
+		// this makes the class play nicely with editor scripts and different viewpoints / setups in editor mode vs play mode
+		mode = FR.Target.NONE;
+	}
+
+	public void SetMode( FR.Target newMode )
 	{
 		//Debug.LogError("FRCamera setting mode " + newMode + " from " + this.mode + ". " + LugusCamera.numerator );
 
@@ -27,7 +33,7 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 			LugusCamera.denominator.rect = new Rect(0, 0, 1, 0.5f);
 			LugusCamera.denominator.transform.position = new Vector3(0,-200, -10.0f);
 
-            SetCharactersPosition(4f);
+            SetCharactersPosition(1f);
 		}
 
 		else if( mode == FR.Target.NUMERATOR)
@@ -49,7 +55,7 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 
 			LugusCamera.denominator.gameObject.SetActive(false);
 
-            SetCharactersPosition(2f);
+            SetCharactersPosition(-1f);
 		}
 
 		else if( mode == FR.Target.DENOMINATOR )
@@ -62,12 +68,28 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 
 			LugusCamera.numerator.gameObject.SetActive(false);
 
-            SetCharactersPosition(2f);
+            SetCharactersPosition(-1f);
 		}
 	}
 
     void SetCharactersPosition(float zPosition)
     {
+		//Debug.LogError("Setting characters position to " + zPosition);
+
+		NumberRenderer[] numbers = GameObject.FindObjectsOfType<NumberRenderer>();
+		
+		if (numbers.Length < 1)
+		{
+			Debug.LogWarning("FRCamera: Couldn't find any NumberRenderers in the scene");
+			return;
+		}
+		
+		foreach (NumberRenderer number in numbers)
+		{
+			number.transform.position = number.transform.position.z( number.SpawnPosition.z + zPosition );
+		}
+
+		/*
         Character[] characters = GameObject.FindObjectsOfType<Character>();
 
         if (characters.Length < 1)
@@ -80,6 +102,8 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
         {
             character.transform.position = new Vector3(character.transform.position.x, character.transform.position.y, zPosition);
         }
+        */
     }
+
 
 }
