@@ -315,7 +315,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294967039
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_HDR: 0
@@ -412,7 +412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 615a61bc34afa4b71b9549f0bbd7b6a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode: 3
+  mode: 0
 --- !u!1 &932808278
 GameObject:
   m_ObjectHideFlags: 0
@@ -454,6 +454,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceptInput: 1
+  state: -1
+  errorShowStartTime: -10
+  errorMessage: 0
 --- !u!114 &932808281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -466,6 +469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5104d129e7cf5405c99a613b49d8238e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceptInput: 1
   dragging: 0
   down: 0
   up: 0
@@ -513,6 +517,89 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7c9f7e8510f015e4597d83f2004136b2, type: 3}
   m_RootGameObject: {fileID: 2070735049}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
+--- !u!1 &1170632363
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100000, guid: a0df3cc7b13854b4497fefca990f3929, type: 2}
+  m_PrefabInternal: {fileID: 1524542120}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1170632365}
+  - 114: {fileID: 1170632364}
+  m_Layer: 0
+  m_Name: FRDebug
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1170632364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400000, guid: a0df3cc7b13854b4497fefca990f3929,
+    type: 2}
+  m_PrefabInternal: {fileID: 1524542120}
+  m_GameObject: {fileID: 1170632363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d14ba320e2eeb4e14a36521d56ea24e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldType: 2
+  cameraMode: 3
+  interactionSpeed: 1
+  busy: 0
+--- !u!4 &1170632365
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400000, guid: a0df3cc7b13854b4497fefca990f3929, type: 2}
+  m_PrefabInternal: {fileID: 1524542120}
+  m_GameObject: {fileID: 1170632363}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!1001 &1524542120
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400000, guid: a0df3cc7b13854b4497fefca990f3929, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: a0df3cc7b13854b4497fefca990f3929, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: a0df3cc7b13854b4497fefca990f3929, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: a0df3cc7b13854b4497fefca990f3929, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: a0df3cc7b13854b4497fefca990f3929, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: a0df3cc7b13854b4497fefca990f3929, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: a0df3cc7b13854b4497fefca990f3929, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: a0df3cc7b13854b4497fefca990f3929, type: 2}
+  m_RootGameObject: {fileID: 1170632363}
   m_IsPrefabParent: 0
   m_IsExploded: 1
 --- !u!1001 &1749273703
@@ -569,6 +656,7 @@ GameObject:
   - 4: {fileID: 1981059374}
   - 114: {fileID: 1981059375}
   - 114: {fileID: 1981059376}
+  - 114: {fileID: 1981059377}
   m_Layer: 0
   m_Name: FRFactories
   m_TagString: Untagged
@@ -629,14 +717,240 @@ MonoBehaviour:
   worldTemplates:
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 11400000, guid: 70e565b2894ed4606ab445c242ee868c, type: 2}
-  - {fileID: 11400000, guid: 59d33c9f954b9489491403e3588cf231, type: 2}
+  - {fileID: 11400000, guid: c9b888f51d9ca46d388770d34ddbd890, type: 2}
+  - {fileID: 11400000, guid: c9b888f51d9ca46d388770d34ddbd890, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  debug_initialFractions: []
+  debug_initialFractions:
+  - _numerator:
+      _value: 6
+      _fraction:
+        _numerator:
+          _value: 6
+          _fraction:
+            _numerator:
+              _value: 6
+              _fraction:
+                _numerator:
+                  _value: 6
+                _denominator:
+                  _value: 4
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 4
+              _fraction:
+                _numerator:
+                  _value: 6
+                _denominator:
+                  _value: 4
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 1
+          _renderer: {fileID: 0}
+        _denominator:
+          _value: 4
+          _fraction:
+            _numerator:
+              _value: 6
+              _fraction:
+                _numerator:
+                  _value: 6
+                _denominator:
+                  _value: 4
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 4
+              _fraction:
+                _numerator:
+                  _value: 6
+                _denominator:
+                  _value: 4
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 0
+          _renderer: {fileID: 0}
+      _isNumerator: 1
+      _renderer: {fileID: 0}
+    _denominator:
+      _value: 4
+      _fraction:
+        _numerator:
+          _value: 6
+          _fraction:
+            _numerator:
+              _value: 6
+              _fraction:
+                _numerator:
+                  _value: 6
+                _denominator:
+                  _value: 4
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 4
+              _fraction:
+                _numerator:
+                  _value: 6
+                _denominator:
+                  _value: 4
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 1
+          _renderer: {fileID: 0}
+        _denominator:
+          _value: 4
+          _fraction:
+            _numerator:
+              _value: 6
+              _fraction:
+                _numerator:
+                  _value: 6
+                _denominator:
+                  _value: 4
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 4
+              _fraction:
+                _numerator:
+                  _value: 6
+                _denominator:
+                  _value: 4
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 0
+          _renderer: {fileID: 0}
+      _isNumerator: 0
+      _renderer: {fileID: 0}
+  - _numerator:
+      _value: 6
+      _fraction:
+        _numerator:
+          _value: 6
+          _fraction:
+            _numerator:
+              _value: 6
+              _fraction:
+                _numerator:
+                  _value: 6
+                _denominator:
+                  _value: 3
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 3
+              _fraction:
+                _numerator:
+                  _value: 6
+                _denominator:
+                  _value: 3
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 1
+          _renderer: {fileID: 0}
+        _denominator:
+          _value: 3
+          _fraction:
+            _numerator:
+              _value: 6
+              _fraction:
+                _numerator:
+                  _value: 6
+                _denominator:
+                  _value: 3
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 3
+              _fraction:
+                _numerator:
+                  _value: 6
+                _denominator:
+                  _value: 3
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 0
+          _renderer: {fileID: 0}
+      _isNumerator: 1
+      _renderer: {fileID: 0}
+    _denominator:
+      _value: 3
+      _fraction:
+        _numerator:
+          _value: 6
+          _fraction:
+            _numerator:
+              _value: 6
+              _fraction:
+                _numerator:
+                  _value: 6
+                _denominator:
+                  _value: 3
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 3
+              _fraction:
+                _numerator:
+                  _value: 6
+                _denominator:
+                  _value: 3
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 1
+          _renderer: {fileID: 0}
+        _denominator:
+          _value: 3
+          _fraction:
+            _numerator:
+              _value: 6
+              _fraction:
+                _numerator:
+                  _value: 6
+                _denominator:
+                  _value: 3
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 3
+              _fraction:
+                _numerator:
+                  _value: 6
+                _denominator:
+                  _value: 3
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 0
+          _renderer: {fileID: 0}
+      _isNumerator: 0
+      _renderer: {fileID: 0}
   test: 5
+--- !u!114 &1981059377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400004, guid: 30cafdf4131e44c14b412965da496799,
+    type: 2}
+  m_PrefabInternal: {fileID: 881792252}
+  m_GameObject: {fileID: 1981059373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cbe67e63a3094db08755159ef01d429, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectTypes: 01000000020000000300000004000000
+  effects:
+  - {fileID: 11400000, guid: ef67af0c1d187423a9f56c15711bfde6, type: 2}
+  - {fileID: 11400000, guid: ef67af0c1d187423a9f56c15711bfde6, type: 2}
+  - {fileID: 11400024, guid: 39088e5df9941814891cfeea7e4f2209, type: 2}
+  - {fileID: 11400024, guid: 39088e5df9941814891cfeea7e4f2209, type: 2}
+  - {fileID: 11400024, guid: 39088e5df9941814891cfeea7e4f2209, type: 2}
+  - {fileID: 11400024, guid: 39088e5df9941814891cfeea7e4f2209, type: 2}
+  - {fileID: 11400000, guid: ef67af0c1d187423a9f56c15711bfde6, type: 2}
+  - {fileID: 11400000, guid: ef67af0c1d187423a9f56c15711bfde6, type: 2}
 --- !u!1 &1984076877
 GameObject:
   m_ObjectHideFlags: 0
@@ -705,7 +1019,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294967039
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_HDR: 0

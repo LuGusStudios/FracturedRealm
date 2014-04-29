@@ -155,7 +155,7 @@ public class FRValidator : EditorWindow
 	{
 		Debug.Log("START ValidateCharacterFactory");
 		
-		CharacterFactory cf = CharacterFactory.use; 
+		RendererFactory cf = RendererFactory.use; 
 		if( cf == null )
 		{
 			Debug.LogError("FRValidator:ValidateCharacterFactory : cf is null!");
@@ -166,7 +166,7 @@ public class FRValidator : EditorWindow
 		Logus.Assert( cf.Denominators.Length == 6 );
 		
 		int i = 1;
-		foreach( Character go in cf.Numerators )
+		foreach( CharacterRenderer go in cf.Numerators )
 		{
 			if( go == null )
 				Debug.LogError("FRValidator:ValidateCharacterFactory : Numerator " + i + " is null!" );
@@ -175,7 +175,7 @@ public class FRValidator : EditorWindow
 		}
 		
 		i = 1;
-		foreach( Character go in cf.Denominators )
+		foreach( CharacterRenderer go in cf.Denominators )
 		{
 			if( go == null )
 				Debug.LogError("FRValidator:ValidateCharacterFactory : Denominator " + i + " is null!" );

@@ -61,7 +61,7 @@ public class OperationVisualizerMultiply : IOperationVisualizer
 			else
 			{
 				// if we are at 1, we just disappear... sad, isn't it :(
-				CharacterFactory.use.FreeRenderer(Starter);
+				RendererFactory.use.FreeRenderer(Starter);
 				break;
 			}
 			
@@ -70,7 +70,7 @@ public class OperationVisualizerMultiply : IOperationVisualizer
 			// TODO: make sure we don't have to wait for 1 to arrive before spawning the other... (booooring otherwhise :))
 
 
-			NumberRenderer Runner = CharacterFactory.use.CreateRenderer( new Number(originalReceiverValue, null, side.HasNumerator() ) );
+			NumberRenderer Runner = RendererFactory.use.CreateRenderer( new Number(originalReceiverValue, null, side.HasNumerator() ) );
 			Runner.transform.position = Starter.transform.position;
 			Runner.transform.rotation = Starter.transform.rotation;
 
@@ -93,7 +93,7 @@ public class OperationVisualizerMultiply : IOperationVisualizer
 			Receiver = Receiver.NumberValueChanged();
 
 
-			CharacterFactory.use.FreeRenderer( Runner );
+			RendererFactory.use.FreeRenderer( Runner );
 			
 			// just some animation breathing time
 			yield return new WaitForSeconds(1.0f);

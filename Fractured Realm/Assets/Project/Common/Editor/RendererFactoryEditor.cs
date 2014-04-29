@@ -2,8 +2,8 @@ using UnityEngine;
 using System.Collections;
 using UnityEditor;
 
-[CustomEditor(typeof(CharacterFactory))]
-public class CharacterFactoryEditor : Editor 
+[CustomEditor(typeof(RendererFactory))]
+public class RendererFactoryEditor : Editor 
 {
 	protected bool showNumerators = true;
 	protected bool showDenominators = true;
@@ -12,7 +12,7 @@ public class CharacterFactoryEditor : Editor
 	
 	public override void OnInspectorGUI()
 	{
-		CharacterFactory subject = (CharacterFactory) target;
+		RendererFactory subject = (RendererFactory) target;
 		
 		EditorGUIUtility.LookLikeInspector();
 		
@@ -28,10 +28,10 @@ public class CharacterFactoryEditor : Editor
 		
 		
 		if( subject.Numerators == null || subject.Numerators.Length != 6 )
-			subject.Numerators = new Character[6];
+			subject.Numerators = new CharacterRenderer[6];
 		
 		if( subject.Denominators == null || subject.Denominators.Length != 6 )
-			subject.Denominators = new Character[6];
+			subject.Denominators = new CharacterRenderer[6];
 	
 		
 		showNumerators = EditorGUILayout.Foldout(showNumerators, "Numerators");
@@ -39,8 +39,8 @@ public class CharacterFactoryEditor : Editor
 		{
 			for( int i = 0; i < 6; ++i )
 			{
-				Character oldCharacter = subject.Numerators[i];
-				Character newCharacter = (Character) EditorGUILayout.ObjectField( "Numerator " + (i + 1), oldCharacter, typeof(Character), false );
+				CharacterRenderer oldCharacter = subject.Numerators[i];
+				CharacterRenderer newCharacter = (CharacterRenderer) EditorGUILayout.ObjectField( "Numerator " + (i + 1), oldCharacter, typeof(CharacterRenderer), false );
 				
 				// TODO: perform some validation here (necessary components etc.)
 				
@@ -54,8 +54,8 @@ public class CharacterFactoryEditor : Editor
 		{
 			for( int i = 0; i < 6; ++i )
 			{
-				Character oldCharacter = subject.Denominators[i];
-				Character newCharacter = (Character) EditorGUILayout.ObjectField( "Denominator " + (i + 1), oldCharacter, typeof(Character), false );
+				CharacterRenderer oldCharacter = subject.Denominators[i];
+				CharacterRenderer newCharacter = (CharacterRenderer) EditorGUILayout.ObjectField( "Denominator " + (i + 1), oldCharacter, typeof(CharacterRenderer), false );
 				
 				// TODO: perform some validation here (necessary components etc.)
 				

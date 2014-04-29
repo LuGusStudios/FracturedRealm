@@ -44,8 +44,8 @@ public class OperationVisualizerDivide : IOperationVisualizer
 		
 		// create new renderers (don't couple them to the correct Numbers yet)
 		// TODO: check if these get the correct parent (i.e. WORLD, etc.)
-		NumberRenderer newNumerator = CharacterFactory.use.CreateRenderer( new Number(Switcher.Denominator.Number.Value, null, false) );
-		NumberRenderer newDenominator = CharacterFactory.use.CreateRenderer( new Number(Switcher.Numerator.Number.Value, null, true) );
+		NumberRenderer newNumerator = RendererFactory.use.CreateRenderer( new Number(Switcher.Denominator.Number.Value, null, false) );
+		NumberRenderer newDenominator = RendererFactory.use.CreateRenderer( new Number(Switcher.Numerator.Number.Value, null, true) );
 		
 		newNumerator.transform.position = numeratorDown;
 		newNumerator.gameObject.MoveTo( numeratorUp ).Time (2.0f).Execute();
@@ -64,8 +64,8 @@ public class OperationVisualizerDivide : IOperationVisualizer
 		current.StopFraction.Denominator = temp;
 		
 		// 2. remove the old renderers
-		CharacterFactory.use.FreeRenderer( Switcher.Numerator );
-		CharacterFactory.use.FreeRenderer( Switcher.Denominator );
+		RendererFactory.use.FreeRenderer( Switcher.Numerator );
+		RendererFactory.use.FreeRenderer( Switcher.Denominator );
 		
 		// 3. make sure the new renderers now point to the correct numbers and vice versa
 		newNumerator.Number = current.StopFraction.Numerator;

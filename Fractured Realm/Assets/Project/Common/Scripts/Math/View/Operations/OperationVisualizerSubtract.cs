@@ -52,7 +52,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 		
 		if( Defender.Numerator.Number.Value < 1 )
 		{ 
-			CharacterFactory.use.FreeRenderer( Defender.Denominator );
+			RendererFactory.use.FreeRenderer( Defender.Denominator );
 		}
 	}
 
@@ -260,7 +260,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 
 			if( Smallest.Numerator.Number.Value < 1 )
 			{
-				CharacterFactory.use.FreeRenderer( Smallest );
+				RendererFactory.use.FreeRenderer( Smallest );
 			}
 			else
 			{ 

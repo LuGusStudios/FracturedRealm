@@ -89,7 +89,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		
 		Fraction fr = new Fraction(fractions[0].Numerator.Value, fractions[0].Denominator.Value); 
 		
-		FractionRenderer frr = CharacterFactory.use.CreateRenderer( fr );
+		FractionRenderer frr = RendererFactory.use.CreateRenderer( fr );
 
 		if( fr.Numerator.Value != 0 )
 		{
@@ -117,7 +117,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		
 		Fraction fr2 = new Fraction(fractions[1].Numerator.Value, fractions[1].Denominator.Value); 
 		
-		FractionRenderer frr2 = CharacterFactory.use.CreateRenderer( fr2 );
+		FractionRenderer frr2 = RendererFactory.use.CreateRenderer( fr2 );
 		
 		if( fr2.Numerator.Value != 0 )
 		{
@@ -157,7 +157,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 	{
 		Fraction fr = new Fraction(fractions[0].Numerator.Value, fractions[0].Denominator.Value); 
 		
-		FractionRenderer frr = CharacterFactory.use.CreateRenderer( fr );
+		FractionRenderer frr = RendererFactory.use.CreateRenderer( fr );
 		if( fractions[0].Numerator.Value != 0 )
 			frr.Numerator.transform.position = new Vector3(0,0,0);
 		if( fractions[0].Denominator.Value != 0 )
@@ -166,7 +166,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		
 		Fraction fr2 = new Fraction(fractions[1].Numerator.Value, fractions[1].Denominator.Value); 
 		
-		FractionRenderer frr2 = CharacterFactory.use.CreateRenderer( fr2 );
+		FractionRenderer frr2 = RendererFactory.use.CreateRenderer( fr2 );
 		if( fractions[1].Numerator.Value != 0 )
 			frr2.Numerator.transform.position = new Vector3(10,0,0);
 		if( fractions[1].Denominator.Value != 0 )
@@ -265,7 +265,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 
 	}
 	
-	public void FreeWorld(Character character)
+	public void FreeWorld(CharacterRenderer character)
 	{
 		// TODO: add actual pooling and re-use of objects!
 		GameObject.Destroy( character.gameObject );

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -233,7 +233,7 @@ public class AnimationSequenceTester : MonoBehaviour
 		}
 	}
 
-	protected IEnumerator RotateAndRun(int type, Character[] characters)
+	protected IEnumerator RotateAndRun(int type, CharacterRenderer[] characters)
 	{
 		crossfadeCounter += 1;
 		if( crossfadeCounter > 3 )
@@ -244,7 +244,7 @@ public class AnimationSequenceTester : MonoBehaviour
 
 		CharacterOrientationInfo orientationInfo = new CharacterOrientationInfo();
 
-		foreach( Character c in characters )
+		foreach( CharacterRenderer c in characters )
 		{
 
 			if( c == characters[0] )

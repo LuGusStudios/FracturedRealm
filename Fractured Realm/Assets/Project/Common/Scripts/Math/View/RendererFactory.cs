@@ -13,10 +13,10 @@ namespace FR
 }
 */
 
-public class CharacterFactory : LugusSingletonExisting<CharacterFactory> 
+public class RendererFactory : LugusSingletonExisting<RendererFactory> 
 {	
-	public Character[] Numerators;
-	public Character[] Denominators; 
+	public CharacterRenderer[] Numerators;
+	public CharacterRenderer[] Denominators; 
 	
 	
 	public FractionRenderer CreateRenderer(Fraction fraction)
@@ -226,9 +226,9 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 	// ex CreacteCharacter(number, number.ValueTo6)
 	// seems like passing the same thing twice, but number has multiple values, which each can have a character
 	// we can't pass just the int value either, because we might want to use Number to get details about the fraction or world etc.
-	public Character CreateCharacter(Number number, int value)
+	public CharacterRenderer CreateCharacter(Number number, int value)
 	{
-		Character[] pool;
+		CharacterRenderer[] pool;
 		if( number.IsNumerator )
 			pool = Numerators;
 		else 
@@ -246,7 +246,7 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 				value = pool.Length - 1;
 		}
 		
-		Character newCharacter = (Character) GameObject.Instantiate( pool[ value ] );
+		CharacterRenderer newCharacter = (CharacterRenderer) GameObject.Instantiate( pool[ value ] );
 		newCharacter.transform.eulerAngles = new Vector3(0, 180, 0);
 		newCharacter.Value = value;
 
@@ -266,7 +266,7 @@ public class CharacterFactory : LugusSingletonExisting<CharacterFactory>
 	}
 	
 	
-	public void FreeCharacter(Character character)
+	public void FreeCharacter(CharacterRenderer character)
 	{
 		// TODO: add actual pooling and re-use of objects!
 		GameObject.Destroy( character.gameObject );

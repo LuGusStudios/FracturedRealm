@@ -1,8 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-// TODO: Should be refactored to CharacterRenderer?
-public class Character : MonoBehaviour 
+public class CharacterRenderer : MonoBehaviour 
 {
 	//public Number _number = null;
 	public Number Number

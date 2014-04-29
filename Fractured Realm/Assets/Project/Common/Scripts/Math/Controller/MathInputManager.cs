@@ -389,11 +389,11 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 
 			
 			Transform hit = LugusInput.use.RayCastFromMouse( LugusCamera.numerator );
-			Character character = null;
+			CharacterRenderer character = null;
 
 			if( hit != null )
 			{
-				character = hit.GetComponent<Character>();
+				character = hit.GetComponent<CharacterRenderer>();
 			}
 
 			if( character == null )
@@ -403,7 +403,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 				
 				if( hit != null )
 				{
-					character = hit.GetComponent<Character>();
+					character = hit.GetComponent<CharacterRenderer>();
 				}
 			}
 
