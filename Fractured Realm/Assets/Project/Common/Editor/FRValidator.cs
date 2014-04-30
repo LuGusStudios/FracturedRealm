@@ -98,6 +98,7 @@ public class FRValidator : EditorWindow
 			EditorUtility.SetDirty(WorldFactory.use);
 
 			WorldFactory.use.CreateFractions(fractions);
+			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
 			HUDManager.use.SetMode( FR.Target.BOTH );
 		}
 
@@ -110,7 +111,8 @@ public class FRValidator : EditorWindow
 			WorldFactory.use.debug_initialFractions = fractions;
 			EditorUtility.SetDirty(WorldFactory.use);
 
-			WorldFactory.use.CreateWorld(FR.WorldType.FOREST, fractions);
+			WorldFactory.use.CreateWorld(FR.WorldType.FOREST, fractions, FR.Target.BOTH, true);
+			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
 			HUDManager.use.SetMode( FR.Target.BOTH );
 		}
 		
@@ -123,8 +125,23 @@ public class FRValidator : EditorWindow
 			WorldFactory.use.debug_initialFractions = fractions;
 			EditorUtility.SetDirty(WorldFactory.use);
 
-			WorldFactory.use.CreateWorld(FR.WorldType.DESERT, fractions);
+			WorldFactory.use.CreateWorld(FR.WorldType.DESERT, fractions, FR.Target.BOTH, true);
+			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
 			HUDManager.use.SetMode( FR.Target.BOTH );
+		}
+		
+		if( GUILayout.Button("Create Desert (Numerator Only)") )
+		{
+			Fraction[] fractions = new Fraction[2];
+			fractions[0] = new Fraction( fr1_numerator, 0 );
+			fractions[1] = new Fraction( fr2_numerator, 0 );
+			
+			WorldFactory.use.debug_initialFractions = fractions;
+			EditorUtility.SetDirty(WorldFactory.use);
+			
+			WorldFactory.use.CreateWorld(FR.WorldType.DESERT, fractions, FR.Target.NUMERATOR, true);
+			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
+			HUDManager.use.SetMode( FR.Target.NUMERATOR );
 		}
 		
 		GUILayout.Label("-------------------");
@@ -213,19 +230,19 @@ public class FRValidator : EditorWindow
 					
 				if( Logus.Assert( numerator != null) )
 				{
-					if( Logus.Assert( numerator.InteractionPointsContainer != null ) )
+					if( Logus.Assert( numerator.InteractionGroups != null && numerator.InteractionGroups.Length > 0 ) )
 					{
-						Logus.Assert( numerator.SpawnLeft != null );
-						Logus.Assert( numerator.SpawnRight != null );
+						Logus.Assert( numerator.InteractionGroups[0].Spawn1 != null );
+						Logus.Assert( numerator.InteractionGroups[0].Spawn2 != null );
 					}
 				}
 				
 				if( Logus.Assert( denominator != null) )
 				{
-					if( Logus.Assert( denominator.InteractionPointsContainer != null ) )
+					if( Logus.Assert( denominator.InteractionGroups != null && denominator.InteractionGroups.Length > 0 ) )
 					{
-						Logus.Assert( denominator.SpawnLeft != null );
-						Logus.Assert( denominator.SpawnRight != null );
+						Logus.Assert( denominator.InteractionGroups[0].Spawn1 != null );
+						Logus.Assert( denominator.InteractionGroups[0].Spawn2 != null );
 					}
 				}
 			}

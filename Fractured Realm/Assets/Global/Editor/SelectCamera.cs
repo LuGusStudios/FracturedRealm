@@ -26,5 +26,36 @@ public class SelectCamera : EditorWindow
 
             Selection.activeTransform = FRCameras.transform;
         }
+
+		GUILayout.BeginVertical();
+
+		FRCamera.use.DrawInteractionGroupSelectionGUI();
+
+		GUILayout.Space(40);
+		
+		if( GUILayout.Button("\nNumerator\n") )
+		{
+			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
+			HUDManager.use.SetMode( FR.Target.NUMERATOR );
+		}
+		else if( GUILayout.Button("\nDenominator\n") )
+		{
+			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
+			HUDManager.use.SetMode( FR.Target.DENOMINATOR );
+		}
+		else if( GUILayout.Button("\nBoth\n") )
+		{
+			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
+			HUDManager.use.SetMode( FR.Target.BOTH );
+		}
+
+		GUILayout.Space(10);
+		
+		if( GUILayout.Button("Default positions") )
+		{
+			FRCamera.use.MoveToDefaultPositions();
+		}
+
+		GUILayout.EndVertical();
     }
 }

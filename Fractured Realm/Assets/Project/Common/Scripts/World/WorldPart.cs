@@ -3,19 +3,30 @@ using System.Collections;
 
 public class WorldPart : MonoBehaviour 
 {
-	public Transform InteractionPointsContainer
+	protected InteractionGroup[] _interactionGroups;
+	public InteractionGroup[] InteractionGroups
 	{
 		get
 		{
-			return transform.FindChild ("InteractionPoints");
+			if( _interactionGroups == null || _interactionGroups.Length == 0 )
+			{
+				_interactionGroups = transform.gameObject.GetComponentsInChildren<InteractionGroup>();
+				if( _interactionGroups.Length == 0 )
+				{
+					Debug.LogError("WorldPart:InteractionGroups : no InteractionGroups found! Make sure there's at least 1!");
+				}
+			}
+
+			return _interactionGroups; 
 		}
 	}
-	
+
+	/*
 	public Transform SpawnLeft
 	{
 		get
 		{
-			return InteractionPointsContainer.FindChild("SpawnLeft");
+			return InteractionGroups[0].FindChild("1/Spawn1");
 		}
 	}
 	
@@ -23,9 +34,10 @@ public class WorldPart : MonoBehaviour
 	{
 		get
 		{
-			return InteractionPointsContainer.FindChild("SpawnRight");
+			return InteractionGroups[0].FindChild("1/Spawn2");
 		}
 	}
+	*/
 	
 	
 	// Use this for initialization

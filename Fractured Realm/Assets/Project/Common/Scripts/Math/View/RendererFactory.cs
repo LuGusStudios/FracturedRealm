@@ -17,7 +17,51 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 {	
 	public CharacterRenderer[] Numerators;
 	public CharacterRenderer[] Denominators; 
-	
+
+	public Portal[] Portals; // 0 is numerator, 1 is denominator
+
+	public Portal CreatePortal( int value, FR.Target part )
+	{
+		Number number = new Number(value);
+		number.IsNumerator = part.HasNumerator();
+		number.IsDenominator = part.HasDenominator();
+
+		return CreatePortal( number );
+	}
+
+	public Portal CreatePortal(Number number)
+	{
+		Portal prefab = null;
+		if( number.IsNumerator )
+		{
+			if( Portals.Length > 0 )
+			{
+				prefab = Portals[0];
+			}
+			else
+			{
+				Debug.LogError("RendererFactory:CreatePortal : no portal prefab defined for numerator! index 0");
+				return null;
+			}
+		}
+		if( number.IsDenominator )
+		{
+			if( Portals.Length > 1 )
+			{
+				prefab = Portals[1];
+			}
+			else
+			{
+				Debug.LogError("RendererFactory:CreatePortal : no portal prefab defined for denominator! index 1");
+				return null;
+			}
+		}
+
+		// TODO: switch to correct mask visualisation for number.Value
+
+		Portal portal = (Portal) GameObject.Instantiate( prefab );
+		return portal;
+	}
 	
 	public FractionRenderer CreateRenderer(Fraction fraction)
 	{
