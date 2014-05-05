@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+// http://forum.unity3d.com/threads/184747-Some-reasons-why-image-effects-might-not-work-on-Android-devices-(but-work-in-debug)
+
 [RequireComponent(typeof(Camera))]
 [AddComponentMenu("")]
 public class ImageEffectBase : MonoBehaviour
@@ -14,6 +16,7 @@ public class ImageEffectBase : MonoBehaviour
         // Disable if we don't support image effects
         if (!SystemInfo.supportsImageEffects)
         {
+			Debug.LogError("ImageEffect:Start : system doesn't support image effects!");
             enabled = false;
             return;
         }
@@ -21,7 +24,10 @@ public class ImageEffectBase : MonoBehaviour
         // Disable the image effect if the shader can't
         // run on the users graphics card
         if (!shader || !shader.isSupported)
+		{
+			Debug.LogError("ImageEffect:Start : unsupported shader!");
             enabled = false;
+		}
     }
 
     protected Material material

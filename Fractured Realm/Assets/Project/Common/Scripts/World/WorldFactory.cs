@@ -19,7 +19,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 	public void Start()
 	{
 		// TODO: CHANGE!
-		CreateWorld(FR.WorldType.DESERT);
+		CreateWorld(FR.WorldType.DESERT, FR.Target.BOTH, true);
 		HUDManager.use.SetMode( FR.Target.BOTH );
 		
 	}

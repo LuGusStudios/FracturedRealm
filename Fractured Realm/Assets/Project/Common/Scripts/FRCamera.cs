@@ -174,10 +174,13 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 			GUILayout.EndHorizontal();
 		}
 
-		if( GUILayout.Button("\nCycle through all\n") )
+		if( Application.isPlaying )
 		{
-			StopAllCoroutines();
-			gameObject.StartLugusRoutine( InteractionGroupCycleRoutine(groupCount) );
+			if( GUILayout.Button("\nCycle through all\n") )
+			{
+				StopAllCoroutines();
+				gameObject.StartLugusRoutine( InteractionGroupCycleRoutine(groupCount) );
+			}
 		}
 
 		GUILayout.EndVertical();
