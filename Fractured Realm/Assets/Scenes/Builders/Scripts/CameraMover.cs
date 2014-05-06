@@ -7,6 +7,7 @@ public class CameraMover : MonoBehaviour
     public iTween.EaseType easeType;
     public float startingXposition = -40;
     public float endingXposition = 0;
+    public float seconds = 15;
 
 
 	void Start () 
@@ -36,6 +37,6 @@ public class CameraMover : MonoBehaviour
     {
         yield return new WaitForSeconds(.8f);
 
-        FRCamera.MoveTo(new Vector3(endingXposition, 0, 0)).Time(15f).EaseType(easeType).Execute();
+        FRCamera.MoveTo(new Vector3(endingXposition, 0, 0)).Time(seconds).EaseType(easeType).Execute();
     }
 }
