@@ -88,7 +88,7 @@ public class FRValidator : EditorWindow
 		GUILayout.EndHorizontal();
 
 		
-		if( GUILayout.Button("Spawn Numbers") )
+		if( GUILayout.Button("Spawn just the numbers") )
 		{
 			Fraction[] fractions = new Fraction[2];
 			fractions[0] = new Fraction( fr1_numerator, fr1_denominator );
@@ -101,36 +101,40 @@ public class FRValidator : EditorWindow
 			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
 			HUDManager.use.SetMode( FR.Target.BOTH );
 		}
-
-		if( GUILayout.Button("Create Forest") )
-		{
-			Fraction[] fractions = new Fraction[2];
-			fractions[0] = new Fraction( fr1_numerator, fr1_denominator );
-			fractions[1] = new Fraction( fr2_numerator, fr2_denominator );
-			
-			WorldFactory.use.debug_initialFractions = fractions;
-			EditorUtility.SetDirty(WorldFactory.use);
-
-			WorldFactory.use.CreateWorld(FR.WorldType.FOREST, fractions, FR.Target.BOTH, true);
-			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
-			HUDManager.use.SetMode( FR.Target.BOTH );
-		}
 		
-		if( GUILayout.Button("Create Desert") )
-		{
-			Fraction[] fractions = new Fraction[2];
-			fractions[0] = new Fraction( fr1_numerator, fr1_denominator );
-			fractions[1] = new Fraction( fr2_numerator, fr2_denominator );
-			
-			WorldFactory.use.debug_initialFractions = fractions;
-			EditorUtility.SetDirty(WorldFactory.use);
+		GUILayout.Space(10);
 
-			WorldFactory.use.CreateWorld(FR.WorldType.DESERT, fractions, FR.Target.BOTH, true);
-			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
-			HUDManager.use.SetMode( FR.Target.BOTH );
+		FR.WorldType[] worldTypes = (FR.WorldType[]) Enum.GetValues(typeof(FR.WorldType));
+		foreach( FR.WorldType worldType in worldTypes )
+		{
+			if( worldType == FR.WorldType.NONE )
+				continue;
+
+			if( GUILayout.Button("Create " + worldType ) )
+			{
+				
+				Fraction[] fractions = new Fraction[2];
+				fractions[0] = new Fraction( fr1_numerator, fr1_denominator );
+				fractions[1] = new Fraction( fr2_numerator, fr2_denominator );
+				
+				WorldFactory.use.debug_initialFractions = fractions;
+				EditorUtility.SetDirty(WorldFactory.use);
+				
+				
+				WorldFactory.use.CreateDebugWorld( FR.WorldType.DESERT, fractions );
+
+				/*
+				WorldFactory.use.CreateWorld(worldType, fractions, FR.Target.BOTH, true);
+				FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
+				HUDManager.use.SetMode( FR.Target.BOTH );
+				*/
+			}
+
 		}
-		
-		if( GUILayout.Button("Create Desert (Numerator Only)") )
+
+		GUILayout.Space(10);
+
+		if( GUILayout.Button("Create Desert (Numerator Only test)") )
 		{
 			Fraction[] fractions = new Fraction[2];
 			fractions[0] = new Fraction( fr1_numerator, 0 );
@@ -142,6 +146,22 @@ public class FRValidator : EditorWindow
 			WorldFactory.use.CreateWorld(FR.WorldType.DESERT, fractions, FR.Target.NUMERATOR, true);
 			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
 			HUDManager.use.SetMode( FR.Target.NUMERATOR );
+			FRCamera.use.MoveToInteractionGroup( 1, 1, false );
+		}
+		
+		if( GUILayout.Button("Create Desert (Denominator Only test)") )
+		{
+			Fraction[] fractions = new Fraction[2];
+			fractions[0] = new Fraction( fr1_numerator, 0 );
+			fractions[1] = new Fraction( fr2_numerator, 0 );
+			
+			WorldFactory.use.debug_initialFractions = fractions;
+			EditorUtility.SetDirty(WorldFactory.use);
+
+			WorldFactory.use.CreateWorld(FR.WorldType.DESERT, fractions, FR.Target.DENOMINATOR, true);
+			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
+			HUDManager.use.SetMode( FR.Target.DENOMINATOR );
+			FRCamera.use.MoveToInteractionGroup( 1, 1, false );
 		}
 		
 		GUILayout.Label("-------------------");
@@ -206,9 +226,7 @@ public class FRValidator : EditorWindow
 	public void ValidateWorldFactory()
 	{
 		Debug.Log("START ValidateWorldFactory");
-		
-		Logus.Assert( WorldFactory.use.worldTemplates.Count == (WorldFactory.use.worldTypes.Count * 2) );
-		
+
 		FR.WorldType[] types = (FR.WorldType[]) Enum.GetValues(typeof(FR.WorldType));
 		foreach( FR.WorldType type in types )
 		{
@@ -217,7 +235,36 @@ public class FRValidator : EditorWindow
 			
 			
 			Debug.Log("CHECK " + type);
-			
+
+			List<WorldPart> templates = WorldFactory.use.GetWorldParts( type );
+
+			if( templates == null || templates.Count == 0 )
+			{
+				Debug.LogError("FRValidator:ValidateWorldFactory : factory doesn't contain WorldParts for type " + type);
+			}
+			else
+			{
+				foreach( WorldPart part in templates )
+				{
+					if( Logus.Assert( part.InteractionGroups != null && part.InteractionGroups.Length > 0 ) )
+					{
+						InteractionGroup[] groups = part.InteractionGroups;
+						foreach( InteractionGroup group in groups )
+						{
+							Logus.Assert( group.Spawn1 != null );
+							Logus.Assert( group.Spawn2 != null );
+							Logus.Assert( group.PortalEntry != null );
+							Logus.Assert( group.PortalExit != null );
+							Logus.Assert( group.Camera != null );
+						}
+					}
+				}
+			}
+
+
+
+
+			/*
 			if( !WorldFactory.use.worldTypes.Contains(type) )
 			{
 				Debug.LogError("FRValidator:ValidateWorldFactory : factory doesn't contain parts for type " + type);
@@ -246,6 +293,7 @@ public class FRValidator : EditorWindow
 					}
 				}
 			}
+			*/
 		}
 		
 		

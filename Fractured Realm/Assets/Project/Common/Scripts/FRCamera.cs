@@ -113,6 +113,68 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
         */
     }
 
+	// groupNR is 1-based, index is 0-based!!
+	// position: 0 is entry, 1 is center, 2 is exit
+	public void MoveToInteractionGroup( int groupNR, int position, bool animate )
+	{
+		World world = GameObject.FindObjectOfType<World>();
+
+		int groupCount = 0;
+		if( world.numerator != null )
+		{
+			groupCount = world.numerator.InteractionGroups.Length;
+		}
+		else if( world.denominator != null )
+		{
+			groupCount = world.denominator.InteractionGroups.Length;
+		}
+		else
+		{
+			Debug.LogError("FRCamera:MoveToInteractionGroup : no worldparts known!" );
+			return;
+		}
+
+		if( groupNR > groupCount )
+		{
+			Debug.LogError("FRCamera:MoveToInteractionGroup : no group known with number " + groupNR + " // " + groupCount );
+			return;
+		}
+
+		int groupIndex = groupNR - 1;
+
+		Vector3 targetNumerator = Vector3.zero;
+		Vector3 targetDenominator = Vector3.zero;
+
+		if( position == 0 )
+		{
+			if( world.numerator != null )
+				targetNumerator = world.numerator.InteractionGroups[groupIndex].PortalEntryCamera;
+			if( world.denominator != null )
+				targetDenominator = world.denominator.InteractionGroups[groupIndex].PortalEntryCamera;
+		}
+		else if( position == 1 )
+		{
+			if( world.numerator != null )
+				targetNumerator = world.numerator.InteractionGroups[groupIndex].Camera.position;
+			if( world.denominator != null )
+				targetDenominator = world.denominator.InteractionGroups[groupIndex].Camera.position;
+		}
+		else if( position == 2 )
+		{
+			if( world.numerator != null )
+				targetNumerator = world.numerator.InteractionGroups[groupIndex].PortalExitCamera;
+			if( world.denominator != null )
+				targetDenominator = world.denominator.InteractionGroups[groupIndex].PortalExitCamera;
+		}
+
+		
+		if( world.numerator != null )
+			MoveTo( LugusCamera.numerator, targetNumerator , animate );
+		
+		if( world.denominator != null )
+			MoveTo( LugusCamera.denominator, targetDenominator, animate );
+	}
+
 	public void DrawInteractionGroupSelectionGUI()
 	{
 		World world = GameObject.FindObjectOfType<World>();
@@ -145,30 +207,38 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 
 			if( GUILayout.Button("\nEntry\n") )
 			{
+				MoveToInteractionGroup( i + 1, 0, false );
+				/*
 				if( world.numerator != null )
 					MoveTo( LugusCamera.numerator,   world.numerator.InteractionGroups[i].PortalEntryCamera , false );
 
 				if( world.denominator != null )
 					MoveTo( LugusCamera.denominator, world.denominator.InteractionGroups[i].PortalEntryCamera, false );
-
+				*/
 			}
 			if( GUILayout.Button("\nCENTER\n") )
 			{
-				
+				MoveToInteractionGroup( i + 1, 1, false );
+
+				/*
 				if( world.numerator != null )
 					MoveTo( LugusCamera.numerator,   world.numerator.InteractionGroups[i].Camera.position, false );
 				
 				if( world.denominator != null )
 					MoveTo( LugusCamera.denominator, world.denominator.InteractionGroups[i].Camera.position, false );
+				*/
 			}
 			if( GUILayout.Button("\nExit\n") )
 			{
-				
+				MoveToInteractionGroup( i + 1, 2, false );
+
+				/*
 				if( world.numerator != null )
 					MoveTo( LugusCamera.numerator,   world.numerator.InteractionGroups[i].PortalExitCamera, false );
 				
 				if( world.denominator != null )
 					MoveTo( LugusCamera.denominator, world.denominator.InteractionGroups[i].PortalExitCamera, false );
+				*/
 			}
 
 			GUILayout.EndHorizontal();
@@ -194,17 +264,26 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 
 		for( int i = 0; i < groupCount; ++i )
 		{
+			
+			MoveToInteractionGroup( i + 1, 0, true );
+
+			/*
 			if( world.numerator != null )
 			{
 				MoveTo( LugusCamera.numerator, world.numerator.InteractionGroups[i].PortalEntryCamera, true );
 			}
-			else if( world.denominator != null )
+
+			if( world.denominator != null )
 			{
 				MoveTo( LugusCamera.denominator, world.denominator.InteractionGroups[i].PortalEntryCamera, true );
 			}
+			*/
 
 			yield return new WaitForSeconds( waitTime );
 			
+			MoveToInteractionGroup( i + 1, 1, true );
+
+			/*
 			if( world.numerator != null )
 			{
 				MoveTo( LugusCamera.numerator, world.numerator.InteractionGroups[i].Camera.position, true );
@@ -213,9 +292,14 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 			{
 				MoveTo( LugusCamera.denominator, world.denominator.InteractionGroups[i].Camera.position, true );
 			}
+			*/
 			
 			yield return new WaitForSeconds( waitTime );
+			
+			
+			MoveToInteractionGroup( i + 1, 2, true );
 
+			/*
 			if( world.numerator != null )
 			{
 				MoveTo( LugusCamera.numerator, world.numerator.InteractionGroups[i].PortalExitCamera, true );
@@ -224,6 +308,7 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 			{
 				MoveTo( LugusCamera.denominator, world.denominator.InteractionGroups[i].PortalExitCamera, true );
 			}
+			*/
 			
 			yield return new WaitForSeconds( waitTime );
 		}

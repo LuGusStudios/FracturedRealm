@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
 public class WorldPart : MonoBehaviour 
 {
 	protected InteractionGroup[] _interactionGroups;
@@ -13,12 +14,22 @@ public class WorldPart : MonoBehaviour
 				_interactionGroups = transform.gameObject.GetComponentsInChildren<InteractionGroup>();
 				if( _interactionGroups.Length == 0 )
 				{
-					Debug.LogError("WorldPart:InteractionGroups : no InteractionGroups found! Make sure there's at least 1!");
+					Debug.LogError("WorldPart:InteractionGroups : no InteractionGroups found! Make sure there's at least 1! " + transform.name);
 				}
 			}
 
 			return _interactionGroups; 
 		}
+	}
+	
+	public Transform NumeratorSpecificObjects()
+	{
+		return transform.FindChild("GeometryNumerator");
+	}
+
+	public Transform DenominatorSpecificObjects()
+	{
+		return transform.FindChild("GeometryDenominator");
 	}
 
 	/*

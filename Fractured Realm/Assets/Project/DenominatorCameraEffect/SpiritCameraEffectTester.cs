@@ -124,7 +124,7 @@ public class SpiritCameraEffectTester : MonoBehaviour
 		if( !LugusDebug.debug )
 			return;
 
-		GUILayout.BeginArea( new Rect(0, Screen.height / 2.0f, 200, Screen.height / 2.0f ), GUI.skin.box);
+		GUILayout.BeginArea( new Rect(0, Screen.height - 200, 200, 200 ), GUI.skin.box);
 		GUILayout.BeginVertical();
 
 		string current = "NONE";

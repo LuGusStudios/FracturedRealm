@@ -10,7 +10,8 @@ namespace FR
 		FOREST,
 		DESERT,
 		FIRE,
-		ICE
+		ICE,
+		JUNGLE
 	}
 }
 
@@ -26,11 +27,44 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 	
 	// Dictionary<FR.WorldType, List<WorldPart>> is NOT SERIALIZABLE by unity!
 	// so we need to use 2 lists and GetTemplateIndexForType() to get the same functionality
-	public List<FR.WorldType> worldTypes = new List<FR.WorldType>();
-	public List<WorldPart> worldTemplates = new List<WorldPart>();
+	//public List<FR.WorldType> worldTypes = new List<FR.WorldType>();
+	//public List<WorldPart> worldTemplates = new List<WorldPart>();
+
+
+	public List<WorldPart> worldParts_Fire = new List<WorldPart>();
+	public List<WorldPart> worldParts_Forest = new List<WorldPart>();
+	public List<WorldPart> worldParts_Jungle = new List<WorldPart>();
+	public List<WorldPart> worldParts_Ice = new List<WorldPart>();
+	public List<WorldPart> worldParts_Desert = new List<WorldPart>();
+
+	public List<WorldPart> GetWorldParts( FR.WorldType worldType )
+	{
+		if( worldType == FR.WorldType.FIRE )
+		{
+			return worldParts_Fire;
+		}
+		else if(  worldType == FR.WorldType.FOREST )
+		{
+			return worldParts_Forest;
+		}
+		else if(  worldType == FR.WorldType.JUNGLE )
+		{
+			return worldParts_Jungle;
+		}
+		else if(  worldType == FR.WorldType.ICE )
+		{
+			return worldParts_Ice;
+		}
+		else if(  worldType == FR.WorldType.DESERT )
+		{
+			return worldParts_Desert;
+		}
+
+		return null;
+	}
 	
 	//public Dictionary<FR.WorldType, List<WorldPart>> worldTemplates = new Dictionary<FR.WorldType, List<WorldPart>>();
-	
+	/*
 	public int GetTemplateIndexForType(FR.WorldType type)
 	{
 		if( !worldTypes.Contains(type) )
@@ -42,7 +76,21 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		int index = worldTypes.IndexOf( type );
 		return (index * 2); // 2 entries per index
 	}
-	
+	*/
+
+	public World CreateDebugWorld(FR.WorldType type, Fraction[] fractions, bool fillAllInteractionGroups = true)
+	{
+		World output = CreateWorld(type, fractions, FR.Target.BOTH, fillAllInteractionGroups);
+		FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
+		HUDManager.use.SetMode( FR.Target.BOTH );
+
+		FRCamera.use.MoveToInteractionGroup( 1, 1, false );
+		
+		MathInputManager.use.InitializeOperationIcons(1);
+
+		return output;
+	}
+
 	public Fraction[] debug_initialFractions;
 	public int test = 5;
 	public World CreateWorld(FR.WorldType type, FR.Target composition = FR.Target.BOTH, bool fillAllInteractionGroups = false)
@@ -59,11 +107,13 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 	
 	public World CreateWorld(FR.WorldType type, Fraction[] fractions, FR.Target composition = FR.Target.BOTH, bool fillAllInteractionGroups = false ) 
 	{
+		/*
 		if( !worldTypes.Contains(type) )
 		{
 			Debug.LogError("WorldFactory:CreateWorld : unknown worldtype : " + type);
 			return null;
 		}
+		*/
 
 		if( !composition.HasNumerator() && !composition.HasDenominator() )
 		{
@@ -71,34 +121,53 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 			return null;
 		}
 		
-		// worlds consist of 2 separate entities: numerator and denominator parts
-		// each has its own camera and setup
-		
-		int index = GetTemplateIndexForType(type);
-		
+		List<WorldPart> templates = GetWorldParts( type );
+		if( templates.Count == 0 )
+		{
+			Debug.LogError("WorldFactory:CreateWorld : no prefabs defined for world type " + type);
+			return null;
+		}
+
 		GameObject WORLD = GameObject.Find("WORLD");
 		if( WORLD != null )
 			GameObject.DestroyImmediate( WORLD );
 			
 		WORLD = new GameObject("WORLD");
 		WORLD.transform.position = new Vector3(0, 0, 0);
+
+
+		WorldPart template = templates[ Random.Range(0, templates.Count) ];
 		
 		World world = WORLD.AddComponent<World>();
 
 		if( composition.HasNumerator() )
 		{
-			world.numerator = (WorldPart) GameObject.Instantiate( worldTemplates[ index ] );
+			world.numerator = (WorldPart) GameObject.Instantiate( template );//worldTemplates[ index ] );
+			world.numerator.gameObject.SetActive(true);
 			world.numerator.transform.parent = WORLD.transform;
 			world.numerator.transform.position   = LugusCamera.numerator.transform.position.zAdd( 15.0f );
+
+			Transform denominatorSpecifics = world.numerator.DenominatorSpecificObjects();
+			if( denominatorSpecifics != null )
+			{
+				denominatorSpecifics.gameObject.SetActive(false);
+			}
 		}
 		else
 			world.numerator = null;
 
 		if( composition.HasDenominator() )
 		{
-			world.denominator = (WorldPart) GameObject.Instantiate( worldTemplates[ index + 1 ] ); 
+			world.denominator = (WorldPart) GameObject.Instantiate( template );// worldTemplates[ index + 1 ] );
+			world.denominator.gameObject.SetActive(true); 
 			world.denominator.transform.parent = WORLD.transform;
 			world.denominator.transform.position = LugusCamera.denominator.transform.position.zAdd( 15.0f );
+			
+			Transform numeratorSpecifics = world.denominator.NumeratorSpecificObjects();
+			if( numeratorSpecifics != null )
+			{
+				numeratorSpecifics.gameObject.SetActive(false);
+			}
 		}
 		else
 			world.denominator = null;
@@ -186,6 +255,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		return world;
 	}
 
+
 	// TODO: remove, just for debugging
 	public void CreateFractions(Fraction[] fractions)
 	{
@@ -209,6 +279,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		ValidateInternalFraction( fr,  "fraction 1 : ");
 		ValidateInternalFraction( fr2, "fraction 2 : ");
 	}
+
 
 	// TODO: remove, or just move : just for debugging
 	protected void ValidateInternalFraction( Fraction fr, string messagePrefix )
