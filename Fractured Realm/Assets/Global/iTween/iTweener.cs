@@ -275,6 +275,11 @@ public class iTweenerList
 
 public static class iTweenExtensions
 {
+	public static iTweener MoveTo(this GameObject go, Transform target)
+	{
+		return go.MoveTo( target.position );
+	}
+	
 	public static iTweener MoveTo(this GameObject go, Vector3 targetPosition)
 	{
 		iTweener output = go.AddComponent<iTweener>();

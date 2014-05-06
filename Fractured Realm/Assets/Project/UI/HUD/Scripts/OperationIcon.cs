@@ -16,13 +16,25 @@ public class OperationIcon : MonoBehaviour
 	public int OperationAmount
 	{
 		get{ return _operationAmount; }
-		set{ _operationAmount = value; UpdateRenderers(); }
+		set{ int prevAmount = _operationAmount; _operationAmount = value; UpdateRenderers(prevAmount); }
+	}
+
+	public void Clear()
+	{
+		// remove existing renderers (if any)
+		for( int i = 0; i < Renderers.Count; ++i )
+		{
+			Destroy ( Renderers[i].gameObject );
+		}
+		
+		Renderers = new List<Transform>();
+		_operationAmount = 0;
 	}
 
 	protected Transform iconRendererTemplate = null;
 	protected List<Transform> Renderers = new List<Transform>(); 
 
-	public void UpdateRenderers()
+	public void UpdateRenderers(int previousAmount)
 	{
 		if( iconRendererTemplate == null )
 		{
@@ -32,14 +44,17 @@ public class OperationIcon : MonoBehaviour
 				Debug.LogError("OperationIcon:UpdateRenderers : iconRendererTemplate not found. Should be child of icon!");
 				return;
 			}
+
+			iconRendererTemplate.name = "RendererTemplate";
+			iconRendererTemplate.renderer.enabled = false;
 		}
 
-		if( Renderers.Count == 0 )
-		{
-			Renderers.Add( iconRendererTemplate );
-		}
+		//if( Renderers.Count == 0 )
+		//{
+		//	Renderers.Add( iconRendererTemplate );
+		//}
 
-		Debug.Log ("OperationIcon : UpdateRenderers : " + this.type + " -> " + _operationAmount + " // " + Renderers.Count );
+		//Debug.Log ("OperationIcon : UpdateRenderers : " + this.type + " -> " + _operationAmount + " // " + Renderers.Count );
 
 
 		if( _operationAmount == 0 )
@@ -52,48 +67,127 @@ public class OperationIcon : MonoBehaviour
 		}
 
 
-		if( _operationAmount == -1 || _operationAmount == 0 )
+		int animationStartIndex = -1;
+
+		if( _operationAmount == 0 )
+		{
+			// if previous was 1, and now we're 0, we just removed the last peg from the pile
+			// it's probably still animating and will be removed by the UIManager, so we shouldn't remove it here
+			// NOTE: this is custom logic for when you work with 1 peg/action at a time. Should there be more than 1 at a time, this should be revised
+			if( previousAmount != 1 )
+			{
+				// remove existing renderers (if any)
+				for( int i = 0; i < Renderers.Count; ++i )
+				{
+					Destroy ( Renderers[i].gameObject );
+				}
+			}
+			
+			Renderers = new List<Transform>();
+			animationStartIndex = 666; // no animation needed
+		}
+		else if( _operationAmount == -1 )
 		{
 			// infinite uses
 			// just 1 renderer needed that is re-used constantly
 
-			// remove all excess renderers (if any)
+			// remove existing renderers (if any)
 			for( int i = 1; i < Renderers.Count; ++i )
 			{
 				Destroy ( Renderers[i].gameObject );
 			}
 
-			Renderers = new List<Transform>();
-			Renderers.Add( iconRendererTemplate );
-
-			if( _operationAmount == 0 )
+			Transform renderer = null;
+			if( Renderers.Count == 0 )
 			{
-				iconRendererTemplate.localScale = new Vector3(0,0,0);
+				Renderers = new List<Transform>();
+
+				renderer = (Transform) GameObject.Instantiate( iconRendererTemplate );
+				renderer.renderer.enabled = true;
+				renderer.transform.position = GetNextRendererPosition();
+				renderer.transform.parent = this.transform;
+				
+				
+				renderer.transform.name = "Renderer" + (Renderers.Count);
 			}
+			else
+			{
+				renderer = Renderers[0]; // we've left this one "alive" above
+
+				Renderers = new List<Transform>(); // remove others from the list, later add the correct one
+			}
+
+			Renderers.Add ( renderer );
+
+			animationStartIndex = 0; // animate the one
 		}
 		else
 		{
 			int leftOver = _operationAmount - Renderers.Count;
-			for( int i = 0; i < leftOver; ++i )
+
+			if( leftOver > 0 ) 
 			{
-				Transform renderer = (Transform) GameObject.Instantiate( iconRendererTemplate );
-				renderer.transform.position = GetNextRendererPosition();
-				renderer.transform.parent = this.transform;
+				// one or more operations were added
+				//Debug.LogWarning("Icon " + this.name + " : add extra operations : " + leftOver + " = " + _operationAmount + " - " + Renderers.Count + ". Prev : " + previousAmount);
 
-				renderer.transform.name = "Renderer" + (Renderers.Count);
+				for( int i = 0; i < leftOver; ++i )
+				{
+					Transform renderer = (Transform) GameObject.Instantiate( iconRendererTemplate );
+					renderer.renderer.enabled = true;
+					renderer.transform.position = GetNextRendererPosition();
+					renderer.transform.parent = this.transform;
 
-				Renderers.Add( renderer );
+
+					renderer.transform.name = "Renderer" + (Renderers.Count);
+
+					Renderers.Add( renderer );
+				}
+
+				animationStartIndex = Mathf.Max ( 0, previousAmount ); // only animate the new ones
+			}
+			else if( leftOver < 0 )
+			{
+				// one or more were removed
+				// destroying/hiding the renderers themselves should be done by the user of this class
+				// this only updates the internal structure
+				Renderers = new List<Transform>();
+				for( int i = 0; i < _operationAmount; ++i )
+				{
+					Transform renderer = transform.FindChild( "Renderer" + i );
+					if( renderer == null )
+					{
+						Debug.LogError ("OperationIcon:UpdateRenderers : could not find renderer " + i + " after lowering operationAmount");
+					}
+					else
+					{
+						Renderers.Add( renderer );
+					}
+				}
+				
+				animationStartIndex = Renderers.Count; // no animation needed
+			}
+			else
+			{
+				Debug.LogError("OperationIcon:UpdateRenderers called without change in operationAmount! " + previousAmount + " // " + _operationAmount + " - " + Renderers.Count + " = " + leftOver);
+				animationStartIndex = Mathf.Max ( 0, previousAmount - 1 ); //Renderers.Count; // no animation needed
 			}
 		}
 
 		if( _operationAmount != 0 )
 		{
-			int j = 0;
-			foreach( Transform renderer in Renderers )
+			int count = 0;
+			for( int j = animationStartIndex; j < Renderers.Count; ++j )
 			{
+				Transform renderer = Renderers[j];
+
 				renderer.transform.localScale = Vector3.zero;
-				renderer.gameObject.ScaleTo( new Vector3(1,1,1) ).Time (1.0f).Delay(j * 0.3f).EaseType( iTween.EaseType.easeOutBounce ).Execute();
-				j++;
+
+				renderer.transform.eulerAngles = new Vector3(0,0,0);
+				renderer.transform.Rotate( new Vector3(0, 0, UnityEngine.Random.Range(-20.0f, 20.0f)) );
+
+				renderer.gameObject.ScaleTo( new Vector3(1,1,1) ).Time (1.0f).Delay(count * 0.3f).EaseType( iTween.EaseType.easeOutBounce ).Execute();
+
+				count++;
 			}
 
 			// resize collider
@@ -103,13 +197,28 @@ public class OperationIcon : MonoBehaviour
 		}
 	}
 
-	protected Vector3 GetNextRendererPosition()
+	public Vector3 GetNextRendererPosition()
 	{
-		return this.transform.position.yAdd( Renderers.Count * rendererYOffset ).zAdd( Renderers.Count * rendererZOffset);
+		return this.transform.position.xAdd(UnityEngine.Random.Range(-0.1f, 0.1f)).yAdd( Renderers.Count * rendererYOffset ).zAdd( Renderers.Count * rendererZOffset);
+	}
+
+	public Vector3 GetTopRendererPosition()
+	{
+		return this.transform.position.xAdd(UnityEngine.Random.Range(-0.1f, 0.1f)).yAdd( (Renderers.Count - 1) * rendererYOffset ).zAdd( (Renderers.Count - 1) * rendererZOffset);
+	}
+
+	public Transform GetTopRenderer()
+	{
+		if( Renderers != null && Renderers.Count > 0 )
+			return Renderers[ Renderers.Count - 1 ];
+		else
+			return null;
 	}
 
 	void Awake()
 	{
+		_operationAmount = -1;
+
 		button = GetComponent<Button>();
 		if( button == null )
 		{
@@ -142,9 +251,9 @@ public class OperationIcon : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if( button.pressed ) 
-		{
-			MathInputManager.use.SelectOperation( this.type );
-		}
+		//if( button.pressed ) 
+		//{
+		//	MathManager.use.SelectOperation( this.type );
+		//}
 	}
 }

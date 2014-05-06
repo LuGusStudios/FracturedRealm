@@ -15,14 +15,26 @@ public class OperationDivide : IOperation
 	
 	public override bool AcceptState(OperationState state)
 	{
+		this.lastMessage = FR.OperationMessage.None;
+
+		bool result = false;
+
 		if( state.StartFraction == null )
-			return true;
+			result = true;
 		else if( state.StopFraction == null )
-			return true;
+			result = true;
 		else
 		{
-			return AcceptOperation(state); 
+			result =  AcceptOperation(state); 
 		}
+		
+		if( lastMessage != FR.OperationMessage.None )
+		{
+			if( lastMessage != FR.OperationMessage.Error_Requires2Fractions )
+				Debug.LogError("OperationAdd:AcceptState : raised error : " + lastMessage);
+		}
+		
+		return result;
 	}
 	
 	protected bool AcceptOperation(OperationState state)
@@ -31,21 +43,38 @@ public class OperationDivide : IOperation
 		
 		// state needs a StopFraction!
 		if( state.StopFraction == null )
+		{
+			this.lastMessage = FR.OperationMessage.Error_Requires2Fractions;
 			return false;
+		}
 			
 		// don't divide the same fraction by itself
 		if( state.StartFraction == state.StopFraction )
+		{
+			this.lastMessage = FR.OperationMessage.Error_IdenticalTargets;
 			return false;
-		
-		// TODO: no more than 12 as uitkomst! 
+		}
+
+		// maximum resulting value is 12
+		if( state.StopFraction.Denominator.Value * state.StartFraction.Numerator.Value > 12 ||
+		    state.StopFraction.Numerator.Value * state.StartFraction.Denominator.Value > 12 )
+		{
+			this.lastMessage = FR.OperationMessage.Error_ResultTooLarge;
+			return false;
+		}
+
 		
 		if( !Fraction.AreAlike( state.StartFraction, state.StopFraction ) )
+		{
+			this.lastMessage = FR.OperationMessage.Error_UnsimilarTargets;
 			return false;
+		}
 
 		// can only divide "full" fractions : no 0 values
 		if( state.StartFraction.Numerator.Value == 0 || state.StartFraction.Denominator.Value == 0 ||
 		    state.StopFraction.Numerator.Value == 0 || state.StopFraction.Denominator.Value == 0 )
 		{
+			this.lastMessage = FR.OperationMessage.Error_RequiresFullFractions;
 			return false;
 		}
 

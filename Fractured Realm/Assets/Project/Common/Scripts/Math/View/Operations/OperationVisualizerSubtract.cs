@@ -15,7 +15,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 
 	protected IEnumerator VisualizeDenominatorsOnly(OperationState current, OperationState target )
 	{
-		IOperationVisualizer addViz = MathInputManager.use.GetVisualizer( FR.OperationType.ADD );
+		IOperationVisualizer addViz = MathManager.use.GetVisualizer( FR.OperationType.ADD );
 		
 		yield return LugusCoroutines.use.StartRoutine( addViz.Visualize(current, target) ).Coroutine;
 		

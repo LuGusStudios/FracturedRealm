@@ -1,19 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FRCamera : MonoBehaviour 
+public class FRCamera : LugusSingletonExisting<FRCamera> 
 {
-	public enum Mode
+	public FR.Target mode = FR.Target.NONE;
+
+	public void Awake()
 	{
-		NONE = -1,
-		Numerator = 1,
-		Denominator = 2,
-		Both = 3
+		// this makes the class play nicely with editor scripts and different viewpoints / setups in editor mode vs play mode
+		mode = FR.Target.NONE;
 	}
 
-	public Mode mode = Mode.Both;
-
-	public void SetMode(Mode newMode )
+	public void SetMode( FR.Target newMode )
 	{
 		//Debug.LogError("FRCamera setting mode " + newMode + " from " + this.mode + ". " + LugusCamera.numerator );
 
@@ -22,7 +20,7 @@ public class FRCamera : MonoBehaviour
 
 		mode = newMode;
 
-		if( mode == Mode.Both )
+		if( mode == FR.Target.BOTH )
 		{
 			LugusCamera.numerator.gameObject.SetActive(true);
 			LugusCamera.numerator.fieldOfView = 30;
@@ -35,10 +33,10 @@ public class FRCamera : MonoBehaviour
 			LugusCamera.denominator.rect = new Rect(0, 0, 1, 0.5f);
 			LugusCamera.denominator.transform.position = new Vector3(0,-200, -10.0f);
 
-            SetCharactersPosition(4f);
+            SetCharactersPosition(1f);
 		}
 
-		else if( mode == Mode.Numerator )
+		else if( mode == FR.Target.NUMERATOR)
 		{
 			LugusCamera.numerator.gameObject.SetActive(true);
 
@@ -57,10 +55,10 @@ public class FRCamera : MonoBehaviour
 
 			LugusCamera.denominator.gameObject.SetActive(false);
 
-            SetCharactersPosition(2f);
+            SetCharactersPosition(-1f);
 		}
 
-		else if( mode == Mode.Denominator )
+		else if( mode == FR.Target.DENOMINATOR )
 		{
 			LugusCamera.denominator.gameObject.SetActive(true);
 			
@@ -70,12 +68,28 @@ public class FRCamera : MonoBehaviour
 
 			LugusCamera.numerator.gameObject.SetActive(false);
 
-            SetCharactersPosition(2f);
+            SetCharactersPosition(-1f);
 		}
 	}
 
     void SetCharactersPosition(float zPosition)
     {
+		//Debug.LogError("Setting characters position to " + zPosition);
+
+		NumberRenderer[] numbers = GameObject.FindObjectsOfType<NumberRenderer>();
+		
+		if (numbers.Length < 1)
+		{
+			Debug.LogWarning("FRCamera: Couldn't find any NumberRenderers in the scene");
+			return;
+		}
+		
+		foreach (NumberRenderer number in numbers)
+		{
+			number.transform.position = number.transform.position.z( number.SpawnPosition.z + zPosition );
+		}
+
+		/*
         Character[] characters = GameObject.FindObjectsOfType<Character>();
 
         if (characters.Length < 1)
@@ -88,5 +102,8 @@ public class FRCamera : MonoBehaviour
         {
             character.transform.position = new Vector3(character.transform.position.x, character.transform.position.y, zPosition);
         }
+        */
     }
+
+
 }

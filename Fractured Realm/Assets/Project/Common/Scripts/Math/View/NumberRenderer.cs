@@ -11,6 +11,13 @@ public class NumberRenderer : MonoBehaviour
 		get{ InitiateRenderers(); return _characters; } // this is passed by reference, like we expect
 		set{ _characters = value; }
 	}
+
+	protected Vector3 _spawnPosition;
+	public Vector3 SpawnPosition
+	{
+		get{ return _spawnPosition; }
+		set{ _spawnPosition = value; }
+	}
 	
 	private void InitiateRenderers()
 	{

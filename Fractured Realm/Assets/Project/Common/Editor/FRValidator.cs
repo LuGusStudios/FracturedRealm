@@ -1,4 +1,3 @@
-// C# example:
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
@@ -22,7 +21,9 @@ public class FRValidator : EditorWindow
 	int fr2_numerator = 1;
 	[SerializeField]
 	int fr2_denominator = 1;
-	
+
+	protected bool useDefaultFractions = true;
+
 	void OnGUI()
 	{
 		bool validateAll = false;	
@@ -95,8 +96,9 @@ public class FRValidator : EditorWindow
 			
 			WorldFactory.use.debug_initialFractions = fractions;
 			EditorUtility.SetDirty(WorldFactory.use);
-			
+
 			WorldFactory.use.CreateFractions(fractions);
+			HUDManager.use.SetMode( FR.Target.BOTH );
 		}
 
 		if( GUILayout.Button("Create Forest") )
@@ -107,8 +109,9 @@ public class FRValidator : EditorWindow
 			
 			WorldFactory.use.debug_initialFractions = fractions;
 			EditorUtility.SetDirty(WorldFactory.use);
-			
+
 			WorldFactory.use.CreateWorld(FR.WorldType.FOREST, fractions);
+			HUDManager.use.SetMode( FR.Target.BOTH );
 		}
 		
 		if( GUILayout.Button("Create Desert") )
@@ -119,8 +122,32 @@ public class FRValidator : EditorWindow
 			
 			WorldFactory.use.debug_initialFractions = fractions;
 			EditorUtility.SetDirty(WorldFactory.use);
-			
+
 			WorldFactory.use.CreateWorld(FR.WorldType.DESERT, fractions);
+			HUDManager.use.SetMode( FR.Target.BOTH );
+		}
+		
+		GUILayout.Label("-------------------");
+		GUILayout.Label("-------------------");
+		GUILayout.Label("-------------------");
+
+		if( Application.isPlaying )
+		{
+			GUILayout.Label("OperationTester");
+			GUILayout.Label("-------------------");
+			
+			useDefaultFractions = GUILayout.Toggle(useDefaultFractions, "Use default fractions");
+
+			if( useDefaultFractions )
+				FROperationTester.use.DrawGUI(null, null);
+			else
+				FROperationTester.use.DrawGUI(new Fraction( fr1_numerator, fr1_denominator ), new Fraction( fr2_numerator, fr2_denominator ));
+
+		}
+		else
+		{
+			GUILayout.Label("OperationTester : only works in Play mode");
+			GUILayout.Label("-------------------");
 		}
 	}
 	

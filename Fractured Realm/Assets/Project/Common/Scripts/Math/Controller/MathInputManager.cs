@@ -4,139 +4,499 @@ using System.Collections.Generic;
 
 public class MathInputManager : LugusSingletonExisting<MathInputManager> 
 {	
+	public enum InputState
+	{
+		NONE = -1,
+
+		IDLE = 1,
+		TARGET1 = 2,
+		TARGET2 = 3,
+		DISABLED = 4
+	}
+
 	public bool acceptInput = true;
-	
-	[HideInInspector]
-	protected IOperation currentOperation = null;
-	
-	protected List<IOperation> operations = new List<IOperation>();
-	protected List<IOperationVisualizer> operationVisualizers = new List<IOperationVisualizer>();
-	
-	// FIXME: move this to a GUI-manager like-thing
-	protected List<OperationIcon> operationIcons;// = new List<OperationIcon>();
+
+	public InputState state = InputState.NONE;
+
+	protected List<OperationIcon> operationIcons;
+
+	protected Transform currentOperationRendererLocation = null;
+	protected ArrowDrawer arrow1 = null;
+	protected ArrowDrawer arrow2 = null;
+	protected ArrowDrawer arrow3 = null;
+
+	protected Vector3 arrow1DefaultTarget;
+	protected Vector3 arrow2DefaultTarget;
+	protected Vector3 arrow3DefaultTarget;
 
 	void Awake () 
 	{
-		operations.Add( new OperationAdd() );
-		operations.Add( new OperationSubtract() );
-		operations.Add( new OperationSimplify() );
-		operations.Add( new OperationDouble() );
-		operations.Add( new OperationMultiply() );
-		operations.Add( new OperationDivide() );
-		
-		operationVisualizers.Add( new OperationVisualizerAdd() );
-		operationVisualizers.Add( new OperationVisualizerSubtract() );
-		operationVisualizers.Add( new OperationVisualizerSimplify() );
-		operationVisualizers.Add( new OperationVisualizerDouble() );
-		operationVisualizers.Add( new OperationVisualizerMultiply() );
-		operationVisualizers.Add( new OperationVisualizerDivide() );
-		
-		//currentOperation = operations[0];
+		MathManager m = MathManager.use; // make sure it exists
+
+		if( currentOperationRendererLocation == null )
+		{
+			currentOperationRendererLocation = GameObject.Find ("CurrentOperationLocation").transform;
+		}
+
+		if( arrow1 == null )
+		{
+			arrow1 = GameObject.Find ("Arrow1").GetComponent<ArrowDrawer>();
+		}
+
+		if( arrow2 == null )
+		{
+			arrow2 = GameObject.Find ("Arrow2").GetComponent<ArrowDrawer>();
+		}
+
+		if( arrow3 == null )
+		{
+			arrow3 = GameObject.Find ("Arrow3").GetComponent<ArrowDrawer>();
+		}
+
+		// 45 degrees to the left
+		arrow1DefaultTarget = arrow1.transform.position + new Vector3( -1.0f, -1.0f, 0.0f );
+		// 45 degrees to the right
+		arrow2DefaultTarget = arrow2.transform.position + new Vector3(  1.0f, -1.0f, 0.0f );
+		// straight down
+		arrow3DefaultTarget = arrow3.transform.position + new Vector3(   0.0f, -1.5f, 0.0f );
 	}
 
 	public void Start()
 	{
-		InitializeOperationIcons();
+		InitializeOperationIcons(666);
+
+		ChangeState( InputState.IDLE );
 	}
 
-	protected void InitializeOperationIcons()
+	public void InitializeOperationIcons(int amount)
 	{
 		operationIcons = new List<OperationIcon>();
 		operationIcons.AddRange ( GameObject.FindObjectsOfType<OperationIcon>() );
 		
 		foreach( OperationIcon icon in operationIcons )
 		{
-			icon.OperationAmount = Random.Range(-1, 6);
-		}
-	}
-	                                    
+			icon.Clear();
 
-	public IOperation GetOperation(FR.OperationType type)
+			if( icon.type == FR.OperationType.SIMPLIFY || icon.type == FR.OperationType.DOUBLE )
+				icon.OperationAmount = -1;
+			else if( amount == 666 )
+				icon.OperationAmount = Random.Range(0, 3);
+			else
+				icon.OperationAmount = amount;
+		}
+	}
+
+	public void SetMode( FR.Target mode )
 	{
-		IOperation output = null;
-		foreach( IOperation operation in operations )
+		// when called from inside editor :)
+		if( currentOperationRendererLocation == null )
+			Awake ();
+
+
+		Transform operationButtons = HUDManager.use.transform.FindChild("OperationButtons");
+
+		if( mode == FR.Target.BOTH )
 		{
-			if( operation.type == type )
-				output = operation;
+			currentOperationRendererLocation.position = new Vector3(10.24f, 13.80313f ,0.0f);
+
+			operationButtons.position = new Vector3(0, 0, 0);
 		}
 		
-		return output;
-	}
-	
-	public IOperationVisualizer GetVisualizer(FR.OperationType type)
-	{
-		IOperationVisualizer visualizer = null;
-		foreach( IOperationVisualizer viz in operationVisualizers )
+		else if( mode == FR.Target.NUMERATOR)
 		{
-			if( viz.type == type )
-				visualizer = viz;
+			currentOperationRendererLocation.position = new Vector3(10.24f, 13.80313f ,0.0f);
+
+			operationButtons.position = new Vector3(0, -6.003259f, 0);
 		}
 		
-		return visualizer;
-	}
-	
-	
-	public void SelectOperation(FR.OperationType type)
-	{
-		
-		currentOperation = GetOperation(type);
-		
-		if( currentOperation == null ) 
+		else if( mode == FR.Target.DENOMINATOR )
 		{
-			Debug.LogError("MathInputManager:SelectOperation : no operation handler found for " + type);
-			currentOperation = operations[0];
+			currentOperationRendererLocation.position = new Vector3(10.24f, 13.80313f ,0.0f);
+
+			operationButtons.position = new Vector3(0, -6.003259f, 0);
 		}
-		
-		Debug.Log("Selected operation : " + currentOperation.type);	
 	}
-	
-	/*
-	void OnGUI()
+
+
+	public void ChangeState(InputState newState)
 	{
-		float xStart = 50;
-		float yStart = 10; 
-		
-		bool currentSolverChanged = false;
-		
-		foreach( IOperation solver in operations )//System.Enum.GetValues(typeof(SolverTool)) )
+		InputState oldState = state;
+		state = newState;
+
+		if( newState == InputState.IDLE )
 		{
-			if( solver.type == OperationType.NONE )
-				continue;
+			// TODO: hide arrows
+			arrow1.renderer.enabled = false;
+			arrow2.renderer.enabled = false;
+			arrow3.renderer.enabled = false;
+		}
+		else if( newState == InputState.TARGET1 )
+		{
+			// TODO: show arrows
+			arrow1.startTransform.localPosition = Vector3.zero;
+			arrow2.startTransform.localPosition = Vector3.zero;
+			arrow3.startTransform.localPosition = Vector3.zero;
+			arrow1.targetTransform.position = arrow1.startTransform.position;
+			arrow2.targetTransform.position = arrow2.startTransform.position;
+			arrow3.targetTransform.position = arrow3.startTransform.position;
 			
-			float height = 50;
-			if( solver == currentOperation )
-				height = 100;
-			
-			if( GUI.Button( new Rect(xStart, yStart, 120, height), "" + solver.type ) )
+			if( MathManager.use.currentOperation.RequiresTwoFractions() )
 			{
-				currentOperation = solver;
-				currentSolverChanged = true;
+				arrow1.renderer.enabled = true;
+				arrow2.renderer.enabled = true;
+
+				arrow1.MakePositive();
+				arrow2.MakePositive();
+
+				arrow1.MoveTowards( arrow1DefaultTarget, 0.4f );
+				arrow2.MoveTowards( arrow2DefaultTarget, 0.4f );
 			}
-			
-			
-			xStart += 150;
+			else
+			{
+				arrow3.renderer.enabled = true;
+				arrow3.MakePositive();
+				arrow3.MoveTowards( arrow3DefaultTarget, 0.4f );
+			}
 		}
-		
-		if( currentSolverChanged )
+		else if( newState == InputState.TARGET2 )
 		{
-			// ... do other stuff
-			Debug.Log("Current solver changed to " + currentOperation.type);
+
+		}
+		else if( newState == InputState.DISABLED )
+		{
+			currentOperationIcon = null;
+		}
+
+		Debug.Log("MathInputManager:ChangeState : changed from " + oldState + " to " + newState );
+	}
+
+	
+	void Update () 
+	{
+		if( !acceptInput) 
+			return;
+		
+		if( LugusInput.use.KeyDown(KeyCode.S) ) // "spawn"
+		{
+			InitializeOperationIcons(666);
+		}
+		if( LugusInput.use.KeyDown(KeyCode.D) )
+		{
+			operationIcons[0].OperationAmount += 2;
+		}
+		if( LugusInput.use.KeyDown(KeyCode.F) )
+		{
+			operationIcons[0].GetTopRenderer().gameObject.MoveTo( new Vector3(LugusUtil.UIWidth, LugusUtil.UIHeight,0) ).Time(1.0f).Execute();
+			Destroy( operationIcons[0].GetTopRenderer().gameObject, 2.0f );
+			operationIcons[0].OperationAmount -= 1;
+			
+			operationIcons[0].GetTopRenderer().gameObject.MoveTo( new Vector3(LugusUtil.UIWidth, LugusUtil.UIHeight,0) ).Time(1.0f).Execute();
+			Destroy( operationIcons[0].GetTopRenderer().gameObject, 2.0f );
+			operationIcons[0].OperationAmount -= 1;
+		}
+		if( LugusInput.use.KeyDown(KeyCode.G) )
+		{
+			operationIcons[0].OperationAmount = -1;
+		}
+		
+		// we need to have selected an operation to be able to continue
+		//if( MathManager.use.currentOperation == null )
+		//	return;
+		
+		if( LugusInput.use.down || LugusInput.use.dragging || LugusInput.use.up )
+		{
+			//Debug.LogWarning(Time.frameCount + " : One of the mouse inputs was true." + this.state);
+
+			if( state != InputState.DISABLED )
+			{
+				//if( state == InputState.IDLE )
+				//{
+					ProcessOperationSelect();
+				//}
+				if( state == InputState.TARGET1 || state == InputState.TARGET2 )
+				{
+					ProcessTargetSelect();
+				}
+				else if( state == InputState.DISABLED )
+				{
+					// do nothing here
+				}
+			}
 		}
 	}
-	*/
-	
-	protected Vector3 currentStart;
-	protected Vector3 currentEnd;
-	
-	protected OperationState currentState = null;
-	
-	protected void ResetOperationState()
+
+	protected OperationIcon currentOperationIcon = null;
+	protected Vector2 mouseDownPosition;
+
+	public void ProcessOperationSelect()
 	{
-		// TODO: deselect characters that were selected
-		
-		currentState = null;
+		if( LugusInput.use.down )
+		{
+			Transform hit = LugusInput.use.RayCastFromMouse( LugusCamera.ui );
+			if( hit == null )
+			{
+				//Debug.LogError("No operation hit ! " + LugusInput.use.lastPoint);
+				return;
+			}
+			//else
+			//{
+			//	Debug.LogError("DID operation hit ! " + LugusInput.use.lastPoint);
+			//}
+
+			OperationIcon clickedIcon = null;
+
+			// check if we've clicked one of the operation icons
+			foreach( OperationIcon icon in operationIcons )
+			{
+				if( hit == icon.transform )
+				{
+					clickedIcon = icon;
+					break;
+				}
+			}
+
+			// if no icon selected, nothing to do here
+			if( clickedIcon == null )
+				return; 
+
+			mouseDownPosition = LugusInput.use.lastPoint;
+
+			if( currentOperationIcon != null )
+			{
+				if( currentOperationIcon == clickedIcon ) // clicked the same icon
+				{
+					iTween.PunchScale( currentOperationIcon.GetTopRenderer().gameObject, new Vector3(0.5f, 0.5f, 0.5f), 0.5f );
+
+					// TODO: auditive feedback
+					Debug.LogError("Selected same icon. Giving visual and auditive feedback");
+				}
+				else
+				{
+					currentOperationIcon.GetTopRenderer().gameObject.MoveTo( currentOperationIcon.GetTopRendererPosition() ).Time (0.5f).Execute();
+					currentOperationIcon = null;
+
+					ChangeState( InputState.IDLE );
+
+					//Debug.LogError("Selected another input icon : deselecting previous one and starting over");
+				}
+			} 
+
+			// TODO: add and keep clicked-offset so texture doesn;t "snap" to the mouse position
+			currentOperationIcon = clickedIcon;
+
+			//Debug.LogError("Begun selecting operationIcon : " + currentOperationIcon.name);
+		}
+		else if( LugusInput.use.dragging && state == InputState.IDLE && currentOperationIcon != null )
+		{
+			// TODO: possibly cache TopRenderer so we don't have to request it every frame
+			Transform renderer = currentOperationIcon.GetTopRenderer();
+			renderer.transform.position = LugusInput.use.ScreenTo3DPoint( renderer );
+		}
+		else if( LugusInput.use.up && state == InputState.IDLE && currentOperationIcon != null )
+		{
+			//if( Vector2.Distance( LugusInput.use.lastPoint, mouseDownPosition ) < 10.0f )
+			//{
+				// user probably misclicked and wasn't really planning on selecting this item... ignore it
+			//	currentOperationIcon = null;
+			//	return;
+			//}
+
+			
+			//Debug.LogError("Selected operationIcon : " + currentOperationIcon.name);
+			//currentOperationIcon.OperationAmount -= 1;
+
+			gameObject.StartLugusRoutine( MoveTopRendererRoutine() );
+		}
 	}
-	
+
+	protected IEnumerator MoveTopRendererRoutine()
+	{
+		// move with constant speed. Calculate time needed
+		float time = Vector3.Distance( currentOperationIcon.GetTopRenderer().transform.position, currentOperationRendererLocation.position ) / 15.0f; // 1500px / s
+
+		currentOperationIcon.GetTopRenderer().gameObject.MoveTo( currentOperationRendererLocation.position ).Time ( time ).Execute();
+
+		yield return new WaitForSeconds( time );
+
+		MathManager.use.SelectOperation( currentOperationIcon.type );
+
+		ChangeState( InputState.TARGET1 );
+	}
+
+	public void ProcessTargetSelect()
+	{
+		ArrowDrawer arrow = null;
+		Vector3 arrowDefaultTarget;
+
+		if( state == InputState.TARGET1 )
+		{
+			if( MathManager.use.currentOperation.RequiresTwoFractions() )
+			{
+				arrow = arrow1;
+				arrowDefaultTarget = arrow1DefaultTarget;
+			}
+			else
+			{
+				arrow = arrow3;
+				arrowDefaultTarget = arrow3DefaultTarget;
+			}
+		}
+		else
+		{
+			arrow = arrow2;
+			arrowDefaultTarget = arrow2DefaultTarget;
+		}
+
+		if( LugusInput.use.down )
+		{
+			// TODO: test : if down is close enough to end of first arrow (and we're target 2)
+			// we will revert back to TARGET1 phase, because the user probably wants to re-align the arrow
+			arrow.MakePositive();
+		}
+		else if( LugusInput.use.dragging )
+		{
+			Vector3 worldPos = LugusInput.use.ScreenTo3DPoint( LugusInput.use.lastPoint, arrow.transform.position, LugusCamera.ui );//LugusCamera.ui.WorldToScreenPoint( currentOperationRendererLocation.position );
+			arrow.targetTransform.position = worldPos;
+
+			//arrow.CreateArrowScreen( screenPos, LugusInput.use.lastPoint, true );
+			arrow.CreateArrow(true);
+
+			arrow.renderer.enabled = true;
+		}
+		else if( LugusInput.use.up )
+		{
+			/*
+			Transform hit = LugusInput.use.RayCastFromMouse( LugusCamera.numerator );
+			
+			if( hit == null )
+				hit = LugusInput.use.RayCastFromMouse( LugusCamera.denominator );
+
+			Debug.LogWarning("HITTING : " + hit.name);
+
+
+			Character character = hit.GetComponent<Character>();
+			
+			if( character == null )
+			{
+				hit = LugusInput.use.RayCastFromMouse( LugusCamera.denominator );
+				if( hit != null )
+					character = hit.GetComponent<Character>();
+				else
+					return;
+
+			}
+			*/
+
+			
+			Transform hit = LugusInput.use.RayCastFromMouse( LugusCamera.numerator );
+			Character character = null;
+
+			if( hit != null )
+			{
+				character = hit.GetComponent<Character>();
+			}
+
+			if( character == null )
+			{
+				// no character found in Numerator : try Denominator
+				hit = LugusInput.use.RayCastFromMouse( LugusCamera.denominator );
+				
+				if( hit != null )
+				{
+					character = hit.GetComponent<Character>();
+				}
+			}
+
+			if( character == null )
+			{
+				// move arrow back towards icon on the same direction it was dragged
+				Vector3 arrowDirection = arrow.targetTransform.position - arrow.startTransform.position;
+				arrowDirection.Normalize();
+
+				arrow.MoveTowards( arrow.startTransform.position + (arrowDirection * 1.4f), 0.2f );
+
+				Debug.LogWarning("NO CHARACTER COMPONENT ON HIT " + ((hit != null) ? hit.name : "") );
+				return;
+			}
+
+
+			Debug.LogWarning("Character hit for operation : " + character.name);
+
+			FR.OperationMessage operationResult = FR.OperationMessage.None;
+			if( state == InputState.TARGET1 )
+				operationResult = MathManager.use.OnTarget1Selected( character.Number.Fraction );
+			else if( state == InputState.TARGET2 )
+				operationResult = MathManager.use.OnTarget2Selected( character.Number.Fraction );
+
+			if( operationResult == FR.OperationMessage.None )
+			{
+				// TODO: hide arrows
+				// TODO: hide operationIconRenderer
+				// TODO: Decrement OperationAmount
+
+				if( state == InputState.TARGET2 )
+				{
+					arrow1.CollapseTowards( arrow1.targetTransform.position, 0.5f );
+					arrow2.CollapseTowards( arrow2.targetTransform.position, 0.5f );
+				}
+				else
+				{
+					arrow3.CollapseTowards( arrow3.targetTransform.position, 0.5f );
+				}
+				
+				Transform iconRenderer = currentOperationIcon.GetTopRenderer();
+				if( currentOperationIcon.OperationAmount > -1 )
+				{
+					// move iconRenderer out of screen
+					iconRenderer.transform.parent = null;
+					iconRenderer.gameObject.MoveTo( iconRenderer.position.y( LugusUtil.UIHeight + 3.0f ) ).Time ( 1.3f ).EaseType(iTween.EaseType.easeInBack).Execute();
+
+					currentOperationIcon.OperationAmount -= 1;
+					
+					GameObject.Destroy( iconRenderer.gameObject, 1.5f );
+				}
+				else
+				{
+					// move iconRenderer back to normal position (infinite uses)
+					iconRenderer.gameObject.MoveTo( currentOperationIcon.GetTopRendererPosition() ).Time ( 1.3f ).EaseType(iTween.EaseType.easeInBack).Execute();
+				}
+
+
+				ChangeState( InputState.DISABLED );
+				MathManager.use.onOperationCompleted += OnOperationCompleted;
+
+				MathManager.use.ProcessCurrentOperation();
+			}
+			else if( operationResult == FR.OperationMessage.Error_Requires2Fractions )
+			{
+				ChangeState( InputState.TARGET2 );
+			}
+			else
+			{
+				// there was an error.
+				// stay with target1, make arrow red
+				Debug.LogWarning("THERE WAS ERROR. NEGATIVE ARROW BABY");
+				arrow.MakeNegative();
+
+				errorShowStartTime = Time.time; 
+				errorMessage = operationResult;
+			}
+		}
+		else
+		{
+			// hide arrow
+			arrow.renderer.enabled = false;
+		}
+	}
+
+	public void OnOperationCompleted(IOperation operation)
+	{
+		MathManager.use.onOperationCompleted -= OnOperationCompleted;
+		ChangeState( InputState.IDLE );
+	}
+
+
+	/*
 	public void ProcessClick()
 	{
 		Transform hit = LugusInput.use.RayCastFromMouseDown( LugusCamera.numerator );
@@ -146,7 +506,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 
 		if( hit == null )
 		{
-			ResetOperationState();
+			MathManager.use.ResetOperationState();
 			return;
 		}
 			
@@ -163,26 +523,26 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 
 		if( character == null )
 		{
-			ResetOperationState();
+			MathManager.use.ResetOperationState();
 			return;
 		}
 		
 		// 1. New operation : selecting first target
-		if( currentState == null )
+		if( MathManager.use.currentState == null )
 		{
-			currentState = new OperationState(currentOperation.type, character.Number.Fraction, null); 
-			currentState.StartNumber = character.Number;
+			MathManager.use.currentState = new OperationState(MathManager.use.currentOperation.type, character.Number.Fraction, null); 
+			MathManager.use.currentState.StartNumber = character.Number;
 			
-			bool ok = currentOperation.AcceptState( currentState );
+			bool ok = MathManager.use.currentOperation.AcceptState( MathManager.use.currentState );
 			
 			if( ok )
 			{
 				//currentState.StartFraction.Numerator.Renderer.transform.localScale /= 2.0f;
 				//currentState.StartFraction.Denominator.Renderer.transform.localScale /= 2.0f;
 				
-				if( !currentOperation.RequiresTwoFractions() )
+				if( !MathManager.use.currentOperation.RequiresTwoFractions() )
 				{
-					ProcessCurrentOperation();
+					MathManager.use.ProcessCurrentOperation();
 					return;
 				}
 			}
@@ -190,31 +550,31 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 			{
 				// TODO: deselect all + show error message?
 				// OnOperationStartFailed();
-				ResetOperationState();
+				MathManager.use.ResetOperationState();
 				return;
 			}
 		}
 		
 		// FINAL: can be removed 
-		if( currentState.StopFraction != null )
+		if( MathManager.use.currentState.StopFraction != null )
 		{
 			Debug.LogError("MathInputManager:ProcessClick : clicked with a full operationState... shouldn't be possible!");
 		}
 		
 		// 2. Operation in progress : select 2nd target
-		if( currentState.StartFraction != null )
+		if( MathManager.use.currentState.StartFraction != null )
 		{
-			if( currentState.StartNumber == character.Number )
+			if( MathManager.use.currentState.StartNumber == character.Number )
 				return;
 			
-			currentState.StopFraction = character.Number.Fraction;
-			currentState.StopNumber = character.Number;
+			MathManager.use.currentState.StopFraction = character.Number.Fraction;
+			MathManager.use.currentState.StopNumber = character.Number;
 			
 			
-			bool ok = currentOperation.AcceptState( currentState );
+			bool ok = MathManager.use.currentOperation.AcceptState( MathManager.use.currentState );
 			
 			// FINAL: can be removed 
-			if( !currentOperation.RequiresTwoFractions() )
+			if( !MathManager.use.currentOperation.RequiresTwoFractions() )
 			{
 				Debug.LogError("MathInputManager:ProcessClick : RequiresTwoFractions() is false, yet it didn't execute after select 1...");
 			}
@@ -222,146 +582,57 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 			
 			if( ok )
 			{
-				ProcessCurrentOperation();  
+				MathManager.use.ProcessCurrentOperation();  
 			}
 			else
 			{
 				Debug.Log ("ProcessClick: 2nd target is not valid");
 				// Don't just reset operation state completely... the user might want to select another thing if he misclicked
-				currentState.StopFraction = null;
-				currentState.StopNumber = null;
+				MathManager.use.currentState.StopFraction = null;
+				MathManager.use.currentState.StopNumber = null;
 			}
 		}
 		
 	}
-	
-	protected void ProcessCurrentOperation()
-	{
-		// TODO: ...
-		
-		Debug.LogError ("ProcessCurrentOperation " + currentOperation.type);
-		
-		
-		OperationState outcome = currentOperation.Process( currentState );
-		
-		IOperationVisualizer visualizer = GetVisualizer( currentState.Type );
-		
-		if( visualizer == null ) 
-		{
-			Debug.LogError("MathInputManager:ProcessCurrentOperation : no visualizer found for " + currentState.Type);
-		}
-		else
-		{
-			StartCoroutine( visualizer.Visualize(currentState, outcome) );
-		}
-		
-		
-		ResetOperationState();
-	}
-	
-	void Update () 
-	{
-		if( !acceptInput) 
-			return;
+	*/
 
-		if( LugusInput.use.KeyDown(KeyCode.S) ) // "spawn"
-		{
-			InitializeOperationIcons();
-		}
-
-		// we need to have selected an operation to be able to continue
-		if( currentOperation == null )
-			return;
-		
-		if( LugusInput.use.down )
-		{
-			ProcessClick();
-			
-			/*
-			Character character = hit.GetComponent<Character>();
-			if( character == null )
-				return;
-			
-			if( character.floor != Character.Floor.TOPSIDE )
-				return;
-			
-			startPointScreen = LuGusInput.i.lastPoint;
-			
-			startCharacter = character;
-			
-			Debug.Log("OnInputStart:add : selecting "+ startCharacter + " " + startCharacter.significantOther);
-			
-			*/
-			//visualHelper.SelectCharacter( startCharacter );
-			//visualHelper.SelectCharacter( startCharacter.significantOther );
-		}
-		
-		/*
-		if( LuGusInput.use.dragging )
-		{
-			//currentEnd = LuGusInput.i.lastPoint;
-			
-			
-			Transform hit = LuGusInput.use.RayCastFromMouse();
-			if( hit == null )
-				return;
-			
-			Character numberRenderer = hit.GetComponent<Character>();
-			if( numberRenderer == null )
-				return;
-			
-			if( currentState.StartNumber == numberRenderer.Number )
-				return;
-			
-			currentState.StopNumber = numberRenderer.Number;
-			
-			
-			bool ok = currentOperation.AcceptState(currentState);
-			
-			if( ok )
-			{
-				//visualHelper.SelectCharacter( stopCharacter );
-				//visualHelper.SelectCharacter( stopCharacter.significantOther );
-			}
-			
-		}
-		
-		
-		// todo: maybe do this if( !dragging ) ?
-		if( LuGusInput.use.up )
-		{
-			
-			if( currentState == null )
-				return;
-			
-			
-			if( currentState.StopFraction == null )
-			{
-				// TODO: undo all
-				return;
-			}
-			
-			
-			bool ok = currentOperation.Process( currentState );
-			
-			// TODO!
-		}
-		*/
-	}
+	public float errorShowStartTime = -10.0f;
+	public FR.OperationMessage errorMessage = FR.OperationMessage.None;
 	
 	void OnGUI()
 	{
+		if( Time.time - errorShowStartTime < 3.0f )
+		{
+			GUILayout.BeginArea( new Rect(Screen.width / 2.0f - 100, Screen.height - 100, 200, 50), GUI.skin.box );	
+			GUILayout.BeginVertical();
+
+			GUILayout.Label("ERROR : " +  errorMessage );// + "\n" + Time.time + " - " + errorShowStartTime + " = "  + (Time.time - errorShowStartTime));
+
+			
+			GUILayout.EndVertical();
+			GUILayout.EndArea();
+		}
+
 		if( !LugusDebug.debug )
 			return;
 		
 		
-		GUILayout.BeginArea( new Rect(0, 100, 300, 300) );	
+		GUILayout.BeginArea( new Rect(Screen.width / 2.0f - 150.0f, 100, 300, 300) );	
 		GUILayout.BeginVertical();
 		
-		GUILayout.Box("Current operation : " + currentOperation);
+		GUILayout.Box("Current operation : " + MathManager.use.currentOperation);
 		
-		if( currentState != null )
-			GUILayout.Box("Current state : " + currentState.StartFraction + " -> " + currentState.StopFraction);
+		GUILayout.Box("Current state : " + MathManager.use.state);
+
+		if( MathManager.use.operationInfo != null )
+		{
+			GUILayout.Box("Current fractions : " + MathManager.use.operationInfo.StartFraction + " -> " + MathManager.use.operationInfo.StopFraction);
+		}
+
+		if( MathManager.use.lastOperationMessage != FR.OperationMessage.None )
+		{
+			GUILayout.Box("\nCurrent message : " + MathManager.use.lastOperationMessage + "\n");
+		}
 		
 		GUILayout.EndVertical();
 		GUILayout.EndArea();

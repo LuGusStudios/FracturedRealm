@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class OperationState
 {
@@ -84,13 +85,36 @@ namespace FR
 
 	public enum OperationType
 	{
-		NONE,
-		ADD,
-		SUBTRACT,
-		MULTIPLY,
-		DIVIDE,
-		DOUBLE,
-		SIMPLIFY
+		NONE = -1,
+		ADD = 1,
+		SUBTRACT = 2,
+		MULTIPLY = 3,
+		DIVIDE = 4,
+		DOUBLE = 5,
+		SIMPLIFY = 6
+	}
+
+	[Flags]
+	public enum OperationMessage
+	{
+		None = 0,
+
+		Error_Requires2Fractions = 1, // just 1 target set and tried to execute
+		Error_Requires1Fraction = 128, // 2 targets set but just 1 needed (shouldnt happen, but can never be too carefull :))
+		Error_IdenticalTargets = 2, // startFraction == stopFraction
+		Error_UnsimilarTargets = 4, // ! AreAlike() -> not both have numerator/denominator or same combination of both
+
+		Error_DenominatorsNotEqual = 8, // both denominators aren't equal. NEcessary for + and -
+		Error_RequiresFullFractions = 16, // divide requires both targets to be full fractions (numerator + denominator of both are non zero)
+
+		Error_ResultTooLarge = 32, // results should never be > 12 in this setup
+		Error_SimplificationImpossible = 64, // ex. 5/3 cannot be simplified
+		Error_RequiresEvenNumbers = 256, // ex. 5/3 cannot be simplified
+
+		Errors = 511, // convenience value to check if message is an error. if( OperationMessage.Errors & myMessage == myMessage ) { error } NOTE: check for .None separately!!!
+
+
+
 	}
 }
 
@@ -100,7 +124,10 @@ public class IOperation
 	{
 		
 	}
-	
+
+	public FR.OperationMessage lastMessage = FR.OperationMessage.None;
+
+
 	public FR.OperationType type = FR.OperationType.NONE;
 	
 	public virtual bool AcceptState( OperationState state ){ return false; }

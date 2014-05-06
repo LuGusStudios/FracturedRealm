@@ -11,25 +11,34 @@ public class OperationAdd : IOperation
 	public void Reset()
 	{
 		this.type = FR.OperationType.ADD; 
+		this.lastMessage = FR.OperationMessage.None;
 	}
 	
 	public override bool AcceptState(OperationState state)
 	{
+		this.lastMessage = FR.OperationMessage.None;
+
+		bool result = false;
+
 		if( state.StartFraction == null )
-			return AcceptStart(state);
+			result = AcceptStart(state);
 		else if( state.StopFraction == null )
-			return true;
+			result = true;
 		else
-			return AcceptStop(state);  
+			result = AcceptStop(state);  
+
+		if( lastMessage != FR.OperationMessage.None )
+		{
+			if( lastMessage != FR.OperationMessage.Error_Requires2Fractions )
+				Debug.LogError("OperationAdd:AcceptState : raised error : " + lastMessage);
+		}
+
+		return result;
 	}
 	
 	protected bool AcceptStart(OperationState state)
 	{
 		Debug.Log ("OperationAdd:AcceptStart : " + state);
-		
-		// Add can only start at the nominator
-		//if( !state.StartNumber.IsNumerator )
-		//	return false;
 		
 		return true;
 	}
@@ -37,38 +46,35 @@ public class OperationAdd : IOperation
 	protected bool AcceptStop(OperationState state)
 	{
 		Debug.Log ("OperationAdd:AcceptStop : " + state);
-		
+
 		// state needs a StopFraction!
 		if( state.StopFraction == null )
+		{
+			this.lastMessage = FR.OperationMessage.Error_Requires2Fractions;
 			return false;
+		}
 			
 		// don't add the same fraction to itself
 		if( state.StartFraction == state.StopFraction )
+		{
+			this.lastMessage = FR.OperationMessage.Error_IdenticalTargets;
 			return false;
-		
-		// only add numerators
-		//if( !state.StopNumber.IsNumerator )
-		//	return false;
-		
-		// only if they are actually both fractions
-		/*
-		if( state.StartFraction.Denominator == null && state.StopFraction.Denominator != null )
-			return false;
-		if( state.StartFraction.Denominator != null && state.StopFraction.Denominator == null )
-			return false;
-		*/
+		}
+
 		
 		if( !Fraction.AreAlike( state.StartFraction, state.StopFraction ) )
+		{
+			this.lastMessage = FR.OperationMessage.Error_UnsimilarTargets;
 			return false;
-		
-		// if we do have both fractions 
-		//if( state.StartFraction.Denominator != null && state.StopFraction.Denominator != null )
-		//{
+		}
 
-			// only allow of the Denominators are the same
-			if( state.StartFraction.Denominator.Value != state.StopFraction.Denominator.Value )
-				return false;
-		//}
+
+		// only allow of the Denominators are the same
+		if( state.StartFraction.Denominator.Value != state.StopFraction.Denominator.Value )
+		{
+			this.lastMessage = FR.OperationMessage.Error_DenominatorsNotEqual;
+			return false;
+		}
 		 
 		return true;
 	} 
