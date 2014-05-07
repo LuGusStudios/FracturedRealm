@@ -68,16 +68,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08ac408b4fcc24b69835ea6b31bd80d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldTypes: 01000000020000000300000004000000
-  worldTemplates:
-  - {fileID: 0}
-  - {fileID: 0}
+  worldParts_Fire:
+  - {fileID: 11400006, guid: a23fa38a55f4748f2a2811fd4bc01e15, type: 2}
+  worldParts_Forest:
+  - {fileID: 11400006, guid: a23fa38a55f4748f2a2811fd4bc01e15, type: 2}
+  worldParts_Jungle:
+  - {fileID: 11400006, guid: a23fa38a55f4748f2a2811fd4bc01e15, type: 2}
+  worldParts_Ice:
   - {fileID: 11400000, guid: c9b888f51d9ca46d388770d34ddbd890, type: 2}
+  worldParts_Desert:
   - {fileID: 11400000, guid: c9b888f51d9ca46d388770d34ddbd890, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   debug_initialFractions:
   - _numerator:
       _value: 3
