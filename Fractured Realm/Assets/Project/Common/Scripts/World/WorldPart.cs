@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 [System.Serializable]
 public class WorldPart : MonoBehaviour 
@@ -15,6 +16,23 @@ public class WorldPart : MonoBehaviour
 				if( _interactionGroups.Length == 0 )
 				{
 					Debug.LogError("WorldPart:InteractionGroups : no InteractionGroups found! Make sure there's at least 1! " + transform.name);
+				}
+				else
+				{
+					// interactiongroups should be sorted on their names
+					Array.Sort( _interactionGroups, 
+					           delegate( InteractionGroup g1, InteractionGroup g2 )
+					           { 
+									return g1.name.CompareTo( g2.name );
+							   } 
+					);
+
+					/*
+					foreach( InteractionGroup group in _interactionGroups )
+					{
+						Debug.LogError("SORTED GROUP : " + group.name );
+					}
+					*/
 				}
 			}
 

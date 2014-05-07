@@ -52,7 +52,7 @@ public class WorldFactoryEditor : Editor
 			}
 		}
 		
-		EditorGUILayout.LabelField("------------");
+		EditorGUILayout.LabelField("------------"); 
 
 
 		FR.WorldType[] types = (FR.WorldType[]) Enum.GetValues(typeof(FR.WorldType));

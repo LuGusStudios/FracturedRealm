@@ -60,7 +60,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 			return worldParts_Desert;
 		}
 
-		return null;
+		return null; 
 	}
 	
 	//public Dictionary<FR.WorldType, List<WorldPart>> worldTemplates = new Dictionary<FR.WorldType, List<WorldPart>>();
@@ -78,15 +78,19 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 	}
 	*/
 
-	public World CreateDebugWorld(FR.WorldType type, Fraction[] fractions, bool fillAllInteractionGroups = true)
+	public World CreateDebugWorld(FR.WorldType type, Fraction[] fractions, FR.Target composition = FR.Target.BOTH, bool fillAllInteractionGroups = true)
 	{
-		World output = CreateWorld(type, fractions, FR.Target.BOTH, fillAllInteractionGroups);
+		World output = CreateWorld(type, fractions, composition, fillAllInteractionGroups);
 		FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
-		HUDManager.use.SetMode( FR.Target.BOTH );
+		HUDManager.use.SetMode( composition );
 
 		FRCamera.use.MoveToInteractionGroup( 1, 1, false );
-		
-		MathInputManager.use.InitializeOperationIcons(1);
+
+		if( Application.isPlaying )
+		{
+			Debug.LogError("App is playing, so initialize operation icons");
+			MathInputManager.use.InitializeOperationIcons(1);
+		}
 
 		return output;
 	}
@@ -140,17 +144,35 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		
 		World world = WORLD.AddComponent<World>();
 
+		bool numeratorHasDirectionalLight = false;
 		if( composition.HasNumerator() )
 		{
 			world.numerator = (WorldPart) GameObject.Instantiate( template );//worldTemplates[ index ] );
 			world.numerator.gameObject.SetActive(true);
 			world.numerator.transform.parent = WORLD.transform;
-			world.numerator.transform.position   = LugusCamera.numerator.transform.position.zAdd( 15.0f );
+			world.numerator.transform.position   = new Vector3(0, 0, 15.0f );//LugusCamera.numerator.transform.position.zAdd( 15.0f );
 
 			Transform denominatorSpecifics = world.numerator.DenominatorSpecificObjects();
 			if( denominatorSpecifics != null )
 			{
 				denominatorSpecifics.gameObject.SetActive(false);
+			}
+
+			Light[] lights = world.numerator.GetComponentsInChildren<Light>(true);
+			foreach( Light light in lights )
+			{
+				if(  light.type == LightType.Directional  )
+				{
+					if( !numeratorHasDirectionalLight )
+					{
+						numeratorHasDirectionalLight = true;
+					}
+					else
+					{
+						Debug.LogError("WorldFactory:CreateWorld : numerator had more than 1 directional light!");
+						light.enabled = false;
+					}
+				}
 			}
 		}
 		else
@@ -161,12 +183,24 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 			world.denominator = (WorldPart) GameObject.Instantiate( template );// worldTemplates[ index + 1 ] );
 			world.denominator.gameObject.SetActive(true); 
 			world.denominator.transform.parent = WORLD.transform;
-			world.denominator.transform.position = LugusCamera.denominator.transform.position.zAdd( 15.0f );
+			world.denominator.transform.position = new Vector3(0, -200.0f, 15.0f );//LugusCamera.denominator.transform.position.zAdd( 15.0f );
 			
 			Transform numeratorSpecifics = world.denominator.NumeratorSpecificObjects();
 			if( numeratorSpecifics != null )
 			{
 				numeratorSpecifics.gameObject.SetActive(false);
+			}
+
+			if( numeratorHasDirectionalLight )
+			{
+				Light[] lights = world.numerator.GetComponentsInChildren<Light>(true);
+				foreach( Light light in lights )
+				{
+					if( light.type == LightType.Directional )
+					{
+						light.enabled = false;
+					}
+				}
 			}
 		}
 		else
@@ -246,6 +280,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 				Portal p = RendererFactory.use.CreatePortal( fr2.Denominator.Value, FR.Target.DENOMINATOR );
 				p.transform.position = world.denominator.InteractionGroups[i].PortalExit.position;
 				p.transform.parent = world.denominator.transform;
+			
 			}
 			
 			ValidateInternalFraction( fr2, "fraction 2 : ");

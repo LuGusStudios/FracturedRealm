@@ -121,7 +121,7 @@ public class FRValidator : EditorWindow
 				EditorUtility.SetDirty(WorldFactory.use);
 				
 				
-				WorldFactory.use.CreateDebugWorld( FR.WorldType.DESERT, fractions );
+				WorldFactory.use.CreateDebugWorld( worldType, fractions );
 
 				/*
 				WorldFactory.use.CreateWorld(worldType, fractions, FR.Target.BOTH, true);
@@ -246,9 +246,34 @@ public class FRValidator : EditorWindow
 			{
 				foreach( WorldPart part in templates )
 				{
+					Debug.Log ("Validating WorldPart template : " + part.name);
+
+					Logus.Assert( part.DenominatorSpecificObjects() != null );
+					Logus.Assert( part.NumeratorSpecificObjects() != null );
+					Logus.Assert( part.transform.FindChild("Geometry") != null );
+					Logus.Assert( part.transform.FindChild("InteractionGroups") != null );
+
+
+					// GetComponentsInChildren<> doesn't work in editor mode when checkin a prefab...
+
+					/*
+					bool directionalFound = false;
+					Light[] lights = part.transform.GetComponentsInChildren<Light>();
+					foreach( Light light in lights )
+					{
+						if( light.type == LightType.Directional )
+						{
+							directionalFound = true;
+							break;
+						}
+					}
+
+					Logus.Assert( directionalFound );
+
+
 					if( Logus.Assert( part.InteractionGroups != null && part.InteractionGroups.Length > 0 ) )
 					{
-						InteractionGroup[] groups = part.InteractionGroups;
+						InteractionGroup[] groups = part.InteractionGroups; 
 						foreach( InteractionGroup group in groups )
 						{
 							Logus.Assert( group.Spawn1 != null );
@@ -258,6 +283,7 @@ public class FRValidator : EditorWindow
 							Logus.Assert( group.Camera != null );
 						}
 					}
+					*/
 				}
 			}
 
