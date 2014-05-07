@@ -110,7 +110,8 @@ public class StateMachineManipulatorWindow : EditorWindow
 			if( clip != null )
 			{
 				FRAnimationFile f = new FRAnimationFile();
-				f.path = path;
+				// path is of the form /Type/Animation  -> we need Type.Animation
+				f.path = path.Trim(new char[1]{'/'}).Replace("/", ".");
 				f.asset = clip;
 				
 				output.Add (f);
@@ -212,7 +213,7 @@ public class StateMachineManipulatorWindow : EditorWindow
 
 		idleState.position = new Vector3(0,0,0);
 
-		Debug.LogError("IdleState position set to : " + idleState.position );
+		//Debug.LogError("IdleState position set to : " + idleState.position );
 
 		
 		foreach( FRAnimationFile animationFile in animations )
@@ -345,7 +346,13 @@ public class StateMachineManipulatorWindow : EditorWindow
 		EditorGUILayout.BeginHorizontal();
 		if( GUILayout.Button("\n\nBuild FRAnimations class code\n\n") )
 		{
-			GenerateFRAnimationsClass( ac );
+			AnimationTemplateGeneratorHelper.GenerateFRAnimationsClass( ac );
+		}
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		if( GUILayout.Button("\n\nBuild OperationVisualizers\n\n") )
+		{
+			AnimationTemplateGeneratorHelper.GenerateOperationVisualizerClasses( ac );
 		}
 		EditorGUILayout.EndHorizontal();
 		EditorGUILayout.EndVertical();
@@ -403,93 +410,6 @@ public class StateMachineManipulatorWindow : EditorWindow
 		}
 
 
-	}
-
-	protected void RetrieveAnimationsFromController(int layer, UnityEditorInternal.StateMachine parent, List<FRAnimationData> animations)
-	{
-		int stateCount = parent.stateCount;
-		for( int i = 0; i < stateCount; ++i )
-		{
-			UnityEditorInternal.State state = parent.GetState(i);
-
-			// TODO: FIXME: check if this animation "name" (name + parent?) doesn't exist yet... important!
-			// TODO: FIXME: must make sure parent names are also unique across layers... 
-			FRAnimationData animation = new FRAnimationData();
-			animation.name = state.name;
-			animation.parentName = parent.name;
-			animation.hash = Animator.StringToHash( animation.parentName + "." + animation.name);
-
-			animation.movieClipName = "NONE YET";
-			animation.layer = layer;
-
-
-			animations.Add( animation );
-		}
-
-		int submachineCount = parent.stateMachineCount;
-
-		for( int i = 0; i < submachineCount; ++i )
-		{
-			RetrieveAnimationsFromController( layer, parent.GetStateMachine(i), animations );
-		}
-	}
-
-	protected void GenerateFRAnimationsClass(UnityEditorInternal.AnimatorController ac)
-	{
-		// TODO: FIXME: loop over all layers to add all animations
-		List<FRAnimationData> animations = new List<FRAnimationData>();
-		RetrieveAnimationsFromController(0, ac.GetLayer(0).stateMachine, animations );
-
-		/*
-		 * 
-		auto-generate ENUM with different anim states as fields
-		-> this works: animator.CrossFade( "/Movements.running", 0.15f );
-		-> this doesn't: animator.CrossFade( "Base Layer.running", 0.15f );
-		-> neither does this: animator.CrossFade( "Base Layer./Movements.running", 0.15f );
-
-		-> if state is named "Movements.test", neither "Movements.test.xxx" or "test.xxx" seems to work
-		  -> So no "." inside substate names, yippy
-
-        also need to make sure substate names are unique across layers this way, and "nested" substates... darned
-		 */ 
-
-		
-		string enumString = "public enum FRAnimation\n{\n\tNONE = -1, ";
-		string ctorString = "FRAnimationData animation = null;\n\n";
-
-		foreach( FRAnimationData animation in animations )
-		{
-			enumString += "\n\t" + animation.name + " = " + animation.hash + ",";
-
-			ctorString += "\t\tanimation = new FRAnimationData();\n";
-			ctorString += "\t\tanimation.name = \"" + animation.name + "\";\n";
-			ctorString += "\t\tanimation.hash = " + animation.hash + ";\n";
-			ctorString += "\t\tanimation.parentName = \"" + animation.parentName + "\";\n";
-			ctorString += "\t\tanimation.layer = " + animation.layer + ";\n";
-
-			ctorString += "\t\tanimations.Add(" + animation.hash+ ", animation);\n\n";
-		}
-
-
-		enumString += "\n};";
-
-		string outputPath = Application.dataPath + "/" + "Project/Common/Scripts/Characters/Animations/";
-
-		string template = File.ReadAllText( outputPath + "FRAnimationsTemplate.cs" );
-		template = template.Replace( "/*", "" );
-		template = template.Replace( "*/", "" );
-
-		template = template.Replace("ENUM", enumString );
-		template = template.Replace("INIT", ctorString );
-
-		if( File.Exists( outputPath + "FRAnimations.cs" ) )
-		{
-			File.Delete( outputPath + "FRAnimations.cs" );
-		}
-
-		File.WriteAllText( outputPath + "FRAnimations.cs", template );
-		
-		// ex. call GetAssetsInFolderRecursive("Project/CharactersNew/Animations", "", output);
 	}
 
 }

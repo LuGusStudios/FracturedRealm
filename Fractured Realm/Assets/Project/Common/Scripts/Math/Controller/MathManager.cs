@@ -96,7 +96,7 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 			if( viz.type == type )
 				visualizer = viz;
 		}
-		
+
 		return visualizer;
 	}
 	
