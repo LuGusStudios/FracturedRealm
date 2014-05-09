@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 public class IOperationVisualizer
@@ -8,6 +9,35 @@ public class IOperationVisualizer
 	{
 		
 	}
+
+	
+	protected List<FR.Animation> _nextAnimations = null;
+	public List<FR.Animation> NextAnimations
+	{
+		get
+		{
+			if( _nextAnimations == null )
+			{
+				PrepareNextAnimations();
+			}
+			
+			return _nextAnimations;
+		}
+	}
+	
+	public virtual FR.Animation GetRandomNextAnimation()
+	{
+		if( NextAnimations == null || NextAnimations.Count == 0 )
+		{
+			return FR.Animation.NONE;
+		}
+		
+		return NextAnimations[ UnityEngine.Random.Range(0, NextAnimations.Count) ];
+	}
+
+
+	protected virtual void PrepareNextAnimations(){ _nextAnimations = new List<FR.Animation>(); }
+
 	
 	public FR.OperationType type = FR.OperationType.NONE;
 	

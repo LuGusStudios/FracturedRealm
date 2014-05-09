@@ -9,7 +9,15 @@ public class FRAnimationData
 	public int hash = -1;
 	public int layer = 0;
 
-	public string parentName = "";
+	public FR.Animation type = FR.Animation.NONE;
+
+	public FR.OperationType operation = FR.OperationType.NONE;
+	public FR.AnimationStage stage = FR.AnimationStage.NONE;
+	
+	public string parentName = ""; // to assist in auto-creating the classes through script generation
+	public string originalOperationName = ""; // to assist in auto-creating the classes through script generation
+	public string originalStageName = ""; // to assist in auto-creating the classes through script generation
+
 
 	public string movieClipName = "";
 	public bool loop = false;
@@ -20,28 +28,10 @@ public class FRAnimationData
 
 	public string VisualizerClassName()
 	{	
-		
-		List<string> operations = new List<string>();
-		operations.Add ("Add");
-		operations.Add ("Subtract");
-		operations.Add ("Multiply");
-		operations.Add ("Divide");
-		operations.Add ("Simplify");
-		operations.Add ("Double");
-
-
-		string[] splits = parentName.Split('.');
-		string parentOperation = splits[0];
-		string parentStage = "";
-		if( splits.Length > 1 )
-		{
-			parentStage = splits[1];
-		}
-
-		if( !operations.Contains( parentOperation ) )
+		if( operation == FR.OperationType.NONE )
 			return "";
 		
-		string stageName = ( !string.IsNullOrEmpty(parentStage) ) ? "_" + parentStage : "";
-		return "OperationVisualizer" + parentOperation + stageName + "_" + this.name;
+		string stageName = ( !string.IsNullOrEmpty(originalStageName) ) ? "_" + originalStageName : "";
+		return "OperationVisualizer" + originalOperationName + stageName + "_" + this.name;
 	}
 }

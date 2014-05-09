@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System;
 
 public class AnimationTemplateGeneratorHelper 
 {
@@ -21,6 +22,23 @@ public class AnimationTemplateGeneratorHelper
 			
 			animation.movieClipName = "NONE YET";
 			animation.layer = layer;
+
+
+			// parent name can have various forms:
+			// - Operation / identifier
+			// - Operation.Stage
+			string[] splits = animation.parentName.Split('.'); // if no ., splits[0] will just contain the full string
+			animation.originalOperationName = splits[0];
+			animation.operation = StringToOperationType( animation.originalOperationName );
+
+			if( splits.Length > 1 )
+			{
+				// Operation.Stage
+				animation.originalStageName = splits[1];
+				animation.stage = StringToAnimationStage( animation.originalStageName );
+			}
+
+
 			
 			
 			animations.Add( animation );
@@ -31,6 +49,42 @@ public class AnimationTemplateGeneratorHelper
 		for( int i = 0; i < submachineCount; ++i )
 		{
 			RetrieveAnimationsFromController( layer, parent.GetStateMachine(i), animations );
+		}
+	}
+
+	protected static FR.OperationType StringToOperationType(string operationName)
+	{
+		operationName = operationName.ToUpper();
+
+		try
+		{
+			return (FR.OperationType) Enum.Parse( typeof(FR.OperationType), operationName );
+		}
+		catch( ArgumentException e )
+		{
+			return FR.OperationType.NONE;
+		}
+	}
+
+	protected static FR.AnimationStage StringToAnimationStage(string animationStage)
+	{
+		// stores FROM -> TO of the animation stages
+		Dictionary<string,string> stages = new Dictionary<string, string>();
+		stages.Add("Starter", "Receiver");
+		stages.Add("Ascend", "Descend");
+		stages.Add("Attacks", "Hits");
+
+		if( stages.ContainsKey(animationStage) )
+		{
+			return FR.AnimationStage.Stage1;
+		}
+		else if( stages.ContainsValue(animationStage) )
+		{
+			return FR.AnimationStage.Stage2;
+		}
+		else
+		{
+			return FR.AnimationStage.NONE;
 		}
 	}
 
@@ -50,27 +104,21 @@ public class AnimationTemplateGeneratorHelper
 		{
 			Directory.CreateDirectory( outputPath );
 		}
-		
-		List<string> operations = new List<string>();
-		operations.Add ("Add");
-		operations.Add ("Subtract");
-		operations.Add ("Multiply");
-		operations.Add ("Divide");
-		operations.Add ("Simplify");
-		operations.Add ("Double");
 
-		// stores FROM -> TO of the animation stages
-		Dictionary<string,string> stages = new Dictionary<string, string>();
-		stages.Add("Starter", "Receiver");
-		stages.Add("Ascend", "Descend");
-		stages.Add("Attacks", "Hits");
 
 		List<string> processedOperationStages = new List<string>(); // keep track of generated files
 
 		List<FRAnimationData> animations = new List<FRAnimationData>();
 		RetrieveAnimationsFromController(0, ac.GetLayer(0).stateMachine, animations );
 
-		
+		Dictionary<FR.OperationType, List<string>> starterAnimations = new Dictionary<FR.OperationType, List<string>>();
+		Dictionary<FR.OperationType, List<string>> stage2Animations = new Dictionary<FR.OperationType, List<string>>(); 
+
+
+		string template = "";
+		string fileName = "";
+
+		// first pass: gather info about various stages and generate stage-base classes where needed
 		foreach( FRAnimationData animation in animations )
 		{
 			// couple of different options, figure out which one:
@@ -78,25 +126,14 @@ public class AnimationTemplateGeneratorHelper
 			// -2. animation is for an Operation, but doesn't use stages: ex. Simplify.backFlip, Multiply.headbang
 			// -3. animation is not for an Operation: no OperationVisualizer needed
 
-			// see if there's an operation in the parent name of the animation
-			
-			string[] splits = animation.parentName.Split('.');
-			string parentOperation = splits[0];
-			string parentStage = "";
-			if( splits.Length > 1 )
-			{
-				parentStage = splits[1];
-			}
 
 			// case 3: animation is not for an operation
-			if( !operations.Contains( parentOperation ) )
+			if( animation.operation == FR.OperationType.NONE )
 				continue; 
 
-			string template = "";
-			string fileName = "";
-
-			// case 1: operation has various stages: generate base class for every stage
-			if( !processedOperationStages.Contains( animation.parentName ) && !string.IsNullOrEmpty(parentStage) )
+			// case 1: operation has various stages: generate base class for every stage if it doesn't exist yet
+			// case 2 doesn't need extra base class: they just inherit from the original OperationVisualizer for their specific Operation
+			if( !processedOperationStages.Contains( animation.parentName ) && (animation.stage != FR.AnimationStage.NONE) )
 			{
 				Debug.LogWarning("GenerateOperationVisualizerClasses : operationStage " + animation.parentName + " didn't have a base class yet. Generate it!");
 
@@ -105,10 +142,10 @@ public class AnimationTemplateGeneratorHelper
 				template = template.Replace( "/*", "" );
 				template = template.Replace( "*/", "" );
 				
-				template = template.Replace("OPERATION", parentOperation );
-				template = template.Replace("STAGE", "_" + parentStage ); // if not chained (case 2: stage will just be empty)
+				template = template.Replace("OPERATION", animation.originalOperationName );
+				template = template.Replace("STAGE", "_" + animation.originalStageName ); 
 				
-				fileName = "OperationVisualizer" + parentOperation + "_" + parentStage + ".cs";
+				fileName = "OperationVisualizer" + animation.originalOperationName + "_" + animation.originalStageName + ".cs";
 				
 				if( File.Exists( outputPath + fileName ) )
 				{
@@ -117,9 +154,56 @@ public class AnimationTemplateGeneratorHelper
 				
 				File.WriteAllText( outputPath + fileName, template );
 
-
 				// make sure base class is not generated again (multiple animations can share the same parent)
 				processedOperationStages.Add( animation.parentName );
+			}
+
+			
+			// if it's a starter animation, we need to keep it for later processing
+			// if it doesn't have a specific stage, it's also a "starter" animation
+			if( animation.stage == FR.AnimationStage.Stage1 || animation.stage == FR.AnimationStage.NONE )
+			{
+				if( !starterAnimations.ContainsKey(animation.operation) )
+				{
+					//Debug.LogWarning("new key found for stageAnimations : " + operationType);
+					starterAnimations[animation.operation] = new List<string>();
+				}
+				
+				//Debug.LogError("Adding " + animation.name + " to " + operationType);
+				starterAnimations[animation.operation].Add( animation.name );
+			}
+			
+			// if it's a receiver animation, we need to keep it for later processing
+			if( animation.stage == FR.AnimationStage.Stage2 )
+			{
+				if( !stage2Animations.ContainsKey(animation.operation) )
+				{
+					stage2Animations[animation.operation] = new List<string>();
+				}
+
+				stage2Animations[animation.operation].Add( animation.name );
+			}
+		}
+
+
+		// second pass : generate actual animation files per animation
+		// we have to do this in 2 passes, because we need to know each possible STAGE2 animation for the STAGE1's because they need to be included in their files.
+		foreach( FRAnimationData animation in animations )
+		{
+			string nextString = "";
+			if( animation.stage == FR.AnimationStage.Stage1 )
+			{
+				nextString = "\n";
+
+				if( stage2Animations.ContainsKey( animation.operation ) ) 
+				{
+					foreach( string stage2 in stage2Animations[animation.operation] )
+					{
+						nextString += "\t\t_nextAnimations.Add(FR.Animation." + stage2 + ");\n";
+					}
+				}
+				else
+					Debug.LogError("GenerateOperationVisualizerClasses : no stage2 animations found for stage1 " + animation.operation + " // " + animation.parentName + "." + animation.name);
 			}
 
 
@@ -129,14 +213,18 @@ public class AnimationTemplateGeneratorHelper
 			template = template.Replace( "/*", "" );
 			template = template.Replace( "*/", "" );
 			
-			string stageName = ( !string.IsNullOrEmpty(parentStage) ) ? "_" + parentStage : "";
+			// if it's not a "Staged" animation, we need to change the class / file name to leave the stage name out completely
+			string stageName = ( !string.IsNullOrEmpty(animation.originalStageName) ) ? "_" + animation.originalStageName : "";
+			
+			template = template.Replace("NEXTANIMATION", nextString );
 
-			template = template.Replace("OPERATION", parentOperation ); 
+			template = template.Replace("OPERATION", animation.originalOperationName ); 
 			template = template.Replace("STAGE", stageName );
 			template = template.Replace("ANIMATION", "_" + animation.name );
 
+			
 			fileName = animation.VisualizerClassName() + ".cs";//"OperationVisualizer" + parentOperation + stageName + "_" + animation.name + ".cs";
-
+			
 			if( File.Exists( outputPath + fileName ) )
 			{
 				File.Delete( outputPath + fileName );
@@ -144,6 +232,38 @@ public class AnimationTemplateGeneratorHelper
 			
 			File.WriteAllText( outputPath + fileName, template );
 		}
+
+
+
+
+
+		// we need a record somewhere of the animations that belong to a certain Operation ("starters" if they are staged)
+		// each STARTER animation keeps track of possible RECEIVERS, so something individual for those isn't needed
+		string ctorString = "\n";
+		foreach( FR.OperationType operation in starterAnimations.Keys )
+		{
+			ctorString += "\t\t_operationAnimations[ FR.OperationType." + operation + " ] = new List<FR.Animation>();\n";
+
+			foreach( string animationName in starterAnimations[operation] )
+			{
+				ctorString += "\t\t_operationAnimations[ FR.OperationType." + operation + " ].Add( FR.Animation."+ animationName +" );\n";
+			}
+
+			ctorString += "\n";
+		}
+
+		template = File.ReadAllText( basePath + "FRAnimationsStagesTemplate.cs" );
+		template = template.Replace( "/*", "" );
+		template = template.Replace( "*/", "" );
+
+		template = template.Replace("INIT", ctorString );
+		
+		if( File.Exists( basePath + "FRAnimationsStages.cs" ) )
+		{
+			File.Delete( basePath + "FRAnimationsStages.cs" );
+		}
+		
+		File.WriteAllText( basePath + "FRAnimationsStages.cs", template );
 	}
 
 	public static void GenerateFRAnimationsClass(UnityEditorInternal.AnimatorController ac)
@@ -166,18 +286,26 @@ public class AnimationTemplateGeneratorHelper
 		 */ 
 		
 		
-		string enumString = "public enum FRAnimation\n{\n\tNONE = -1, ";
+		string enumString = "public enum Animation\n{\n\tNONE = -1, "; 
 		string ctorString = "FRAnimationData animation = null;\n\n";
 		
 		foreach( FRAnimationData animation in animations )
 		{
 			enumString += "\n\t" + animation.name + " = " + animation.hash + ",";
-			
+
+
 			ctorString += "\t\tanimation = new FRAnimationData();\n";
 			ctorString += "\t\tanimation.name = \"" + animation.name + "\";\n";
+			ctorString += "\t\tanimation.type = FR.Animation." + animation.name + ";\n";
 			ctorString += "\t\tanimation.hash = " + animation.hash + ";\n";
 			ctorString += "\t\tanimation.parentName = \"" + animation.parentName + "\";\n";
 			ctorString += "\t\tanimation.layer = " + animation.layer + ";\n";
+
+			
+			ctorString += "\t\tanimation.stage = FR.AnimationStage." + animation.stage + ";\n";
+			ctorString += "\t\tanimation.operation = FR.OperationType." + animation.operation + ";\n";
+			ctorString += "\t\tanimation.originalOperationName = \"" + animation.originalOperationName + "\";\n";
+			ctorString += "\t\tanimation.originalStageName = \"" + animation.originalStageName + "\";\n";
 
 			string visualizer = animation.VisualizerClassName();
 			if( !string.IsNullOrEmpty(visualizer) )

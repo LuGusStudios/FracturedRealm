@@ -27,7 +27,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 	{
 		yield return Attacker.Animator.RotateTowards( FR.Target.BOTH, Defender ).Coroutine;
 		
-		Attacker.Animator.CrossFade(FR.Target.NUMERATOR, FRAnimation.castFireball); 
+		Attacker.Animator.CrossFade(FR.Target.NUMERATOR, FR.Animation.castFireball); 
 		
 		yield return new WaitForSeconds(1.0f);
 		
@@ -151,7 +151,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 
 		yield return Smallest.Animator.RotateTowards( FR.Target.BOTH, Biggest ).Coroutine;
 
-		Smallest.Animator.CrossFade(FR.Target.NUMERATOR, FRAnimation.castFireball); 
+		Smallest.Animator.CrossFade(FR.Target.NUMERATOR, FR.Animation.castFireball); 
 
 		yield return new WaitForSeconds(1.0f);
 		
@@ -235,7 +235,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 			// 1. Biggest attacks : sends fireball to smallest
 			//Biggest.AnimationFireBool(FR.Target.NUMERATOR, "CastFireball");
 			
-			Biggest.Animator.CrossFade(FR.Target.NUMERATOR, FRAnimation.castFireball); 
+			Biggest.Animator.CrossFade(FR.Target.NUMERATOR, FR.Animation.castFireball); 
 
 			yield return new WaitForSeconds(1.0f);
 			
@@ -271,7 +271,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 				// 3. Smallest attacks : sends fireball to biggest
 				//Smallest.AnimationFireBool(FR.Target.NUMERATOR, "CastFireball");
 			 
-				Smallest.Animator.CrossFade(FR.Target.NUMERATOR, FRAnimation.castFireball); 
+				Smallest.Animator.CrossFade(FR.Target.NUMERATOR, FR.Animation.castFireball); 
 
 				yield return new WaitForSeconds(1.0f); 
 				

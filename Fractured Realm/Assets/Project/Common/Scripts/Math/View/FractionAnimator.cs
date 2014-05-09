@@ -172,7 +172,7 @@ public class FractionAnimator
 		}
 	}
 	
-	public void CrossFade( FR.Target selector, FRAnimation animation, float fadeDuration = 0.05f )
+	public void CrossFade( FR.Target selector, FR.Animation animation, float fadeDuration = 0.05f )
 	{
 		if( _renderer.Fraction.Numerator.Value != 0 && selector.HasNumerator() )
 		{

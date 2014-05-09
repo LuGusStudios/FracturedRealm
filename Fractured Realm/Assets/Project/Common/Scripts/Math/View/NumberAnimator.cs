@@ -62,7 +62,7 @@ public class NumberAnimator : MonoBehaviour
 
 		foreach( CharacterRenderer c in Renderer.Characters )
 		{
-			c.Animator.CrossFade( FRAnimation.running, 0.05f );
+			c.Animator.CrossFade( FR.Animation.running, 0.05f );
 		}
 		
 		return this.gameObject.StartLugusRoutine( MoveToRoutine(2.0f) );
@@ -74,7 +74,7 @@ public class NumberAnimator : MonoBehaviour
 		
 		foreach( CharacterRenderer c in Renderer.Characters )
 		{
-			c.Animator.CrossFade( FRAnimation.idle, 0.05f );
+			c.Animator.CrossFade( FR.Animation.idle, 0.05f );
 		}
 	}
 
@@ -95,7 +95,7 @@ public class NumberAnimator : MonoBehaviour
 		}
 	}
 	
-	public void CrossFade( FRAnimation animation, float fadeDuration )
+	public void CrossFade( FR.Animation animation, float fadeDuration )
 	{
 		foreach( CharacterRenderer c in Renderer.Characters )
 		{
