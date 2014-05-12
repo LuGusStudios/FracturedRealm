@@ -26,5 +26,18 @@ public class SelectCamera : EditorWindow
 
             Selection.activeTransform = FRCameras.transform;
         }
+
+        if (GUILayout.Button("Select CameraMover", GUILayout.Height(50)))
+        {
+            GameObject cameraMover = GameObject.Find("CameraMover");
+
+            if (cameraMover == null)
+            {
+                Debug.Log("SelectCamera: There is no CameraMover in the scene");
+                return;
+            }
+
+            Selection.activeTransform = cameraMover.transform;
+        }
     }
 }
