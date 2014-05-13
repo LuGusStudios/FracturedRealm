@@ -11,7 +11,7 @@ GameObject:
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
   m_Layer: 0
-  m_Name: Crystal
+  m_Name: Crystal03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23,9 +23,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_LocalRotation: {x: 0, y: .278838515, z: 0, w: .960338056}
-  m_LocalPosition: {x: -56.0668716, y: -4.68032074, z: 1.25111294}
-  m_LocalScale: {x: 1.23533463, y: 1.23533463, z: 1.23533463}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -49.3725052, y: -4.54678249, z: .673995972}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
 --- !u!23 &2300000
@@ -55,7 +55,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_Mesh: {fileID: 4300000, guid: 44a7464bc97930e43b166aec5eaa187a, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 5dab99e8319d0eb47b5ecae5effb7c07, type: 3}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
