@@ -20,7 +20,7 @@ public class NumberAnimator : MonoBehaviour
 	{
 		ILugusCoroutineHandle output = null;
 
-		foreach( Character c in Renderer.Characters )
+		foreach( CharacterRenderer c in Renderer.Characters )
 		{
 			if( _renderer.interactionCharacter == c )
 				output = c.Animator.RotateTowards( target );
@@ -34,7 +34,7 @@ public class NumberAnimator : MonoBehaviour
 	// TODO: make this a better interface (ex. duration = 0 on RotateTowards or sthing )
 	public void RotateTowardsDirect( Vector3 target )
 	{
-		foreach( Character c in Renderer.Characters )
+		foreach( CharacterRenderer c in Renderer.Characters )
 		{
 			c.Animator.RotateTowardsDirect( target );
 		}
@@ -44,7 +44,7 @@ public class NumberAnimator : MonoBehaviour
 	{
 		ILugusCoroutineHandle output = null;
 		
-		foreach( Character c in Renderer.Characters )
+		foreach( CharacterRenderer c in Renderer.Characters )
 		{
 			if( _renderer.interactionCharacter == c )
 				output = c.Animator.RotateInDirection( direction );
@@ -60,7 +60,7 @@ public class NumberAnimator : MonoBehaviour
 	{
 		gameObject.MoveTo( target ).Time ( 2.0f ).Execute();
 
-		foreach( Character c in Renderer.Characters )
+		foreach( CharacterRenderer c in Renderer.Characters )
 		{
 			c.Animator.CrossFade( FRAnimation.running, 0.05f );
 		}
@@ -72,7 +72,7 @@ public class NumberAnimator : MonoBehaviour
 	{
 		yield return new WaitForSeconds( duration );
 		
-		foreach( Character c in Renderer.Characters )
+		foreach( CharacterRenderer c in Renderer.Characters )
 		{
 			c.Animator.CrossFade( FRAnimation.idle, 0.05f );
 		}
@@ -81,7 +81,7 @@ public class NumberAnimator : MonoBehaviour
 	
 	public void CrossFade( string animationName, float fadeDuration )
 	{
-		foreach( Character c in Renderer.Characters )
+		foreach( CharacterRenderer c in Renderer.Characters )
 		{
 			c.Animator.CrossFade( animationName, fadeDuration );
 		}
@@ -89,7 +89,7 @@ public class NumberAnimator : MonoBehaviour
 	
 	public void CrossFade( FRAnimationData animation, float fadeDuration )
 	{
-		foreach( Character c in Renderer.Characters )
+		foreach( CharacterRenderer c in Renderer.Characters )
 		{
 			c.Animator.CrossFade( animation, fadeDuration );
 		}
@@ -97,7 +97,7 @@ public class NumberAnimator : MonoBehaviour
 	
 	public void CrossFade( FRAnimation animation, float fadeDuration )
 	{
-		foreach( Character c in Renderer.Characters )
+		foreach( CharacterRenderer c in Renderer.Characters )
 		{
 			c.Animator.CrossFade( animation, fadeDuration );
 		}

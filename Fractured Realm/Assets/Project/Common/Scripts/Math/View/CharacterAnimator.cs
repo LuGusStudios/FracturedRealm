@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -151,13 +151,13 @@ class CharacterOrientationInfo
 
 public class CharacterAnimator : MonoBehaviour 
 {
-	protected Character _renderer = null;
-	public Character Renderer
+	protected CharacterRenderer _renderer = null;
+	public CharacterRenderer Renderer
 	{
 		get
 		{ 	
 			if( _renderer == null )
-				_renderer = GetComponent<Character>();
+				_renderer = GetComponent<CharacterRenderer>();
 
 			return _renderer; 
 		}

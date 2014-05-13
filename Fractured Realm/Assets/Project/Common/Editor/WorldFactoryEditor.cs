@@ -12,6 +12,8 @@ public class WorldFactoryEditor : Editor
 	protected bool showDenominators = true;
 	
 	protected bool showDefault = false;
+
+	protected WorldPart newItem = null;
 	
 	public override void OnInspectorGUI()
 	{
@@ -29,26 +31,85 @@ public class WorldFactoryEditor : Editor
 			{
 				if( worldType == FR.WorldType.NONE )
 					continue;
-				
+
+				/*
 				if( !subject.worldTypes.Contains(worldType) )
 				{
 					subject.worldTypes.Add(worldType);
 					subject.worldTemplates.Add(null);
 					subject.worldTemplates.Add(null);
 				}
-				
+				*/
+
+				/*
 				EditorGUILayout.LabelField("" + worldType);
 				int index = subject.GetTemplateIndexForType(worldType);
 				WorldPart numerator = subject.worldTemplates[index];
 				WorldPart denominator = subject.worldTemplates[index + 1];
 				EditorGUILayout.LabelField("- Numerator:" + ((numerator == null) ? "???" : numerator.name) );
 				EditorGUILayout.LabelField("- Denominator:" + ((denominator == null) ? "???" : denominator.name) );
+				*/
 			}
 		}
 		
-		EditorGUILayout.LabelField("------------");
-	
+		EditorGUILayout.LabelField("------------"); 
+
+
 		FR.WorldType[] types = (FR.WorldType[]) Enum.GetValues(typeof(FR.WorldType));
+		foreach( FR.WorldType worldType in types )
+		{
+			if( worldType == FR.WorldType.NONE )
+				continue;
+			
+			EditorGUILayout.LabelField("" + worldType);
+
+			List<WorldPart> parts = subject.GetWorldParts( worldType );
+
+			if( parts == null )
+			{
+				parts = new List<WorldPart>();
+			}
+
+			List<WorldPart> toRemove = new List<WorldPart>();
+			foreach( WorldPart part in parts )
+			{
+				GUILayout.BeginHorizontal();
+				EditorGUILayout.ObjectField( "", part, typeof(WorldPart), false );
+
+				if( GUILayout.Button("REMOVE") )
+				{
+					toRemove.Add( part );
+				}
+
+				GUILayout.EndHorizontal();
+			}
+
+			foreach( WorldPart part in toRemove )
+			{
+				parts.Remove(part);
+			}
+
+			GUILayout.BeginHorizontal();
+
+			newItem = (WorldPart) EditorGUILayout.ObjectField( "", newItem, typeof(WorldPart), false );
+			if( GUILayout.Button("ADD") )
+			{
+				parts.Add( newItem );
+				newItem = null;
+
+				EditorUtility.SetDirty( subject );
+			}
+
+			GUILayout.EndHorizontal();
+		}
+
+		/*
+		EditorGUILayout.LabelField("------------");
+		EditorGUILayout.LabelField("------------");
+
+
+	
+		//FR.WorldType[] types = (FR.WorldType[]) Enum.GetValues(typeof(FR.WorldType));
 		foreach( FR.WorldType worldType in types )
 		{
 			if( worldType == FR.WorldType.NONE )
@@ -81,6 +142,7 @@ public class WorldFactoryEditor : Editor
 				subject.worldTemplates[ index + 1 ] = newDenominator;
 			}
 		}
+		*/
 		
 		/*
 		showNumerators = EditorGUILayout.Foldout(showNumerators, "Numerators");

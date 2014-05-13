@@ -357,7 +357,16 @@ public class LugusInputDefault : MonoBehaviour
 	void OnGUI()
 	{	
 		if( !LugusDebug.debug )
+		{
+#if UNITY_IPHONE || UNITY_ANDROID || UNITY_WP8
+			if( GUI.Button( new Rect(Screen.width / 2.0f - 100.0f, Screen.height - 30, 200, 30), "Open debug") )
+			{
+				LugusDebug.debug = !LugusDebug.debug;
+			}
+#endif
+
 			return;
+		}
 		
 		if( GUI.Button( new Rect(Screen.width / 2.0f - 100.0f, Screen.height - 30, 200, 30), "Close debug") )
 		{

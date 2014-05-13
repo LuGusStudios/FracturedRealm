@@ -5,8 +5,8 @@ public class NumberRenderer : MonoBehaviour
 {
 	// A Number can be rendered with 2 characters at this moment
 	// this is because we only have characters up to the number 6, while we want to display numbers up to 12
-	protected Character[] _characters = null;
-	public Character[] Characters
+	protected CharacterRenderer[] _characters = null;
+	public CharacterRenderer[] Characters
 	{
 		get{ InitiateRenderers(); return _characters; } // this is passed by reference, like we expect
 		set{ _characters = value; }
@@ -31,18 +31,18 @@ public class NumberRenderer : MonoBehaviour
 		}
 		if( _number.ValuePast6 == 0 )
 		{
-			_characters = new Character[1];
+			_characters = new CharacterRenderer[1];
 			_characters[0] = null;
 		}
 		else
 		{
-			_characters = new Character[2];
+			_characters = new CharacterRenderer[2];
 			_characters[0] = null;
 			_characters[1] = null;
 		}
 	}
 	
-	public Character interactionCharacter
+	public CharacterRenderer interactionCharacter
 	{
 		get
 		{
@@ -73,7 +73,7 @@ public class NumberRenderer : MonoBehaviour
 	{
 		// this renderer object is effectively removed by this call!
 		// as the CharacterFactory will create a completely new NumberRenderer for the new value
-		return CharacterFactory.use.ReplaceRenderer(this, _number);
+		return RendererFactory.use.ReplaceRenderer(this, _number);
 	}
 	
 	protected Number _number = null;

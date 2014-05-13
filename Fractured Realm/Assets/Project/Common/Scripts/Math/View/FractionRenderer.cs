@@ -150,9 +150,9 @@ public class FractionRenderer
 	}
 	*/
 			
-	public List<Character> GetCharacters(FR.Target target)
+	public List<CharacterRenderer> GetCharacters(FR.Target target)
 	{
-		List<Character> output = new List<Character>();
+		List<CharacterRenderer> output = new List<CharacterRenderer>();
 		
 		if( (target & FR.Target.NUMERATOR) == FR.Target.NUMERATOR )
 		{

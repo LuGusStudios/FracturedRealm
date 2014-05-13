@@ -68,6 +68,18 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		ChangeState( InputState.IDLE );
 	}
 
+	public IEnumerator ToggleInputDelayed(bool inputEnabled, float delay )
+	{
+		if( delay != 0.0f )
+		{
+			yield return new WaitForSeconds( delay );
+		}
+
+		acceptInput = inputEnabled;
+
+		yield break;
+	}
+
 	public void InitializeOperationIcons(int amount)
 	{
 		operationIcons = new List<OperationIcon>();
@@ -157,6 +169,9 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 				arrow3.MakePositive();
 				arrow3.MoveTowards( arrow3DefaultTarget, 0.4f );
 			}
+
+			acceptInput = false;
+			gameObject.StartLugusRoutine( ToggleInputDelayed(true, 0.45f) );
 		}
 		else if( newState == InputState.TARGET2 )
 		{
@@ -389,11 +404,11 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 
 			
 			Transform hit = LugusInput.use.RayCastFromMouse( LugusCamera.numerator );
-			Character character = null;
+			CharacterRenderer character = null;
 
 			if( hit != null )
 			{
-				character = hit.GetComponent<Character>();
+				character = hit.GetComponent<CharacterRenderer>();
 			}
 
 			if( character == null )
@@ -403,7 +418,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 				
 				if( hit != null )
 				{
-					character = hit.GetComponent<Character>();
+					character = hit.GetComponent<CharacterRenderer>();
 				}
 			}
 

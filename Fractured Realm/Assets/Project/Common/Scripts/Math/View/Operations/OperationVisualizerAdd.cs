@@ -56,7 +56,7 @@ public class OperationVisualizerAdd : IOperationVisualizer
 			Runner.Denominator.NumberValueChanged();
 
 		
-		CharacterFactory.use.FreeRenderer( Receiver );
+		RendererFactory.use.FreeRenderer( Receiver );
 
 
 		yield return Runner.Animator.RotateTowardsCamera().Coroutine;

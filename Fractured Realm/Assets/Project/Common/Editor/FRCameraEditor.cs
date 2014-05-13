@@ -23,15 +23,25 @@ public class FRCameraEditor : Editor
 
 		if( GUILayout.Button("Numerator") )
 		{
+			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
 			HUDManager.use.SetMode( FR.Target.NUMERATOR );
 		}
 		else if( GUILayout.Button("Denominator") )
 		{
+			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
 			HUDManager.use.SetMode( FR.Target.DENOMINATOR );
 		}
 		else if( GUILayout.Button("Both") )
 		{
+			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
 			HUDManager.use.SetMode( FR.Target.BOTH );
+		}
+
+		GUILayout.Space(10);
+
+		if( GUILayout.Button("Default positions") )
+		{
+			FRCamera.use.MoveToDefaultPositions();
 		}
 		/*
 		showDefault = EditorGUILayout.Foldout(showDefault, "Show original");

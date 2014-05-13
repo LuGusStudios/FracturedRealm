@@ -10,7 +10,8 @@ namespace FR
 		FOREST,
 		DESERT,
 		FIRE,
-		ICE
+		ICE,
+		JUNGLE
 	}
 }
 
@@ -19,18 +20,51 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 	public void Start()
 	{
 		// TODO: CHANGE!
-		CreateWorld(FR.WorldType.DESERT);
+		CreateWorld(FR.WorldType.DESERT, FR.Target.BOTH, true);
 		HUDManager.use.SetMode( FR.Target.BOTH );
 		
 	}
 	
 	// Dictionary<FR.WorldType, List<WorldPart>> is NOT SERIALIZABLE by unity!
 	// so we need to use 2 lists and GetTemplateIndexForType() to get the same functionality
-	public List<FR.WorldType> worldTypes = new List<FR.WorldType>();
-	public List<WorldPart> worldTemplates = new List<WorldPart>();
+	//public List<FR.WorldType> worldTypes = new List<FR.WorldType>();
+	//public List<WorldPart> worldTemplates = new List<WorldPart>();
+
+
+	public List<WorldPart> worldParts_Fire = new List<WorldPart>();
+	public List<WorldPart> worldParts_Forest = new List<WorldPart>();
+	public List<WorldPart> worldParts_Jungle = new List<WorldPart>();
+	public List<WorldPart> worldParts_Ice = new List<WorldPart>();
+	public List<WorldPart> worldParts_Desert = new List<WorldPart>();
+
+	public List<WorldPart> GetWorldParts( FR.WorldType worldType )
+	{
+		if( worldType == FR.WorldType.FIRE )
+		{
+			return worldParts_Fire;
+		}
+		else if(  worldType == FR.WorldType.FOREST )
+		{
+			return worldParts_Forest;
+		}
+		else if(  worldType == FR.WorldType.JUNGLE )
+		{
+			return worldParts_Jungle;
+		}
+		else if(  worldType == FR.WorldType.ICE )
+		{
+			return worldParts_Ice;
+		}
+		else if(  worldType == FR.WorldType.DESERT )
+		{
+			return worldParts_Desert;
+		}
+
+		return null; 
+	}
 	
 	//public Dictionary<FR.WorldType, List<WorldPart>> worldTemplates = new Dictionary<FR.WorldType, List<WorldPart>>();
-	
+	/*
 	public int GetTemplateIndexForType(FR.WorldType type)
 	{
 		if( !worldTypes.Contains(type) )
@@ -42,10 +76,28 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		int index = worldTypes.IndexOf( type );
 		return (index * 2); // 2 entries per index
 	}
-	
+	*/
+
+	public World CreateDebugWorld(FR.WorldType type, Fraction[] fractions, FR.Target composition = FR.Target.BOTH, bool fillAllInteractionGroups = true)
+	{
+		World output = CreateWorld(type, fractions, composition, fillAllInteractionGroups);
+		FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
+		HUDManager.use.SetMode( composition );
+
+		FRCamera.use.MoveToInteractionGroup( 1, 1, false );
+
+		if( Application.isPlaying )
+		{
+			Debug.LogError("App is playing, so initialize operation icons");
+			MathInputManager.use.InitializeOperationIcons(1);
+		}
+
+		return output;
+	}
+
 	public Fraction[] debug_initialFractions;
 	public int test = 5;
-	public World CreateWorld(FR.WorldType type)
+	public World CreateWorld(FR.WorldType type, FR.Target composition = FR.Target.BOTH, bool fillAllInteractionGroups = false)
 	{
 		if( debug_initialFractions == null || debug_initialFractions.Length == 0 )
 		{
@@ -54,110 +106,197 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 			debug_initialFractions[1] = new Fraction(7,4);
 		}
 		
-		return CreateWorld(type, debug_initialFractions);
+		return CreateWorld(type, debug_initialFractions, composition, fillAllInteractionGroups);
 	}
 	
-	public World CreateWorld(FR.WorldType type, Fraction[] fractions) 
+	public World CreateWorld(FR.WorldType type, Fraction[] fractions, FR.Target composition = FR.Target.BOTH, bool fillAllInteractionGroups = false ) 
 	{
+		/*
 		if( !worldTypes.Contains(type) )
 		{
 			Debug.LogError("WorldFactory:CreateWorld : unknown worldtype : " + type);
 			return null;
 		}
+		*/
+
+		if( !composition.HasNumerator() && !composition.HasDenominator() )
+		{
+			Debug.LogError("WorldFactory:CreateWorld : Composition had neither Numerator nor Denominator. " + composition);
+			return null;
+		}
 		
-		// worlds consist of 2 separate entities: numerator and denominator parts
-		// each has its own camera and setup
-		
-		int index = GetTemplateIndexForType(type);
-		
+		List<WorldPart> templates = GetWorldParts( type );
+		if( templates.Count == 0 )
+		{
+			Debug.LogError("WorldFactory:CreateWorld : no prefabs defined for world type " + type);
+			return null;
+		}
+
 		GameObject WORLD = GameObject.Find("WORLD");
 		if( WORLD != null )
 			GameObject.DestroyImmediate( WORLD );
 			
 		WORLD = new GameObject("WORLD");
 		WORLD.transform.position = new Vector3(0, 0, 0);
+
+
+		WorldPart template = templates[ Random.Range(0, templates.Count) ];
 		
 		World world = WORLD.AddComponent<World>();
-		world.numerator = (WorldPart) GameObject.Instantiate( worldTemplates[ index ] );
-		world.denominator = (WorldPart) GameObject.Instantiate( worldTemplates[ index + 1 ] ); 
-		
-		world.numerator.transform.parent = WORLD.transform;
-		world.denominator.transform.parent = WORLD.transform;
-		
-		world.numerator.transform.position   = new Vector3(LugusCamera.numerator.transform.position.x, LugusCamera.numerator.transform.position.y, LugusCamera.numerator.transform.position.z + 15.0f);
-		world.denominator.transform.position = new Vector3(LugusCamera.denominator.transform.position.x, LugusCamera.denominator.transform.position.y,  LugusCamera.denominator.transform.position.z + 15.0f);
-		
-		Fraction fr = new Fraction(fractions[0].Numerator.Value, fractions[0].Denominator.Value); 
-		
-		FractionRenderer frr = CharacterFactory.use.CreateRenderer( fr );
 
-		if( fr.Numerator.Value != 0 )
+		bool numeratorHasDirectionalLight = false;
+		if( composition.HasNumerator() )
 		{
-			frr.Numerator.transform.parent = world.numerator.transform;
-			frr.Numerator.SpawnPosition = world.numerator.SpawnLeft.position;
-			frr.Numerator.transform.position = world.numerator.SpawnLeft.position;
+			world.numerator = (WorldPart) GameObject.Instantiate( template );//worldTemplates[ index ] );
+			world.numerator.gameObject.SetActive(true);
+			world.numerator.transform.parent = WORLD.transform;
+			world.numerator.transform.position   = new Vector3(0, 0, 15.0f );//LugusCamera.numerator.transform.position.zAdd( 15.0f );
+
+			Transform denominatorSpecifics = world.numerator.DenominatorSpecificObjects();
+			if( denominatorSpecifics != null )
+			{
+				denominatorSpecifics.gameObject.SetActive(false);
+			}
+
+			Light[] lights = world.numerator.GetComponentsInChildren<Light>(true);
+			foreach( Light light in lights )
+			{
+				if(  light.type == LightType.Directional  )
+				{
+					if( !numeratorHasDirectionalLight )
+					{
+						numeratorHasDirectionalLight = true;
+					}
+					else
+					{
+						Debug.LogError("WorldFactory:CreateWorld : numerator had more than 1 directional light!");
+						light.enabled = false;
+					}
+				}
+			}
 		}
-		if( fr.Denominator.Value != 0 )
+		else
+			world.numerator = null;
+
+		if( composition.HasDenominator() )
 		{
-			frr.Denominator.transform.parent = world.denominator.transform;
-			frr.Denominator.SpawnPosition = world.denominator.SpawnLeft.position;
-			frr.Denominator.transform.position = world.denominator.SpawnLeft.position;
+			world.denominator = (WorldPart) GameObject.Instantiate( template );// worldTemplates[ index + 1 ] );
+			world.denominator.gameObject.SetActive(true); 
+			world.denominator.transform.parent = WORLD.transform;
+			world.denominator.transform.position = new Vector3(0, -200.0f, 15.0f );//LugusCamera.denominator.transform.position.zAdd( 15.0f );
+			
+			Transform numeratorSpecifics = world.denominator.NumeratorSpecificObjects();
+			if( numeratorSpecifics != null )
+			{
+				numeratorSpecifics.gameObject.SetActive(false);
+			}
+
+			if( numeratorHasDirectionalLight )
+			{
+				Light[] lights = world.numerator.GetComponentsInChildren<Light>(true);
+				foreach( Light light in lights )
+				{
+					if( light.type == LightType.Directional )
+					{
+						light.enabled = false;
+					}
+				}
+			}
 		}
-		
-		/*
-		NumberRenderer c = CharacterFactory.use.CreateRenderer( fr.Numerator );
-		c.transform.parent = world.numerator.transform;
-		c.transform.position = world.numerator.SpawnLeft.position;
-		 
-		c = CharacterFactory.use.CreateRenderer( fr.Denominator );
-		c.transform.parent = world.denominator.transform;
-		c.transform.position = world.denominator.SpawnLeft.position;
-		*/
-		
-		
-		Fraction fr2 = new Fraction(fractions[1].Numerator.Value, fractions[1].Denominator.Value); 
-		
-		FractionRenderer frr2 = CharacterFactory.use.CreateRenderer( fr2 );
-		
-		if( fr2.Numerator.Value != 0 )
+		else
+			world.denominator = null;
+
+
+
+		// Spawn the LEFT fraction (fraction 0)
+		int groupCount = 1;
+		if( fillAllInteractionGroups )
 		{
-			frr2.Numerator.transform.parent = world.numerator.transform;
-			frr2.Numerator.SpawnPosition = world.numerator.SpawnRight.position;
-			frr2.Numerator.transform.position = world.numerator.SpawnRight.position;
+			if( composition.HasNumerator() )
+				groupCount = world.numerator.InteractionGroups.Length;
+			else
+				groupCount = world.denominator.InteractionGroups.Length;
 		}
-		if( fr2.Denominator.Value != 0 )
+
+		for( int i = 0; i < groupCount; ++i )
 		{
-			frr2.Denominator.transform.parent = world.denominator.transform;
-			frr2.Denominator.SpawnPosition = world.denominator.SpawnRight.position;
-			frr2.Denominator.transform.position = world.denominator.SpawnRight.position;
+			Fraction fr = new Fraction(fractions[0].Numerator.Value, fractions[0].Denominator.Value); 
+			
+			FractionRenderer frr = RendererFactory.use.CreateRenderer( fr );
+
+			if( fr.Numerator.Value != 0 && composition.HasNumerator() )
+			{
+				frr.Numerator.transform.parent = world.numerator.transform;
+				frr.Numerator.SpawnPosition = world.numerator.InteractionGroups[i].Spawn1.position;
+				frr.Numerator.transform.position = world.numerator.InteractionGroups[i].Spawn1.position;
+
+
+				Portal p = RendererFactory.use.CreatePortal( fr.Numerator.Value, FR.Target.NUMERATOR );
+				p.transform.position = world.numerator.InteractionGroups[i].PortalEntry.position;
+				p.transform.parent = world.numerator.transform;
+			}
+			if( fr.Denominator.Value != 0 && composition.HasDenominator() )
+			{
+				frr.Denominator.transform.parent = world.denominator.transform;
+				frr.Denominator.SpawnPosition = world.denominator.InteractionGroups[i].Spawn1.position;
+				frr.Denominator.transform.position = world.denominator.InteractionGroups[i].Spawn1.position;
+
+
+				Portal p = RendererFactory.use.CreatePortal( fr.Denominator.Value, FR.Target.DENOMINATOR );
+				p.transform.position = world.denominator.InteractionGroups[i].PortalEntry.position;
+				p.transform.parent = world.denominator.transform;
+			}
+			
+			ValidateInternalFraction( fr,  "fraction 1 : ");
 		}
-		
-		/*
-		c = CharacterFactory.use.CreateRenderer( fr2.Numerator );
-		c.transform.parent = world.numerator.transform;
-		c.transform.position = world.numerator.SpawnRight.position;
-		
-		c = CharacterFactory.use.CreateRenderer( fr2.Denominator );
-		c.transform.parent = world.denominator.transform;
-		c.transform.position = world.denominator.SpawnRight.position;
-		*/
-		
-		//LugusCamera.numerator.transform.position = world.numerator.transform.position + new Vector3(512, 192, -300);
-		//LugusCamera.denominator.transform.position = world.denominator.transform.position + new Vector3(512,192,-300);
 
 		
-		ValidateInternalFraction( fr,  "fraction 1 : ");
-		ValidateInternalFraction( fr2, "fraction 2 : ");
+		// Spawn the RIGHT fraction (fraction 1)
+		for( int i = 0; i < groupCount; ++i )
+		{
+			Fraction fr2 = new Fraction(fractions[1].Numerator.Value, fractions[1].Denominator.Value); 
+			
+			FractionRenderer frr2 = RendererFactory.use.CreateRenderer( fr2 );
+			
+			if( fr2.Numerator.Value != 0 && composition.HasNumerator() )
+			{
+				frr2.Numerator.transform.parent = world.numerator.transform;
+				frr2.Numerator.SpawnPosition = world.numerator.InteractionGroups[i].Spawn2.position;
+				frr2.Numerator.transform.position = world.numerator.InteractionGroups[i].Spawn2.position;
+
+				// TODO: calculate expected end-value for the portal
+				Portal p = RendererFactory.use.CreatePortal( fr2.Numerator.Value, FR.Target.NUMERATOR );
+				p.transform.position = world.numerator.InteractionGroups[i].PortalExit.position;
+				p.transform.parent = world.numerator.transform;
+			}
+			if( fr2.Denominator.Value != 0 && composition.HasDenominator() )
+			{
+				frr2.Denominator.transform.parent = world.denominator.transform; 
+				frr2.Denominator.SpawnPosition = world.denominator.InteractionGroups[i].Spawn2.position;
+				frr2.Denominator.transform.position = world.denominator.InteractionGroups[i].Spawn2.position;
+
+				
+				// TODO: calculate expected end-value for the portal
+				Portal p = RendererFactory.use.CreatePortal( fr2.Denominator.Value, FR.Target.DENOMINATOR );
+				p.transform.position = world.denominator.InteractionGroups[i].PortalExit.position;
+				p.transform.parent = world.denominator.transform;
+			
+			}
+			
+			ValidateInternalFraction( fr2, "fraction 2 : ");
+		}
+
 
 		return world;
 	}
+
 
 	// TODO: remove, just for debugging
 	public void CreateFractions(Fraction[] fractions)
 	{
 		Fraction fr = new Fraction(fractions[0].Numerator.Value, fractions[0].Denominator.Value); 
 		
-		FractionRenderer frr = CharacterFactory.use.CreateRenderer( fr );
+		FractionRenderer frr = RendererFactory.use.CreateRenderer( fr );
 		if( fractions[0].Numerator.Value != 0 )
 			frr.Numerator.transform.position = new Vector3(0,0,0);
 		if( fractions[0].Denominator.Value != 0 )
@@ -166,7 +305,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		
 		Fraction fr2 = new Fraction(fractions[1].Numerator.Value, fractions[1].Denominator.Value); 
 		
-		FractionRenderer frr2 = CharacterFactory.use.CreateRenderer( fr2 );
+		FractionRenderer frr2 = RendererFactory.use.CreateRenderer( fr2 );
 		if( fractions[1].Numerator.Value != 0 )
 			frr2.Numerator.transform.position = new Vector3(10,0,0);
 		if( fractions[1].Denominator.Value != 0 )
@@ -175,6 +314,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		ValidateInternalFraction( fr,  "fraction 1 : ");
 		ValidateInternalFraction( fr2, "fraction 2 : ");
 	}
+
 
 	// TODO: remove, or just move : just for debugging
 	protected void ValidateInternalFraction( Fraction fr, string messagePrefix )
@@ -261,13 +401,6 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 				Debug.LogError(messagePrefix + "Validate: Denominator has no InteractionCharacter! " + fr.Denominator.Renderer.interactionCharacter);
 		}
 
-		Debug.Log (messagePrefix + "Validate : function completed");
-
-	}
-	
-	public void FreeWorld(Character character)
-	{
-		// TODO: add actual pooling and re-use of objects!
-		GameObject.Destroy( character.gameObject );
+		//Debug.Log (messagePrefix + "Validate : function completed");
 	}
 }

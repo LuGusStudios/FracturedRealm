@@ -54,6 +54,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 12821f4267390694ca20092cf7b18edb, type: 2}
   - {fileID: 11400000, guid: d6402e1b06830cd4aad56e3239daa198, type: 2}
   - {fileID: 11400000, guid: b5d897e1132591c4eaa15e892918bd64, type: 2}
+  Portals:
+  - {fileID: 11400000, guid: 27e89515d04204aed84bc9aba389dcdc, type: 2}
+  - {fileID: 11400000, guid: 27e89515d04204aed84bc9aba389dcdc, type: 2}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -77,50 +80,50 @@ MonoBehaviour:
   - {fileID: 0}
   debug_initialFractions:
   - _numerator:
-      _value: 6
+      _value: 3
       _fraction:
         _numerator:
-          _value: 6
+          _value: 3
           _fraction:
             _numerator:
-              _value: 6
+              _value: 3
               _fraction:
                 _numerator:
-                  _value: 6
+                  _value: 3
                 _denominator:
-                  _value: 4
+                  _value: 1
               _isNumerator: 1
               _renderer: {fileID: 0}
             _denominator:
-              _value: 4
+              _value: 1
               _fraction:
                 _numerator:
-                  _value: 6
+                  _value: 3
                 _denominator:
-                  _value: 4
+                  _value: 1
               _isNumerator: 0
               _renderer: {fileID: 0}
           _isNumerator: 1
           _renderer: {fileID: 0}
         _denominator:
-          _value: 4
+          _value: 1
           _fraction:
             _numerator:
-              _value: 6
+              _value: 3
               _fraction:
                 _numerator:
-                  _value: 6
+                  _value: 3
                 _denominator:
-                  _value: 4
+                  _value: 1
               _isNumerator: 1
               _renderer: {fileID: 0}
             _denominator:
-              _value: 4
+              _value: 1
               _fraction:
                 _numerator:
-                  _value: 6
+                  _value: 3
                 _denominator:
-                  _value: 4
+                  _value: 1
               _isNumerator: 0
               _renderer: {fileID: 0}
           _isNumerator: 0
@@ -128,50 +131,50 @@ MonoBehaviour:
       _isNumerator: 1
       _renderer: {fileID: 0}
     _denominator:
-      _value: 4
+      _value: 1
       _fraction:
         _numerator:
-          _value: 6
+          _value: 3
           _fraction:
             _numerator:
-              _value: 6
+              _value: 3
               _fraction:
                 _numerator:
-                  _value: 6
+                  _value: 3
                 _denominator:
-                  _value: 4
+                  _value: 1
               _isNumerator: 1
               _renderer: {fileID: 0}
             _denominator:
-              _value: 4
+              _value: 1
               _fraction:
                 _numerator:
-                  _value: 6
+                  _value: 3
                 _denominator:
-                  _value: 4
+                  _value: 1
               _isNumerator: 0
               _renderer: {fileID: 0}
           _isNumerator: 1
           _renderer: {fileID: 0}
         _denominator:
-          _value: 4
+          _value: 1
           _fraction:
             _numerator:
-              _value: 6
+              _value: 3
               _fraction:
                 _numerator:
-                  _value: 6
+                  _value: 3
                 _denominator:
-                  _value: 4
+                  _value: 1
               _isNumerator: 1
               _renderer: {fileID: 0}
             _denominator:
-              _value: 4
+              _value: 1
               _fraction:
                 _numerator:
-                  _value: 6
+                  _value: 3
                 _denominator:
-                  _value: 4
+                  _value: 1
               _isNumerator: 0
               _renderer: {fileID: 0}
           _isNumerator: 0
@@ -179,50 +182,50 @@ MonoBehaviour:
       _isNumerator: 0
       _renderer: {fileID: 0}
   - _numerator:
-      _value: 6
+      _value: 3
       _fraction:
         _numerator:
-          _value: 6
+          _value: 3
           _fraction:
             _numerator:
-              _value: 6
-              _fraction:
-                _numerator:
-                  _value: 6
-                _denominator:
-                  _value: 3
-              _isNumerator: 1
-              _renderer: {fileID: 0}
-            _denominator:
               _value: 3
               _fraction:
                 _numerator:
-                  _value: 6
-                _denominator:
                   _value: 3
+                _denominator:
+                  _value: 2
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 2
+              _fraction:
+                _numerator:
+                  _value: 3
+                _denominator:
+                  _value: 2
               _isNumerator: 0
               _renderer: {fileID: 0}
           _isNumerator: 1
           _renderer: {fileID: 0}
         _denominator:
-          _value: 3
+          _value: 2
           _fraction:
             _numerator:
-              _value: 6
-              _fraction:
-                _numerator:
-                  _value: 6
-                _denominator:
-                  _value: 3
-              _isNumerator: 1
-              _renderer: {fileID: 0}
-            _denominator:
               _value: 3
               _fraction:
                 _numerator:
-                  _value: 6
-                _denominator:
                   _value: 3
+                _denominator:
+                  _value: 2
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 2
+              _fraction:
+                _numerator:
+                  _value: 3
+                _denominator:
+                  _value: 2
               _isNumerator: 0
               _renderer: {fileID: 0}
           _isNumerator: 0
@@ -230,50 +233,50 @@ MonoBehaviour:
       _isNumerator: 1
       _renderer: {fileID: 0}
     _denominator:
-      _value: 3
+      _value: 2
       _fraction:
         _numerator:
-          _value: 6
+          _value: 3
           _fraction:
             _numerator:
-              _value: 6
-              _fraction:
-                _numerator:
-                  _value: 6
-                _denominator:
-                  _value: 3
-              _isNumerator: 1
-              _renderer: {fileID: 0}
-            _denominator:
               _value: 3
               _fraction:
                 _numerator:
-                  _value: 6
-                _denominator:
                   _value: 3
+                _denominator:
+                  _value: 2
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 2
+              _fraction:
+                _numerator:
+                  _value: 3
+                _denominator:
+                  _value: 2
               _isNumerator: 0
               _renderer: {fileID: 0}
           _isNumerator: 1
           _renderer: {fileID: 0}
         _denominator:
-          _value: 3
+          _value: 2
           _fraction:
             _numerator:
-              _value: 6
-              _fraction:
-                _numerator:
-                  _value: 6
-                _denominator:
-                  _value: 3
-              _isNumerator: 1
-              _renderer: {fileID: 0}
-            _denominator:
               _value: 3
               _fraction:
                 _numerator:
-                  _value: 6
-                _denominator:
                   _value: 3
+                _denominator:
+                  _value: 2
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 2
+              _fraction:
+                _numerator:
+                  _value: 3
+                _denominator:
+                  _value: 2
               _isNumerator: 0
               _renderer: {fileID: 0}
           _isNumerator: 0
