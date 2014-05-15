@@ -11,6 +11,7 @@ GameObject:
   - 114: {fileID: 11400000}
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400004}
+  - 114: {fileID: 11400006}
   m_Layer: 0
   m_Name: FRFactories
   m_TagString: Untagged
@@ -305,6 +306,20 @@ MonoBehaviour:
   - {fileID: 11400024, guid: 39088e5df9941814891cfeea7e4f2209, type: 2}
   - {fileID: 11400000, guid: ef67af0c1d187423a9f56c15711bfde6, type: 2}
   - {fileID: 11400000, guid: ef67af0c1d187423a9f56c15711bfde6, type: 2}
+--- !u!114 &11400006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d26c8ac0c3de480dbaef4d2ce423fbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  props:
+  - {fileID: 11400000, guid: 91e940fe7763d478b83147a8ac008124, type: 2}
+  - {fileID: 11400000, guid: f2ecb32a17b694c70b3f645ce73c13dc, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

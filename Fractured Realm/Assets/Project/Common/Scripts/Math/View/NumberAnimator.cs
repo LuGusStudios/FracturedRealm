@@ -79,7 +79,7 @@ public class NumberAnimator : MonoBehaviour
 	}
 
 	
-	public void CrossFade( string animationName, float fadeDuration )
+	public void CrossFade( string animationName, float fadeDuration = 0.05f )
 	{
 		foreach( CharacterRenderer c in Renderer.Characters )
 		{
@@ -87,7 +87,7 @@ public class NumberAnimator : MonoBehaviour
 		}
 	}
 	
-	public void CrossFade( FRAnimationData animation, float fadeDuration )
+	public void CrossFade( FRAnimationData animation, float fadeDuration = 0.05f )
 	{
 		foreach( CharacterRenderer c in Renderer.Characters )
 		{
@@ -95,12 +95,36 @@ public class NumberAnimator : MonoBehaviour
 		}
 	}
 	
-	public void CrossFade( FR.Animation animation, float fadeDuration )
+	public void CrossFade( FR.Animation animation, float fadeDuration = 0.05f )
 	{
 		foreach( CharacterRenderer c in Renderer.Characters )
 		{
 			c.Animator.CrossFade( animation, fadeDuration );
 		}
+	}
+
+	public ILugusCoroutineHandle SpawnEffect( FR.EffectType effectType )
+	{
+		FR.Target selector = FR.Target.NONE;
+		if( this.Renderer.Number.IsNumerator )
+			selector = FR.Target.NUMERATOR;
+		else
+			selector = FR.Target.DENOMINATOR;
+
+		Effect[] effects = EffectFactory.use.CreateEffects( selector, effectType );
+
+		Effect effect = null;
+		if( selector == FR.Target.NUMERATOR )
+			effect = effects[0];
+		else
+			effect = effects[1];
+		
+		float duration = float.MinValue;
+		float durationTemp = 0;
+		
+		effect.transform.position = this.Renderer.interactionCharacter.Head.position + new Vector3(0, 0.5f, -3.0f);
+
+		return LugusCoroutines.use.StartRoutine( LugusCoroutineUtil.DelayRoutine( effect.Duration() ) );
 	}
 
 

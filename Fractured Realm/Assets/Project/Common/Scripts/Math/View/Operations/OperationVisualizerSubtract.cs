@@ -23,7 +23,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 		Debug.Log ("OperationVisualizerSubtract : finished version for just Denominators");
 	}
 
-	protected IEnumerator VisualizeSingleAttack( FractionRenderer Attacker, FractionRenderer Defender )
+	protected virtual IEnumerator VisualizeSingleAttack( FractionRenderer Attacker, FractionRenderer Defender )
 	{
 		yield return Attacker.Animator.RotateTowards( FR.Target.BOTH, Defender ).Coroutine;
 		
@@ -86,11 +86,22 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 			Biggest = temp;
 		}
 
+		OperationVisualizerSubtract visualizer = null;
+
 		while( Biggest.Numerator.Number.Value > target.StartFraction.Numerator.Value )
 		{
-			yield return LugusCoroutines.use.StartRoutine( VisualizeSingleAttack(Smallest, Biggest) ).Coroutine;
+			
+			visualizer = (OperationVisualizerSubtract) MathManager.use.GetVisualizer( FR.OperationType.SUBTRACT ); // new random visualizer
 
-			yield return LugusCoroutines.use.StartRoutine( VisualizeSingleAttack(Biggest, Smallest) ).Coroutine;
+			yield return LugusCoroutines.use.StartRoutine( visualizer.VisualizeSingleAttack(Smallest, Biggest) ).Coroutine;
+
+			visualizer = (OperationVisualizerSubtract) MathManager.use.GetVisualizer( FR.OperationType.SUBTRACT ); // new random visualizer
+			
+			yield return LugusCoroutines.use.StartRoutine( visualizer.VisualizeSingleAttack(Biggest, Smallest) ).Coroutine;
+
+			//yield return LugusCoroutines.use.StartRoutine( VisualizeSingleAttack(Smallest, Biggest) ).Coroutine;
+
+			//yield return LugusCoroutines.use.StartRoutine( VisualizeSingleAttack(Biggest, Smallest) ).Coroutine;
 
 			if( Smallest.Fraction.Numerator.Value < 1 )
 			{

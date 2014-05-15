@@ -94,7 +94,23 @@ public class Fraction
 		get{ return _denominator; }
 		set{ _denominator = value; }
 	}
+
+	public bool HasNumerator()
+	{
+		if( _numerator == null )
+			return false;
+
+		return _numerator.Value != 0;
+	}
 	
+	public bool HasDenominator()
+	{
+		if( _denominator == null )
+			return false;
+		
+		return _denominator.Value != 0;
+	}
+
 	protected FractionRenderer _renderer = null;
 	public FractionRenderer Renderer
 	{

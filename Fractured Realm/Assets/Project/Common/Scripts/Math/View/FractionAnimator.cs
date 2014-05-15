@@ -116,16 +116,16 @@ public class FractionAnimator
 		}
 
 
-		Effect[] hits = EffectFactory.use.CreateEffects( selector, effectType );
+		Effect[] effects = EffectFactory.use.CreateEffects( selector, effectType );
 
 		float duration = float.MinValue;
 		float durationTemp = 0;
 
 		if( selector.HasNumerator() )
 		{
-			hits[0].transform.position = _renderer.Numerator.interactionCharacter.Head.position + new Vector3(0, 0.5f, -3.0f);
+			effects[0].transform.position = _renderer.Numerator.interactionCharacter.Head.position + new Vector3(0, 0.5f, -3.0f);
 
-			durationTemp = hits[0].Duration();
+			durationTemp = effects[0].Duration();
 			if( durationTemp > duration )
 				duration = durationTemp;
 		}
@@ -133,9 +133,9 @@ public class FractionAnimator
 		
 		if( selector.HasDenominator() )
 		{
-			hits[1].transform.position = _renderer.Denominator.interactionCharacter.Head.position + new Vector3(0, 0.5f, -3.0f);
+			effects[1].transform.position = _renderer.Denominator.interactionCharacter.Head.position + new Vector3(0, 0.5f, -3.0f);
 			
-			durationTemp = hits[1].Duration();
+			durationTemp = effects[1].Duration();
 			if( durationTemp > duration )
 				duration = durationTemp;
 		}
