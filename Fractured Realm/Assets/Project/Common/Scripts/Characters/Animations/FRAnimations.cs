@@ -138,7 +138,6 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		{
 			if( _animations == null )
 			{
-				_animations = new Dictionary<int, FRAnimationData>();
 				FillDictionary();
 			}
 
@@ -146,8 +145,15 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		}
 	}
 
+	public FRAnimationData GetAnimationData( FR.Animation animation )
+	{
+		return _animations[ (int) animation];
+	}
+
 	public void FillDictionary()
 	{
+		_animations = new Dictionary<int, FRAnimationData>();
+				
 		FRAnimationData animation = null;
 
 		animation = new FRAnimationData();
@@ -160,7 +166,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Base Layer";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-178524345, animation);
 
 		animation = new FRAnimationData();
@@ -173,7 +179,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Receiver";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Receiver_lowFiveReceiveLefttHand(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Receiver_lowFiveReceiveLefttHand(); };
 		animations.Add(1394721566, animation);
 
 		animation = new FRAnimationData();
@@ -186,7 +192,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Receiver";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Receiver_lowFiveReceiveRightHand(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Receiver_lowFiveReceiveRightHand(); };
 		animations.Add(-1292925210, animation);
 
 		animation = new FRAnimationData();
@@ -199,7 +205,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Receiver";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Receiver_magnetAttractedFront(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Receiver_magnetAttractedFront(); };
 		animations.Add(807729372, animation);
 
 		animation = new FRAnimationData();
@@ -212,7 +218,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Receiver";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Receiver_magnetAttractedSideLeft(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Receiver_magnetAttractedSideLeft(); };
 		animations.Add(-932377542, animation);
 
 		animation = new FRAnimationData();
@@ -225,7 +231,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Receiver";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Receiver_magnetAttractedSideRight(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Receiver_magnetAttractedSideRight(); };
 		animations.Add(824004391, animation);
 
 		animation = new FRAnimationData();
@@ -238,7 +244,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Receiver";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Receiver_supermanWatch(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Receiver_supermanWatch(); };
 		animations.Add(-865762447, animation);
 
 		animation = new FRAnimationData();
@@ -251,7 +257,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Starter";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Starter_chestBump(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Starter_chestBump(); };
 		animations.Add(-1881519238, animation);
 
 		animation = new FRAnimationData();
@@ -264,7 +270,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Starter";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Starter_forcePull(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Starter_forcePull(); };
 		animations.Add(-995234849, animation);
 
 		animation = new FRAnimationData();
@@ -277,7 +283,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Starter";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Starter_freshPrince(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Starter_freshPrince(); };
 		animations.Add(-2108812154, animation);
 
 		animation = new FRAnimationData();
@@ -290,7 +296,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Starter";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Starter_highFiveLeftHand(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Starter_highFiveLeftHand(); };
 		animations.Add(-447528410, animation);
 
 		animation = new FRAnimationData();
@@ -303,7 +309,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Starter";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Starter_highFiveRightHand(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Starter_highFiveRightHand(); };
 		animations.Add(-475806961, animation);
 
 		animation = new FRAnimationData();
@@ -316,7 +322,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Starter";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Starter_lowFiveSlapLeftHand(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Starter_lowFiveSlapLeftHand(); };
 		animations.Add(-1492341143, animation);
 
 		animation = new FRAnimationData();
@@ -329,7 +335,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Starter";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Starter_lowFiveSlapRightHand(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Starter_lowFiveSlapRightHand(); };
 		animations.Add(92455138, animation);
 
 		animation = new FRAnimationData();
@@ -342,7 +348,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Starter";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Starter_magnetAtrractLeft(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Starter_magnetAtrractLeft(); };
 		animations.Add(1053838298, animation);
 
 		animation = new FRAnimationData();
@@ -355,7 +361,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Starter";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Starter_magnetAtrractRight(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Starter_magnetAtrractRight(); };
 		animations.Add(-1847521256, animation);
 
 		animation = new FRAnimationData();
@@ -368,7 +374,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Starter";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Starter_mrWillieBam(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Starter_mrWillieBam(); };
 		animations.Add(-1686570577, animation);
 
 		animation = new FRAnimationData();
@@ -381,7 +387,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.ADD;
 		animation.originalOperationName = "Add";
 		animation.originalStageName = "Starter";
-		animation.visualizer = delegate(){ return new OperationVisualizerAdd_Starter_supermanJump(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerAdd_Starter_supermanJump(); };
 		animations.Add(-921952129, animation);
 
 		animation = new FRAnimationData();
@@ -394,7 +400,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Cheers";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-1598974891, animation);
 
 		animation = new FRAnimationData();
@@ -407,7 +413,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Cheers";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(151404393, animation);
 
 		animation = new FRAnimationData();
@@ -420,7 +426,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Cheers";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-1010949030, animation);
 
 		animation = new FRAnimationData();
@@ -433,7 +439,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Cheers";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-2050718089, animation);
 
 		animation = new FRAnimationData();
@@ -446,7 +452,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Cheers";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(960355200, animation);
 
 		animation = new FRAnimationData();
@@ -459,7 +465,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Ascend";
-		animation.visualizer = delegate(){ return new OperationVisualizerDivide_Ascend_flapWings(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerDivide_Ascend_flapWings(); };
 		animations.Add(-1694428202, animation);
 
 		animation = new FRAnimationData();
@@ -472,7 +478,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Ascend";
-		animation.visualizer = delegate(){ return new OperationVisualizerDivide_Ascend_jetFart(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerDivide_Ascend_jetFart(); };
 		animations.Add(-318687071, animation);
 
 		animation = new FRAnimationData();
@@ -485,7 +491,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Ascend";
-		animation.visualizer = delegate(){ return new OperationVisualizerDivide_Ascend_lotus(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerDivide_Ascend_lotus(); };
 		animations.Add(1603903191, animation);
 
 		animation = new FRAnimationData();
@@ -498,7 +504,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Ascend";
-		animation.visualizer = delegate(){ return new OperationVisualizerDivide_Ascend_tractorBeam(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerDivide_Ascend_tractorBeam(); };
 		animations.Add(1651649906, animation);
 
 		animation = new FRAnimationData();
@@ -511,7 +517,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Descend";
-		animation.visualizer = delegate(){ return new OperationVisualizerDivide_Descend_fallInLeft(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerDivide_Descend_fallInLeft(); };
 		animations.Add(-615105667, animation);
 
 		animation = new FRAnimationData();
@@ -524,7 +530,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Descend";
-		animation.visualizer = delegate(){ return new OperationVisualizerDivide_Descend_fallInRight(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerDivide_Descend_fallInRight(); };
 		animations.Add(-642342877, animation);
 
 		animation = new FRAnimationData();
@@ -537,7 +543,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Descend";
-		animation.visualizer = delegate(){ return new OperationVisualizerDivide_Descend_fishingPulledIn(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerDivide_Descend_fishingPulledIn(); };
 		animations.Add(795621940, animation);
 
 		animation = new FRAnimationData();
@@ -550,7 +556,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Descend";
-		animation.visualizer = delegate(){ return new OperationVisualizerDivide_Descend_ironManFall(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerDivide_Descend_ironManFall(); };
 		animations.Add(392890495, animation);
 
 		animation = new FRAnimationData();
@@ -563,7 +569,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Descend";
-		animation.visualizer = delegate(){ return new OperationVisualizerDivide_Descend_maryPoppins(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerDivide_Descend_maryPoppins(); };
 		animations.Add(-949686227, animation);
 
 		animation = new FRAnimationData();
@@ -576,7 +582,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Descend";
-		animation.visualizer = delegate(){ return new OperationVisualizerDivide_Descend_maryPoppinsFall(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerDivide_Descend_maryPoppinsFall(); };
 		animations.Add(-1200648783, animation);
 
 		animation = new FRAnimationData();
@@ -589,7 +595,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Descend";
-		animation.visualizer = delegate(){ return new OperationVisualizerDivide_Descend_shrugAndDrop(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerDivide_Descend_shrugAndDrop(); };
 		animations.Add(-1570082847, animation);
 
 		animation = new FRAnimationData();
@@ -602,7 +608,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Descend";
-		animation.visualizer = delegate(){ return new OperationVisualizerDivide_Descend_waveAndDrop(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerDivide_Descend_waveAndDrop(); };
 		animations.Add(-1921503477, animation);
 
 		animation = new FRAnimationData();
@@ -615,7 +621,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Facial";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-1515997460, animation);
 
 		animation = new FRAnimationData();
@@ -628,7 +634,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Facial";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(107191909, animation);
 
 		animation = new FRAnimationData();
@@ -641,7 +647,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Facial";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-1075817003, animation);
 
 		animation = new FRAnimationData();
@@ -654,7 +660,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Facial";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(837073502, animation);
 
 		animation = new FRAnimationData();
@@ -667,7 +673,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Facial";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-718129313, animation);
 
 		animation = new FRAnimationData();
@@ -680,7 +686,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Facial";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(1395957817, animation);
 
 		animation = new FRAnimationData();
@@ -693,7 +699,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(447431443, animation);
 
 		animation = new FRAnimationData();
@@ -706,7 +712,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-1898589571, animation);
 
 		animation = new FRAnimationData();
@@ -719,7 +725,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-341523943, animation);
 
 		animation = new FRAnimationData();
@@ -732,7 +738,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-1064726054, animation);
 
 		animation = new FRAnimationData();
@@ -745,7 +751,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-644702053, animation);
 
 		animation = new FRAnimationData();
@@ -758,7 +764,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-1764542884, animation);
 
 		animation = new FRAnimationData();
@@ -771,7 +777,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-1882716387, animation);
 
 		animation = new FRAnimationData();
@@ -784,7 +790,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-1528474402, animation);
 
 		animation = new FRAnimationData();
@@ -797,7 +803,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-1107401313, animation);
 
 		animation = new FRAnimationData();
@@ -810,7 +816,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(979794256, animation);
 
 		animation = new FRAnimationData();
@@ -823,7 +829,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(595413009, animation);
 
 		animation = new FRAnimationData();
@@ -836,7 +842,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-1734522058, animation);
 
 		animation = new FRAnimationData();
@@ -849,7 +855,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-1280304907, animation);
 
 		animation = new FRAnimationData();
@@ -862,7 +868,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-1431623244, animation);
 
 		animation = new FRAnimationData();
@@ -875,7 +881,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-437600397, animation);
 
 		animation = new FRAnimationData();
@@ -888,7 +894,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-51278286, animation);
 
 		animation = new FRAnimationData();
@@ -901,7 +907,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-673391119, animation);
 
 		animation = new FRAnimationData();
@@ -914,7 +920,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(-825758544, animation);
 
 		animation = new FRAnimationData();
@@ -927,7 +933,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(1231024255, animation);
 
 		animation = new FRAnimationData();
@@ -940,7 +946,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Movements";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(1346683198, animation);
 
 		animation = new FRAnimationData();
@@ -953,7 +959,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.MULTIPLY;
 		animation.originalOperationName = "Multiply";
 		animation.originalStageName = "";
-		animation.visualizer = delegate(){ return new OperationVisualizerMultiply_featherPlop(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerMultiply_featherPlop(); };
 		animations.Add(434568595, animation);
 
 		animation = new FRAnimationData();
@@ -966,7 +972,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.MULTIPLY;
 		animation.originalOperationName = "Multiply";
 		animation.originalStageName = "";
-		animation.visualizer = delegate(){ return new OperationVisualizerMultiply_headbang(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerMultiply_headbang(); };
 		animations.Add(-442117472, animation);
 
 		animation = new FRAnimationData();
@@ -979,7 +985,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.MULTIPLY;
 		animation.originalOperationName = "Multiply";
 		animation.originalStageName = "";
-		animation.visualizer = delegate(){ return new OperationVisualizerMultiply_violentShake(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerMultiply_violentShake(); };
 		animations.Add(-1389930343, animation);
 
 		animation = new FRAnimationData();
@@ -992,7 +998,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Other";
 		animation.originalStageName = "";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(1489361437, animation);
 
 		animation = new FRAnimationData();
@@ -1005,7 +1011,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.NONE;
 		animation.originalOperationName = "Portal";
 		animation.originalStageName = "Success";
-		animation.visualizer = null;
+		animation.visualizerCreate = null;
 		animations.Add(1505373919, animation);
 
 		animation = new FRAnimationData();
@@ -1018,7 +1024,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SIMPLIFY;
 		animation.originalOperationName = "Simplify";
 		animation.originalStageName = "";
-		animation.visualizer = delegate(){ return new OperationVisualizerSimplify_backFlip(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSimplify_backFlip(); };
 		animations.Add(2109636655, animation);
 
 		animation = new FRAnimationData();
@@ -1031,7 +1037,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SIMPLIFY;
 		animation.originalOperationName = "Simplify";
 		animation.originalStageName = "";
-		animation.visualizer = delegate(){ return new OperationVisualizerSimplify_starFishJump(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSimplify_starFishJump(); };
 		animations.Add(-1502036893, animation);
 
 		animation = new FRAnimationData();
@@ -1044,7 +1050,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SIMPLIFY;
 		animation.originalOperationName = "Simplify";
 		animation.originalStageName = "";
-		animation.visualizer = delegate(){ return new OperationVisualizerSimplify_twoHandsBoom(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSimplify_twoHandsBoom(); };
 		animations.Add(1410762865, animation);
 
 		animation = new FRAnimationData();
@@ -1057,7 +1063,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_blowpipe(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_blowpipe(); };
 		animations.Add(-886989685, animation);
 
 		animation = new FRAnimationData();
@@ -1070,7 +1076,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_boxingGlove(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_boxingGlove(); };
 		animations.Add(-1378933481, animation);
 
 		animation = new FRAnimationData();
@@ -1083,7 +1089,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_callAirstrike(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_callAirstrike(); };
 		animations.Add(-1451289705, animation);
 
 		animation = new FRAnimationData();
@@ -1096,7 +1102,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_castFireball(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_castFireball(); };
 		animations.Add(1611567380, animation);
 
 		animation = new FRAnimationData();
@@ -1109,7 +1115,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_dropAnvil(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_dropAnvil(); };
 		animations.Add(1109871056, animation);
 
 		animation = new FRAnimationData();
@@ -1122,7 +1128,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_explodeTNT(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_explodeTNT(); };
 		animations.Add(-114880747, animation);
 
 		animation = new FRAnimationData();
@@ -1135,7 +1141,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_kickSoccerball(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_kickSoccerball(); };
 		animations.Add(-1906241241, animation);
 
 		animation = new FRAnimationData();
@@ -1148,7 +1154,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_shootMortar(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_shootMortar(); };
 		animations.Add(-1670844637, animation);
 
 		animation = new FRAnimationData();
@@ -1161,7 +1167,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_summon(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_summon(); };
 		animations.Add(-669810648, animation);
 
 		animation = new FRAnimationData();
@@ -1174,7 +1180,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_summonLightningRightHand(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_summonLightningRightHand(); };
 		animations.Add(-1164697260, animation);
 
 		animation = new FRAnimationData();
@@ -1187,7 +1193,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_summonMeteor(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_summonMeteor(); };
 		animations.Add(1054257764, animation);
 
 		animation = new FRAnimationData();
@@ -1200,7 +1206,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_summon_02(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_summon_02(); };
 		animations.Add(106109433, animation);
 
 		animation = new FRAnimationData();
@@ -1213,7 +1219,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_throwAmericanFootballLeftHand(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_throwAmericanFootballLeftHand(); };
 		animations.Add(-1109726642, animation);
 
 		animation = new FRAnimationData();
@@ -1226,7 +1232,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_throwAmericanFootballRightHand(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_throwAmericanFootballRightHand(); };
 		animations.Add(-1601002547, animation);
 
 		animation = new FRAnimationData();
@@ -1239,7 +1245,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_throwBaseball(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_throwBaseball(); };
 		animations.Add(1879247415, animation);
 
 		animation = new FRAnimationData();
@@ -1252,7 +1258,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_throwBaseballRightHand(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_throwBaseballRightHand(); };
 		animations.Add(-1801196609, animation);
 
 		animation = new FRAnimationData();
@@ -1265,7 +1271,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_throwBasketballLeftHand(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_throwBasketballLeftHand(); };
 		animations.Add(1065627471, animation);
 
 		animation = new FRAnimationData();
@@ -1278,7 +1284,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_throwBasketballRightHand(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_throwBasketballRightHand(); };
 		animations.Add(-686305890, animation);
 
 		animation = new FRAnimationData();
@@ -1291,7 +1297,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_throwBoomerangLeftHand(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_throwBoomerangLeftHand(); };
 		animations.Add(937297937, animation);
 
 		animation = new FRAnimationData();
@@ -1304,7 +1310,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_throwBoomerangRightHand(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_throwBoomerangRightHand(); };
 		animations.Add(1540156234, animation);
 
 		animation = new FRAnimationData();
@@ -1317,7 +1323,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_throwGrenade(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_throwGrenade(); };
 		animations.Add(-1885175738, animation);
 
 		animation = new FRAnimationData();
@@ -1330,7 +1336,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_tornado(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_tornado(); };
 		animations.Add(1576820080, animation);
 
 		animation = new FRAnimationData();
@@ -1343,7 +1349,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_volleyballHitLeftHand(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_volleyballHitLeftHand(); };
 		animations.Add(372868578, animation);
 
 		animation = new FRAnimationData();
@@ -1356,7 +1362,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Attacks";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Attacks_volleyballHitRightHand(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Attacks_volleyballHitRightHand(); };
 		animations.Add(2136584033, animation);
 
 		animation = new FRAnimationData();
@@ -1369,7 +1375,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Hits";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Hits_hitFront(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Hits_hitFront(); };
 		animations.Add(-1098154141, animation);
 
 		animation = new FRAnimationData();
@@ -1382,7 +1388,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Hits";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Hits_hitSideLeft(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Hits_hitSideLeft(); };
 		animations.Add(885261676, animation);
 
 		animation = new FRAnimationData();
@@ -1395,7 +1401,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.operation = FR.OperationType.SUBTRACT;
 		animation.originalOperationName = "Subtract";
 		animation.originalStageName = "Hits";
-		animation.visualizer = delegate(){ return new OperationVisualizerSubtract_Hits_hitSideRight(); };
+		animation.visualizerCreate = delegate(){ return new OperationVisualizerSubtract_Hits_hitSideRight(); };
 		animations.Add(-1276570897, animation);
 
 

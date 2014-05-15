@@ -39,7 +39,6 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		{
 			if( _animations == null )
 			{
-				_animations = new Dictionary<int, FRAnimationData>();
 				FillDictionary();
 			}
 
@@ -47,8 +46,15 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		}
 	}
 
+	public FRAnimationData GetAnimationData( FR.Animation animation )
+	{
+		return _animations[ (int) animation];
+	}
+
 	public void FillDictionary()
 	{
+		_animations = new Dictionary<int, FRAnimationData>();
+				
 		INIT
 	}
 

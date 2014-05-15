@@ -135,27 +135,41 @@ public class AnimationTemplateGeneratorHelper
 			// case 2 doesn't need extra base class: they just inherit from the original OperationVisualizer for their specific Operation
 			if( !processedOperationStages.Contains( animation.parentName ) && (animation.stage != FR.AnimationStage.NONE) )
 			{
-				Debug.LogWarning("GenerateOperationVisualizerClasses : operationStage " + animation.parentName + " didn't have a base class yet. Generate it!");
-
+				// don't overwrite the file if it already exists!
+				// users might have already added code to the file
 				
-				template = File.ReadAllText( basePath + "OperationVisualizerStageTemplate.cs" );
-				template = template.Replace( "/*", "" );
-				template = template.Replace( "*/", "" );
-				
-				template = template.Replace("OPERATION", animation.originalOperationName );
-				template = template.Replace("STAGE", "_" + animation.originalStageName ); 
 				
 				fileName = "OperationVisualizer" + animation.originalOperationName + "_" + animation.originalStageName + ".cs";
-				
+
 				if( File.Exists( outputPath + fileName ) )
 				{
-					File.Delete( outputPath + fileName );
+					fileName = "OperationVisualizer" + animation.originalOperationName + "_" + animation.originalStageName + ".cs";
+					Debug.Log ("GenerateOperationVisualizerClasses : " + fileName + " existed. Not overwritten.");
+				}
+				else
+				{
+					Debug.LogWarning("GenerateOperationVisualizerClasses : operationStage " + animation.parentName + " didn't have a base class yet. Generate it!");
+
+					
+					template = File.ReadAllText( basePath + "OperationVisualizerStageTemplate.cs" );
+					template = template.Replace( "/*", "" );
+					template = template.Replace( "*/", "" );
+					
+					template = template.Replace("OPERATION", animation.originalOperationName );
+					template = template.Replace("STAGE", "_" + animation.originalStageName ); 
+
+					/*
+					if( File.Exists( outputPath + fileName ) )
+					{
+						File.Delete( outputPath + fileName );
+					}
+					*/
+					
+					File.WriteAllText( outputPath + fileName, template );
 				}
 				
-				File.WriteAllText( outputPath + fileName, template );
-
 				// make sure base class is not generated again (multiple animations can share the same parent)
-				processedOperationStages.Add( animation.parentName );
+				processedOperationStages.Add ( animation.parentName );
 			}
 
 			
@@ -190,6 +204,9 @@ public class AnimationTemplateGeneratorHelper
 		// we have to do this in 2 passes, because we need to know each possible STAGE2 animation for the STAGE1's because they need to be included in their files.
 		foreach( FRAnimationData animation in animations )
 		{
+			if( animation.operation == FR.OperationType.NONE )
+				continue; 
+
 			string nextString = "";
 			if( animation.stage == FR.AnimationStage.Stage1 )
 			{
@@ -207,30 +224,53 @@ public class AnimationTemplateGeneratorHelper
 			}
 
 
-
-			// generate class for specific animation
-			template = File.ReadAllText( basePath + "OperationVisualizerAnimationTemplate.cs" );
-			template = template.Replace( "/*", "" );
-			template = template.Replace( "*/", "" );
+			bool generateFile = true;
 			
-			// if it's not a "Staged" animation, we need to change the class / file name to leave the stage name out completely
-			string stageName = ( !string.IsNullOrEmpty(animation.originalStageName) ) ? "_" + animation.originalStageName : "";
-			
-			template = template.Replace("NEXTANIMATION", nextString );
 
-			template = template.Replace("OPERATION", animation.originalOperationName ); 
-			template = template.Replace("STAGE", stageName );
-			template = template.Replace("ANIMATION", "_" + animation.name );
 
-			
 			fileName = animation.VisualizerClassName() + ".cs";//"OperationVisualizer" + parentOperation + stageName + "_" + animation.name + ".cs";
-			
-			if( File.Exists( outputPath + fileName ) )
+
+			if( File.Exists(outputPath + fileName) )
 			{
-				File.Delete( outputPath + fileName );
+				// the animation-specific file already exists
+				// if someone has started adjusting it already, we shouldn't overwrite it!
+
+				string fileContents = File.ReadAllText( outputPath + fileName );
+				if( fileContents.Contains("FR.VisualizerImplementationStatus.NONE") )
+				{
+					// implementationstate is NONE, so we can overwrite
+					File.Delete( outputPath + fileName );
+				}
+				else
+				{
+					generateFile = false;
+
+					if( animation.operation != FR.OperationType.NONE )
+						Debug.Log ("GenerateOperationVisualizerClasses : " + animation.VisualizerClassName() + " already implemented. Not overwritten.");
+				}
 			}
-			
-			File.WriteAllText( outputPath + fileName, template );
+
+
+			if( generateFile )
+			{
+				// generate class for specific animation
+				template = File.ReadAllText( basePath + "OperationVisualizerAnimationTemplate.cs" );
+				template = template.Replace( "/*", "" );
+				template = template.Replace( "*/", "" );
+				
+				// if it's not a "Staged" animation, we need to change the class / file name to leave the stage name out completely
+				string stageName = ( !string.IsNullOrEmpty(animation.originalStageName) ) ? "_" + animation.originalStageName : "";
+				
+				template = template.Replace("NEXTANIMATION", nextString );
+
+				template = template.Replace("OPERATION", animation.originalOperationName ); 
+				template = template.Replace("STAGE", stageName );
+				template = template.Replace("ANIMATION", "_" + animation.name );
+				template = template.Replace("TYPE", "" + animation.name );
+
+				
+				File.WriteAllText( outputPath + fileName, template );
+			}
 		}
 
 
@@ -309,9 +349,9 @@ public class AnimationTemplateGeneratorHelper
 
 			string visualizer = animation.VisualizerClassName();
 			if( !string.IsNullOrEmpty(visualizer) )
-				ctorString += "\t\tanimation.visualizer = delegate(){ return new " + visualizer + "(); };\n";
+				ctorString += "\t\tanimation.visualizerCreate = delegate(){ return new " + visualizer + "(); };\n";
 			else
-				ctorString += "\t\tanimation.visualizer = null;\n";
+				ctorString += "\t\tanimation.visualizerCreate = null;\n";
 				
 			ctorString += "\t\tanimations.Add(" + animation.hash+ ", animation);\n\n";
 		}

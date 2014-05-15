@@ -8,7 +8,7 @@ public class OperationVisualizerDouble : IOperationVisualizer
 		Reset();
 	}
 	
-	public void Reset()
+	public override void Reset()
 	{
 		this.type = FR.OperationType.DOUBLE; 
 	}

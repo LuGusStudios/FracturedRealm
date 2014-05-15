@@ -2,12 +2,38 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+namespace FR 
+{
+	public enum VisualizerImplementationStatus
+	{
+		NONE = -1,
+
+		IN_PROGRESS = 0,
+		TESTING = 1,
+		IMPLEMENTED = 2
+	}
+}
 
 public class IOperationVisualizer
 {
 	public IOperationVisualizer()
 	{
 		
+	}
+
+	public virtual void Reset()
+	{
+
+	}
+
+	public virtual FR.VisualizerImplementationStatus GetImplementationStatus()
+	{
+		return FR.VisualizerImplementationStatus.NONE;
+	}
+
+	public virtual FR.Animation AnimationType()
+	{
+		return FR.Animation.NONE;
 	}
 
 	
@@ -40,8 +66,10 @@ public class IOperationVisualizer
 
 	
 	public FR.OperationType type = FR.OperationType.NONE;
-	
+
+
 	public virtual IEnumerator Visualize(OperationState current, OperationState target){ yield break; }
+	public virtual IEnumerator VisualizeAnimation(FractionRenderer starter, FractionRenderer receiver){ yield break; }
 	
 	protected virtual void CheckOutcome(OperationState outcome, OperationState target)
 	{

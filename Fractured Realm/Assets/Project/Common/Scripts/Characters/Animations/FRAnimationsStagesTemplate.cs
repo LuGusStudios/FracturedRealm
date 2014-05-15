@@ -36,6 +36,8 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 
 	public void FillOperationAnimations()
 	{
+		_operationAnimations = new Dictionary<FR.OperationType, List<FR.Animation>>();
+		
 		INIT
 	}
 }

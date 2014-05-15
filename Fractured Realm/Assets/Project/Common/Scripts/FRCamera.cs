@@ -258,7 +258,7 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 
 	protected IEnumerator InteractionGroupCycleRoutine(int groupCount)
 	{
-		World world = GameObject.FindObjectOfType<World>();
+		//World world = GameObject.FindObjectOfType<World>();
 
 		float waitTime = 2.0f;
 

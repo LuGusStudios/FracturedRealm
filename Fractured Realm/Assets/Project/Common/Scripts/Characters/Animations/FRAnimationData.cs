@@ -24,7 +24,26 @@ public class FRAnimationData
 
 	public delegate IOperationVisualizer GetVisualizer();
 
-	public GetVisualizer visualizer = null;
+	public GetVisualizer visualizerCreate = null;
+
+	protected IOperationVisualizer _visualizerInstance;
+	public IOperationVisualizer visualizer
+	{
+		get
+		{
+			if( _visualizerInstance == null )
+			{
+				if( visualizerCreate != null )
+				{
+					_visualizerInstance = visualizerCreate();
+					_visualizerInstance.Reset();
+				}
+			}
+
+			return _visualizerInstance;
+		}
+	}
+
 
 	public string VisualizerClassName()
 	{	

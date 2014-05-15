@@ -123,7 +123,7 @@ public class FractionAnimator
 
 		if( selector.HasNumerator() )
 		{
-			hits[0].transform.position = _renderer.Numerator.transform.position + new Vector3(0, 0.5f, -1.0f);
+			hits[0].transform.position = _renderer.Numerator.interactionCharacter.Head.position + new Vector3(0, 0.5f, -3.0f);
 
 			durationTemp = hits[0].Duration();
 			if( durationTemp > duration )
@@ -133,7 +133,7 @@ public class FractionAnimator
 		
 		if( selector.HasDenominator() )
 		{
-			hits[1].transform.position = _renderer.Denominator.transform.position + new Vector3(0, 0.5f, -1.0f);
+			hits[1].transform.position = _renderer.Denominator.interactionCharacter.Head.position + new Vector3(0, 0.5f, -3.0f);
 			
 			durationTemp = hits[1].Duration();
 			if( durationTemp > duration )

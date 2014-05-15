@@ -8,7 +8,7 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 		Reset();
 	}
 	
-	public void Reset()
+	public override void Reset()
 	{
 		this.type = FR.OperationType.SUBTRACT; 
 	}

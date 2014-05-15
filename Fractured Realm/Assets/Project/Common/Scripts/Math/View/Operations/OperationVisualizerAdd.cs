@@ -8,7 +8,7 @@ public class OperationVisualizerAdd : IOperationVisualizer
 		Reset();
 	}
 	
-	public void Reset()
+	public override void Reset()
 	{
 		this.type = FR.OperationType.ADD; 
 	}
@@ -26,23 +26,10 @@ public class OperationVisualizerAdd : IOperationVisualizer
 		//yield return Receiver.Animator.RotateTowards( FR.Target.BOTH,  Runner );
 
 
-		yield return LugusCoroutineUtil.WaitForFinish( 
-                      	Runner.Animator.RotateTowards( FR.Target.BOTH, Receiver ),
-		                Receiver.Animator.RotateTowards( FR.Target.BOTH,  Runner ) 
-              		).Coroutine;
 
 
+		yield return LugusCoroutines.use.StartRoutine( VisualizeAnimation(Runner, Receiver) ).Coroutine;
 
-
-		Runner.Animator.MoveTo( FR.Target.BOTH,  Receiver );
-		
-		// wait until they arrive at the target
-		yield return new WaitForSeconds(1.8f);
-
-		Receiver.Animator.SpawnEffect( FR.Target.BOTH, FR.EffectType.JOIN_HIT );
-		
-		// wait untill the height of the hit effect (covering all)
-		yield return new WaitForSeconds(0.2f);
 
 
 		Runner.Fraction.Numerator.Value = target.StartFraction.Numerator.Value;
@@ -66,5 +53,23 @@ public class OperationVisualizerAdd : IOperationVisualizer
 		Debug.Log ("OperationVisualizerAdd : finished");
 		yield break; 
 		
+	}
+
+	public override IEnumerator VisualizeAnimation(FractionRenderer Starter, FractionRenderer Receiver)
+	{
+		yield return LugusCoroutineUtil.WaitForFinish( 
+                      Starter.Animator.RotateTowards( FR.Target.BOTH, Receiver ),
+                      Receiver.Animator.RotateTowards( FR.Target.BOTH,  Starter ) 
+                      ).Coroutine;
+
+		Starter.Animator.MoveTo( FR.Target.BOTH,  Receiver );
+		
+		// wait until they arrive at the target
+		yield return new WaitForSeconds(1.8f);
+		
+		Receiver.Animator.SpawnEffect( FR.Target.BOTH, FR.EffectType.JOIN_HIT );
+		
+		// wait untill the height of the hit effect (covering all)
+		yield return new WaitForSeconds(0.2f);
 	}
 }

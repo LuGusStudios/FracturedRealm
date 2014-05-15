@@ -91,13 +91,19 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 	public IOperationVisualizer GetVisualizer(FR.OperationType type)
 	{
 		IOperationVisualizer visualizer = null;
+
+		/*
 		foreach( IOperationVisualizer viz in operationVisualizers )
 		{
 			if( viz.type == type )
 				visualizer = viz;
 		}
+		*/
 
-		return visualizer;
+		FRAnimationData animationData = FRAnimations.use.GetRandomStarterAnimation( type );
+		Debug.Log("MathManager:GetVisualizer : chosen visualization is " + animationData.VisualizerClassName() );
+
+		return animationData.visualizer;
 	}
 	
 	public void SelectOperation(FR.OperationType type)

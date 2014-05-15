@@ -20,9 +20,17 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 	public void Start()
 	{
 		// TODO: CHANGE!
-		CreateWorld(FR.WorldType.DESERT, FR.Target.BOTH, true);
-		HUDManager.use.SetMode( FR.Target.BOTH );
-		
+		//CreateWorld(FR.WorldType.DESERT, FR.Target.BOTH, true);
+		//HUDManager.use.SetMode( FR.Target.BOTH );
+
+		if( debug_initialFractions == null || debug_initialFractions.Length == 0 )
+		{
+			debug_initialFractions = new Fraction[2];
+			debug_initialFractions[0] = new Fraction(4,2);
+			debug_initialFractions[1] = new Fraction(7,4);
+		}
+
+		CreateDebugWorld( FR.WorldType.DESERT, debug_initialFractions, FR.Target.BOTH, true );
 	}
 	
 	// Dictionary<FR.WorldType, List<WorldPart>> is NOT SERIALIZABLE by unity!
@@ -88,7 +96,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 
 		if( Application.isPlaying )
 		{
-			Debug.LogError("App is playing, so initialize operation icons");
+			//Debug.LogError("App is playing, so initialize operation icons");
 			MathInputManager.use.InitializeOperationIcons(1);
 		}
 
