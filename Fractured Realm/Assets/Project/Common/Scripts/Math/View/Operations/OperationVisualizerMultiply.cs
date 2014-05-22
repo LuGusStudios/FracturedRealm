@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class OperationVisualizerMultiply : IOperationVisualizer 
 {
@@ -12,15 +13,28 @@ public class OperationVisualizerMultiply : IOperationVisualizer
 	{
 		this.type = FR.OperationType.MULTIPLY; 
 	}
-	
-	protected bool numeratorDone = false;
-	protected bool denominatorDone = false;
-	
+
+	public List<FR.Animation> addAnimations = new List<FR.Animation>();
+	public virtual FR.Animation GetRandomAddAnimation()
+	{
+		if( addAnimations.Count == 0 )
+		{
+			//addAnimations.Add( FR.Animation.highFiveLeftHand );
+			addAnimations.Add( FR.Animation.highFiveRightHand );
+
+			// TODO: FIXME: add extra options here!
+		}
+
+		return addAnimations[ Random.Range(0, addAnimations.Count) ];
+	}
+
+
 	public override IEnumerator Visualize(OperationState current, OperationState target)
 	{ 
 		Debug.Log ("OperationVisualizerMultiply : Visualize : " + current + " TO " + target);
 
-		
+		// NOTE : REVERSE LOGIC HERE!
+		// TODO: SHould probably be refactored... but too error-prone to do right now...
 		FractionRenderer Starter = current.StopFraction.Renderer;
 		FractionRenderer Receiver = current.StartFraction.Renderer;
 
@@ -29,12 +43,12 @@ public class OperationVisualizerMultiply : IOperationVisualizer
 
 		if( Starter.Fraction.Numerator.Value != 0 )
 		{
-			waiter.Add( LugusCoroutines.use.StartRoutine( VisualizeSide(FR.Target.NUMERATOR, Starter.Numerator, Receiver.Numerator) ));
+			waiter.Add( LugusCoroutines.use.StartRoutine( VisualizeAnimationPart(FR.Target.NUMERATOR, Starter.Numerator, Receiver.Numerator) ));
 		}
 
 		if( Starter.Fraction.Denominator.Value != 0 )
 		{
-			waiter.Add ( LugusCoroutines.use.StartRoutine( VisualizeSide(FR.Target.DENOMINATOR, Starter.Denominator, Receiver.Denominator) ));
+			waiter.Add ( LugusCoroutines.use.StartRoutine( VisualizeAnimationPart(FR.Target.DENOMINATOR, Starter.Denominator, Receiver.Denominator) ));
 		}
 		
 		yield return waiter.Start().Coroutine;
@@ -44,15 +58,20 @@ public class OperationVisualizerMultiply : IOperationVisualizer
 		yield break; 
 	}
 
-	protected IEnumerator VisualizeSide( FR.Target side, NumberRenderer Starter, NumberRenderer Receiver )
+	public override IEnumerator VisualizeAnimationPart( FR.Target part, NumberRenderer Starter, NumberRenderer Receiver )
 	{
+		//Debug.LogError(Time.frameCount + " VisualizeAnimationPart multiply ");
+
 		int originalReceiverValue = Receiver.Number.Value;
+
+		yield return Receiver.Animator.RotateTowards( Starter ).Coroutine;
 		
 		while( Starter.Number.Value > 0 )
 		{
 			Effect hit = EffectFactory.use.CreateEffectNormal( FR.EffectType.FIRE_HIT );
 			hit.transform.position = Starter.transform.position + new Vector3(0,0.5f,-1.0f);
-			
+
+
 			Starter.Number.Value -= 1;
 			if( Starter.Number.Value > 0 )
 			{
@@ -70,15 +89,25 @@ public class OperationVisualizerMultiply : IOperationVisualizer
 			// TODO: make sure we don't have to wait for 1 to arrive before spawning the other... (booooring otherwhise :))
 
 
-			NumberRenderer Runner = RendererFactory.use.CreateRenderer( new Number(originalReceiverValue, null, side.HasNumerator() ) );
+			NumberRenderer Runner = RendererFactory.use.CreateRenderer( new Number(originalReceiverValue, null, part.HasNumerator() ) );
 			Runner.transform.position = Starter.transform.position;
 			Runner.transform.rotation = Starter.transform.rotation;
 
+			Vector3 direction = Starter.transform.position - Receiver.transform.position;
+			direction.Normalize();
+
+			Runner.transform.position -= ( direction * 1.0f );
+			
+			Runner.Animator.RotateTowardsDirect( Receiver.transform.position );
+			Runner.Animator.CrossFade( FR.Animation.running );
+
+
 			// TODO: replace this part with a call to an appropriate VisualizerAdd()?
+			/*
 
 			Runner.Animator.RotateTowardsDirect( Receiver.transform.position );
 			
-			yield return Runner.Animator.MoveTo( Receiver.transform.position ).Coroutine;
+			yield return Runner.Animator.RunTo( Receiver.transform.position ).Coroutine;
 
 
 			Receiver.Number.Fraction.Renderer.Animator.SpawnEffect( side, FR.EffectType.FIRE_HIT );
@@ -88,7 +117,17 @@ public class OperationVisualizerMultiply : IOperationVisualizer
 			
 			// wait untill the height of the hit effect (covering all)
 			yield return new WaitForSeconds(0.2f);
-			
+			*/
+
+			FR.Animation addAnim = GetRandomAddAnimation();
+			FRAnimationData addAnimation = FRAnimations.use.animations[ (int) addAnim ];
+
+			IOperationVisualizer visualizer = addAnimation.visualizer;
+
+			yield return LugusCoroutines.use.StartRoutine( visualizer.VisualizeAnimationPart( part, Receiver, Runner ) ).Coroutine;
+
+
+
 			Receiver.Number.Value += originalReceiverValue;
 			Receiver = Receiver.NumberValueChanged();
 
@@ -99,11 +138,17 @@ public class OperationVisualizerMultiply : IOperationVisualizer
 			yield return new WaitForSeconds(1.0f);
 		}
 
-		if( side.HasNumerator() )
-			numeratorDone = true;
-		else if( side.HasDenominator() )
-			denominatorDone = true;
+		Camera cam = null;
+		if( part.HasNumerator() )
+			cam = LugusCamera.numerator;
+		else
+			cam = LugusCamera.denominator;
+
+		yield return Receiver.Animator.RotateTowards( cam.transform.position ).Coroutine;
+		
+		//Debug.LogError(Time.frameCount + " VisualizeAnimationPart multiply DONE ");
 		
 		yield break;	
 	}
+
 }

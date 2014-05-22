@@ -70,6 +70,7 @@ public class IOperationVisualizer
 
 	public virtual IEnumerator Visualize(OperationState current, OperationState target){ yield break; }
 	public virtual IEnumerator VisualizeAnimation(FractionRenderer starter, FractionRenderer receiver){ yield break; }
+	public virtual IEnumerator VisualizeAnimationPart(FR.Target part, NumberRenderer starter, NumberRenderer receiver){ yield break; }
 	
 	protected virtual void CheckOutcome(OperationState outcome, OperationState target)
 	{

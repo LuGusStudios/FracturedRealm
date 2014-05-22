@@ -52,7 +52,7 @@ public class AnimationSequenceTester : MonoBehaviour
 		foreach( Waypoint w in waypoints )
 		{
 			yield return character.Animator.RotateTowards( w.transform.position ).Coroutine;
-			yield return character.Animator.MoveTo( w.transform.position ).Coroutine;
+			yield return character.Animator.RunTo( w.transform.position ).Coroutine;
 		}
 	}
 

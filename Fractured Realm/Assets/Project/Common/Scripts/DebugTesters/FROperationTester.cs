@@ -121,8 +121,11 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 		
 		if( operationType == FR.OperationType.ADD )
 		{
-			fractions[0] = new Fraction( 6, 4 );
-			fractions[1] = new Fraction( 3, 4 );
+			//fractions[0] = new Fraction( 6, 4 );
+			//fractions[1] = new Fraction( 3, 4 );
+			
+			fractions[0] = new Fraction( 3, 4 );
+			fractions[1] = new Fraction( 8, 4 );
 		}
 		if( operationType == FR.OperationType.SUBTRACT )
 		{
@@ -131,8 +134,10 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 		}
 		if(  operationType == FR.OperationType.MULTIPLY )
 		{
-			fractions[0] = new Fraction( 3, 4 );
-			fractions[1] = new Fraction( 3, 2 );
+			//fractions[0] = new Fraction( 3, 4 );
+			//fractions[1] = new Fraction( 3, 2 );
+			fractions[0] = new Fraction( 2, 2 );
+			fractions[1] = new Fraction( 5, 6 );
 		}
 		if( operationType == FR.OperationType.DIVIDE )
 		{
@@ -429,11 +434,17 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 			
 			if( operationType != FR.OperationType.NONE )
 			{
+				fractions = new Fraction[2];
+
 				if( fr1 != null )
 				{
-					fractions = new Fraction[2];
 					fractions[0] = fr1;
 					fractions[1] = fr2;
+				}
+				else
+				{
+					fractions[0] = null;
+					fractions[1] = null;
 				}
 				
 				FROperationTester.use.TestOperation( operationType, fractions[0], fractions[1] );

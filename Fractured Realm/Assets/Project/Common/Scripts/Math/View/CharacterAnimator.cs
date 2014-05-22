@@ -199,7 +199,7 @@ public class CharacterAnimator : MonoBehaviour
 		   info.positionType == CharacterOrientationInfo.RelativePosition.FRONT )
 		{
 			// TODO: possibly still rotate, but without animation (just use lookRotation and Quaternion.Lerp)
-			Debug.LogWarning("CharacterAnimator:RotateTowardsRoutine : no rotation needed, already facing target");
+			Debug.LogWarning(Time.frameCount + " : CharacterAnimator:RotateTowardsRoutine : no rotation needed, already facing target : " + transform.name);
 			yield break;
 		}
 
@@ -213,7 +213,7 @@ public class CharacterAnimator : MonoBehaviour
 
 		animationName += info.animationDegrees;
 
-		//Debug.Log("CharacterAnimator:RotateTowardsRoutine : Rotating "+ info.positionType +" by " + info.angle + " degrees with animation degrees " + info.animationDegrees + " and anim " + animationName + " // " + this.transform.name );
+		Debug.Log(Time.frameCount + " : CharacterAnimator:RotateTowardsRoutine : Rotating "+ info.positionType +" by " + info.angle + " degrees with animation degrees " + info.animationDegrees + " and anim " + animationName + " // " + this.transform.name );
 
 
 

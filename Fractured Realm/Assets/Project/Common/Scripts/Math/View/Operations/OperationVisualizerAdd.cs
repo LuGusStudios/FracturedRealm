@@ -21,20 +21,13 @@ public class OperationVisualizerAdd : IOperationVisualizer
 		FractionRenderer Runner = current.StartFraction.Renderer;
 		FractionRenderer Receiver = current.StopFraction.Renderer;
 
-		
-		//Runner.Animator.RotateTowards( FR.Target.BOTH, Receiver );
-		//yield return Receiver.Animator.RotateTowards( FR.Target.BOTH,  Runner );
-
-
-
-
 		yield return LugusCoroutines.use.StartRoutine( VisualizeAnimation(Runner, Receiver) ).Coroutine;
-
-
+		
+		// wait untill the height of the hit effect (covering all)
+		yield return new WaitForSeconds(0.2f);
 
 		Runner.Fraction.Numerator.Value = target.StartFraction.Numerator.Value;
 		Runner.Fraction.Denominator.Value = target.StartFraction.Denominator.Value;
-
 
 		if( Runner.Fraction.Numerator.Value != 0 )
 			Runner.Numerator.NumberValueChanged();
@@ -42,9 +35,7 @@ public class OperationVisualizerAdd : IOperationVisualizer
 		if( Runner.Fraction.Denominator.Value != 0 )
 			Runner.Denominator.NumberValueChanged();
 
-		
 		RendererFactory.use.FreeRenderer( Receiver );
-
 
 		yield return Runner.Animator.RotateTowardsCamera().Coroutine;
 
@@ -55,21 +46,37 @@ public class OperationVisualizerAdd : IOperationVisualizer
 		
 	}
 
+
 	public override IEnumerator VisualizeAnimation(FractionRenderer Starter, FractionRenderer Receiver)
 	{
+		LugusCoroutineWaiter waiter = new LugusCoroutineWaiter();
+		
+		if( Starter.Fraction.HasNumerator() )
+		{
+			waiter.Add( LugusCoroutines.use.StartRoutine( VisualizeAnimationPart(FR.Target.NUMERATOR, Starter.Numerator, Receiver.Numerator) ));
+		}
+		
+		if( Starter.Fraction.HasDenominator() )
+		{
+			waiter.Add ( LugusCoroutines.use.StartRoutine( VisualizeAnimationPart(FR.Target.DENOMINATOR, Starter.Denominator, Receiver.Denominator) ));
+		}
+		
+		yield return waiter.Start().Coroutine;
+	}
+
+
+	public override IEnumerator VisualizeAnimationPart( FR.Target part, NumberRenderer Starter, NumberRenderer Receiver )
+	{
 		yield return LugusCoroutineUtil.WaitForFinish( 
-                      Starter.Animator.RotateTowards( FR.Target.BOTH, Receiver ),
-                      Receiver.Animator.RotateTowards( FR.Target.BOTH,  Starter ) 
+                      Starter.Animator.RotateTowards( Receiver ),
+		              Receiver.Animator.RotateTowards( Starter ) 
                       ).Coroutine;
 
-		Starter.Animator.MoveTo( FR.Target.BOTH,  Receiver );
+		Starter.Animator.RunTo( Receiver );
 		
-		// wait until they arrive at the target
+		// wait until they arrive at the target (takes 2 seconds)
 		yield return new WaitForSeconds(1.8f);
-		
-		Receiver.Animator.SpawnEffect( FR.Target.BOTH, FR.EffectType.JOIN_HIT );
-		
-		// wait untill the height of the hit effect (covering all)
-		yield return new WaitForSeconds(0.2f);
+
+		Receiver.Animator.SpawnEffect( FR.EffectType.JOIN_HIT );
 	}
 }

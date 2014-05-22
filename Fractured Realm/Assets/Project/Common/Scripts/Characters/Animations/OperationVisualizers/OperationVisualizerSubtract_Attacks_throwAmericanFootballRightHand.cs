@@ -30,16 +30,16 @@ public class OperationVisualizerSubtract_Attacks_throwAmericanFootballRightHand 
 		return base.Visualize( current, target );
 	}
 
-	protected override IEnumerator VisualizeSingleAttack( FractionRenderer Attacker, FractionRenderer Defender )
+	public override IEnumerator VisualizeAnimationPart( FR.Target part, NumberRenderer Attacker, NumberRenderer Defender )
 	{
-		yield return Attacker.Animator.RotateTowards( FR.Target.BOTH, Defender ).Coroutine;
-		
-		Attacker.Animator.CrossFade(FR.Target.NUMERATOR, this.AnimationType() ); 
+		yield return Attacker.Animator.RotateTowards( Defender ).Coroutine;
+
+		Attacker.Animator.CrossFade( this.AnimationType() ); 
 		
 		yield return new WaitForSeconds(0.57f);
 
 		Prop football = PropFactory.use.CreateProp( FR.PropType.Football );
-		football.transform.parent = Attacker.Numerator.interactionCharacter.RightHand;
+		football.transform.parent = Attacker.interactionCharacter.RightHand;
 		football.transform.localPosition = new Vector3(0.4113141f, 0.6171437f, -1.154315f);
 		football.transform.localEulerAngles = new Vector3(318.2309f, 159.6911f, 14.3963f);
 
@@ -47,25 +47,14 @@ public class OperationVisualizerSubtract_Attacks_throwAmericanFootballRightHand 
 
 		football.transform.parent = null;
 		football.transform.localEulerAngles = new Vector3(318.2309f, 159.6911f, 14.3963f);
-		football.gameObject.MoveTo( Defender.Numerator.interactionCharacter.Head ).Time( 0.5f ).Execute();
+		football.gameObject.MoveTo( Defender.interactionCharacter.Head ).Time( 0.5f ).Execute();
 
 		yield return new WaitForSeconds( 0.4f );
 
 		PropFactory.use.FreeProp( football );
-		
-		Effect hit = EffectFactory.use.CreateEffectNormal( FR.EffectType.FIRE_HIT );
-		hit.transform.position = Defender.Numerator.interactionCharacter.Head.transform.position + new Vector3(0,0.0f,-1.0f);
+
+		Defender.Animator.SpawnEffect( FR.EffectType.FIRE_HIT );
 		
 		yield return new WaitForSeconds(0.2f);
-		
-		
-		Defender.Numerator.Number.Value -= 1;
-		Defender.Numerator.NumberValueChanged(); // will automatically freeRenderer on Numerator on smallest on the last attack
-
-		if( Defender.Numerator.Number.Value < 1 )
-		{ 
-			RendererFactory.use.FreeRenderer( Defender.Denominator );
-		}
-
 	}
 }

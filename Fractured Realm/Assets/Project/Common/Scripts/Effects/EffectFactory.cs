@@ -74,6 +74,14 @@ public class EffectFactory : LugusSingletonExisting<EffectFactory>
 		int index = GetEffectIndexForType(type);
 		return (Effect) GameObject.Instantiate( effects[index + 1] );
 	}
+
+	public Effect CreateEffect( FR.Target side, FR.EffectType type )
+	{
+		if( side.HasNumerator() )
+			return CreateEffectNormal( type );
+		else
+			return CreateEffectSpirit( type );
+	}
 	
 	public void FreeEffect( Effect effect )
 	{
