@@ -71,7 +71,7 @@ public class AnimationTemplateGeneratorHelper
 		// stores FROM -> TO of the animation stages
 		Dictionary<string,string> stages = new Dictionary<string, string>();
 		stages.Add("Starter", "Receiver");
-		stages.Add("Ascend", "Descend");
+		stages.Add("Descend", "Ascend");
 		stages.Add("Attacks", "Hits");
 
 		if( stages.ContainsKey(animationStage) )

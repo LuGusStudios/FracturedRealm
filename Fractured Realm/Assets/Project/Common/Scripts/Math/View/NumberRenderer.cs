@@ -18,6 +18,23 @@ public class NumberRenderer : MonoBehaviour
 		get{ return _spawnPosition; }
 		set{ _spawnPosition = value; }
 	}
+
+	// these fields are needed for the divide visualizations, where we have objects in the numerator world that should be renderer as spirits
+	[SerializeField]
+	protected bool _visualizedAsNumerator = true;
+	
+	public bool VisualizedAsNumerator
+	{
+		get{ return _visualizedAsNumerator; } 
+		set{ _visualizedAsNumerator = value; }
+	}
+	
+	public bool VisualizedAsDenominator
+	{
+		get{ return !_visualizedAsNumerator; }
+		set{ _visualizedAsNumerator = !value; }
+	}
+
 	
 	private void InitiateRenderers()
 	{

@@ -21,6 +21,11 @@ public class OperationVisualizerOPERATIONSTAGEANIMATION : OperationVisualizerOPE
 		NEXTANIMATION
 	}
 
+	public override float ApproximateDuration()
+	{
+		return -1.0f; // number < 0 means no length is known
+	}
+
 	public override IEnumerator Visualize(OperationState current, OperationState target)
 	{
 		return base.Visualize( current, target );

@@ -64,6 +64,15 @@ public class NumberAnimator : MonoBehaviour
 		return LugusCoroutines.use.StartRoutine( LugusCoroutineUtil.DelayRoutine(effect.Duration()) );
 	}
 
+	public ILugusCoroutineHandle RotateTowardsCamera()
+	{
+		if( this.Renderer.Number.IsNumerator )
+			return RotateTowards( LugusCamera.numerator.transform.position );
+		else
+			return RotateTowards( LugusCamera.denominator.transform.position );
+
+	}
+
 	public ILugusCoroutineHandle RotateTowards( NumberRenderer target )
 	{
 		Vector3 targetPos = GetOpponentPosition( target );

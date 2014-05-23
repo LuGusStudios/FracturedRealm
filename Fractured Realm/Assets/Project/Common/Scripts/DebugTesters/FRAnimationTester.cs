@@ -110,7 +110,7 @@ public class FRAnimationTester : LugusSingletonRuntime<FRAnimationTester>
 					continue;
 				}
 
-				if( GUILayout.Button("\n" + animationData.name + "\n") )
+				if( GUILayout.Button("\n" + animationData.name + " " + ( (int) animationData.visualizer.GetImplementationStatus() ) + "\n") )
 				{
 					Debug.Log ("Start animation " + animationData.name);
 					this.gameObject.StartLugusRoutine( TestAnimationRoutine(animationData) );

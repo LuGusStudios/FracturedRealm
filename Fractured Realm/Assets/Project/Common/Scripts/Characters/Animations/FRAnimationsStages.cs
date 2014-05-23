@@ -53,10 +53,12 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		_operationAnimations[ FR.OperationType.ADD ].Add( FR.Animation.supermanJump );
 
 		_operationAnimations[ FR.OperationType.DIVIDE ] = new List<FR.Animation>();
-		_operationAnimations[ FR.OperationType.DIVIDE ].Add( FR.Animation.flapWings );
-		_operationAnimations[ FR.OperationType.DIVIDE ].Add( FR.Animation.jetFart );
-		_operationAnimations[ FR.OperationType.DIVIDE ].Add( FR.Animation.lotus );
-		_operationAnimations[ FR.OperationType.DIVIDE ].Add( FR.Animation.tractorBeam );
+		_operationAnimations[ FR.OperationType.DIVIDE ].Add( FR.Animation.waveAndDrop );
+		_operationAnimations[ FR.OperationType.DIVIDE ].Add( FR.Animation.shrugAndDrop );
+		//_operationAnimations[ FR.OperationType.DIVIDE ].Add( FR.Animation.flapWings );
+		//_operationAnimations[ FR.OperationType.DIVIDE ].Add( FR.Animation.jetFart );
+		//_operationAnimations[ FR.OperationType.DIVIDE ].Add( FR.Animation.lotus );
+		//_operationAnimations[ FR.OperationType.DIVIDE ].Add( FR.Animation.tractorBeam );
 
 		_operationAnimations[ FR.OperationType.MULTIPLY ] = new List<FR.Animation>();
 		_operationAnimations[ FR.OperationType.MULTIPLY ].Add( FR.Animation.featherPlop );

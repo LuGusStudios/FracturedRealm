@@ -36,6 +36,11 @@ public class IOperationVisualizer
 		return FR.Animation.NONE;
 	}
 
+	// returns a number < 0 if length is not known / should not be used
+	public virtual float ApproximateDuration()
+	{
+		return -1.0f; 
+	}
 	
 	protected List<FR.Animation> _nextAnimations = null;
 	public List<FR.Animation> NextAnimations

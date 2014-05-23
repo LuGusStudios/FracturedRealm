@@ -18,26 +18,26 @@ public class OperationVisualizerAdd : IOperationVisualizer
 		Debug.Log ("OperationVisualizerAdd : Visualize : " + current + " TO " + target);
 		
 		
-		FractionRenderer Runner = current.StartFraction.Renderer;
+		FractionRenderer Starter = current.StartFraction.Renderer;
 		FractionRenderer Receiver = current.StopFraction.Renderer;
 
-		yield return LugusCoroutines.use.StartRoutine( VisualizeAnimation(Runner, Receiver) ).Coroutine;
+		yield return LugusCoroutines.use.StartRoutine( VisualizeAnimation(Starter, Receiver) ).Coroutine;
 		
 		// wait untill the height of the hit effect (covering all)
 		yield return new WaitForSeconds(0.2f);
 
-		Runner.Fraction.Numerator.Value = target.StartFraction.Numerator.Value;
-		Runner.Fraction.Denominator.Value = target.StartFraction.Denominator.Value;
+		Starter.Fraction.Numerator.Value = target.StartFraction.Numerator.Value;
+		Starter.Fraction.Denominator.Value = target.StartFraction.Denominator.Value;
 
-		if( Runner.Fraction.Numerator.Value != 0 )
-			Runner.Numerator.NumberValueChanged();
+		if( Starter.Fraction.Numerator.Value != 0 )
+			Starter.Numerator.NumberValueChanged();
 		
-		if( Runner.Fraction.Denominator.Value != 0 )
-			Runner.Denominator.NumberValueChanged();
+		if( Starter.Fraction.Denominator.Value != 0 )
+			Starter.Denominator.NumberValueChanged();
 
 		RendererFactory.use.FreeRenderer( Receiver );
 
-		yield return Runner.Animator.RotateTowardsCamera().Coroutine;
+		yield return Starter.Animator.RotateTowardsCamera().Coroutine;
 
 		CheckOutcome(current, target);
 		
