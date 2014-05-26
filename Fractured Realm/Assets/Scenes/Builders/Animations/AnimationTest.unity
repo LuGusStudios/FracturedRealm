@@ -1703,7 +1703,7 @@ Transform:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-  m_PrefabInternal: {fileID: 2008392355}
+  m_PrefabInternal: {fileID: 1098820555}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 105263294}
@@ -1723,7 +1723,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400004, guid: 30cafdf4131e44c14b412965da496799,
     type: 2}
-  m_PrefabInternal: {fileID: 2008392355}
+  m_PrefabInternal: {fileID: 1098820555}
   m_GameObject: {fileID: 105263290}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -1745,7 +1745,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799,
     type: 2}
-  m_PrefabInternal: {fileID: 2008392355}
+  m_PrefabInternal: {fileID: 1098820555}
   m_GameObject: {fileID: 105263290}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -1973,7 +1973,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400000, guid: 30cafdf4131e44c14b412965da496799,
     type: 2}
-  m_PrefabInternal: {fileID: 2008392355}
+  m_PrefabInternal: {fileID: 1098820555}
   m_GameObject: {fileID: 105263290}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -2001,7 +2001,7 @@ MonoBehaviour:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-  m_PrefabInternal: {fileID: 2008392355}
+  m_PrefabInternal: {fileID: 1098820555}
   m_GameObject: {fileID: 105263290}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -2013,7 +2013,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400006, guid: 30cafdf4131e44c14b412965da496799,
     type: 2}
-  m_PrefabInternal: {fileID: 2008392355}
+  m_PrefabInternal: {fileID: 1098820555}
   m_GameObject: {fileID: 105263290}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -2021,6 +2021,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   props:
+  - {fileID: 11400000, guid: 700e5e7a84a584385be08f23b9fa3fe2, type: 2}
   - {fileID: 11400000, guid: 91e940fe7763d478b83147a8ac008124, type: 2}
   - {fileID: 11400000, guid: f2ecb32a17b694c70b3f645ce73c13dc, type: 2}
 --- !u!1 &105318144
@@ -2312,7 +2313,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 124701761}
-  m_LocalRotation: {x: -.503250897, y: .863881469, z: .00871487241, w: .0192749482}
+  m_LocalRotation: {x: -.503250837, y: .86388135, z: .00871487148, w: .0192749463}
   m_LocalPosition: {x: -.796077907, y: 1.32021618, z: -.772104263}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -6301,7 +6302,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 311788002}
-  m_LocalRotation: {x: -.503250897, y: .863881469, z: .00871487241, w: .0192749482}
+  m_LocalRotation: {x: -.503250837, y: .86388135, z: .00871487148, w: .0192749463}
   m_LocalPosition: {x: -.796077907, y: 1.32021618, z: -.772104263}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -8314,7 +8315,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 422259219}
-  m_LocalRotation: {x: -.503250897, y: .863881469, z: .00871487241, w: -.0192749482}
+  m_LocalRotation: {x: -.503250837, y: .86388135, z: .00871487148, w: -.0192749463}
   m_LocalPosition: {x: -.599709928, y: -9.97660436e-07, z: -2.4292051e-06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -9073,7 +9074,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 466739449}
-  m_LocalRotation: {x: -.503250897, y: .863881469, z: .00871487241, w: .0192749482}
+  m_LocalRotation: {x: -.503250837, y: .86388135, z: .00871487148, w: .0192749463}
   m_LocalPosition: {x: -.796077907, y: 1.32021618, z: -.772104263}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -15138,7 +15139,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 823103900}
-  m_LocalRotation: {x: -.503250897, y: .863881469, z: .00871487241, w: -.0192749482}
+  m_LocalRotation: {x: -.503250837, y: .86388135, z: .00871487148, w: -.0192749463}
   m_LocalPosition: {x: -.599709928, y: -9.97660436e-07, z: -2.4292051e-06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -19612,7 +19613,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1038278997}
-  m_LocalRotation: {x: -.503250897, y: .863881469, z: .00871487241, w: -.0192749482}
+  m_LocalRotation: {x: -.503250837, y: .86388135, z: .00871487148, w: -.0192749463}
   m_LocalPosition: {x: -.599709928, y: -9.97660436e-07, z: -2.4292051e-06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -20202,7 +20203,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1070495619}
-  m_LocalRotation: {x: -.503250897, y: .863881469, z: .00871487241, w: .0192749482}
+  m_LocalRotation: {x: -.503250837, y: .86388135, z: .00871487148, w: .0192749463}
   m_LocalPosition: {x: -.796077907, y: 1.32021618, z: -.772104263}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -20908,6 +20909,46 @@ Transform:
   m_Children:
   - {fileID: 1456455962}
   m_Father: {fileID: 1502519376}
+--- !u!1001 &1098820555
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
+  m_RootGameObject: {fileID: 105263290}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
 --- !u!1 &1101146329
 GameObject:
   m_ObjectHideFlags: 0
@@ -21570,7 +21611,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1134997737}
-  m_LocalRotation: {x: -.503250897, y: .863881469, z: .00871487241, w: -.0192749482}
+  m_LocalRotation: {x: -.503250837, y: .86388135, z: .00871487148, w: -.0192749463}
   m_LocalPosition: {x: -.599709928, y: -9.97660436e-07, z: -2.4292051e-06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -23501,7 +23542,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1236459168}
-  m_LocalRotation: {x: -.503250897, y: .863881469, z: .00871487241, w: -.0192749482}
+  m_LocalRotation: {x: -.503250837, y: .86388135, z: .00871487148, w: -.0192749463}
   m_LocalPosition: {x: -.599709928, y: -9.97660436e-07, z: -2.4292051e-06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -27662,7 +27703,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1453035590}
-  m_LocalRotation: {x: -.503250897, y: .863881469, z: .00871487241, w: -.0192749482}
+  m_LocalRotation: {x: -.503250837, y: .86388135, z: .00871487148, w: -.0192749463}
   m_LocalPosition: {x: -.599709928, y: -9.97660436e-07, z: -2.4292051e-06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -28995,7 +29036,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1537967387}
-  m_LocalRotation: {x: -.503250897, y: .863881469, z: .00871487241, w: .0192749482}
+  m_LocalRotation: {x: -.503250837, y: .86388135, z: .00871487148, w: .0192749463}
   m_LocalPosition: {x: -.796077907, y: 1.32021618, z: -.772104263}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -32443,7 +32484,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1744907092}
-  m_LocalRotation: {x: -.503250897, y: .863881469, z: .00871487241, w: .0192749482}
+  m_LocalRotation: {x: -.503250837, y: .86388135, z: .00871487148, w: .0192749463}
   m_LocalPosition: {x: -.796077907, y: 1.32021618, z: -.772104263}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -33531,7 +33572,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1817029982}
-  m_LocalRotation: {x: -.503250897, y: .863881469, z: .00871487241, w: -.0192749482}
+  m_LocalRotation: {x: -.503250837, y: .86388135, z: .00871487148, w: -.0192749463}
   m_LocalPosition: {x: -.599709928, y: -9.97660436e-07, z: -2.4292051e-06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -33612,7 +33653,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1829887907}
-  m_LocalRotation: {x: -.503250897, y: .863881469, z: .00871487241, w: .0192749482}
+  m_LocalRotation: {x: -.503250837, y: .86388135, z: .00871487148, w: .0192749463}
   m_LocalPosition: {x: -.796077907, y: 1.32021618, z: -.772104263}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -34200,7 +34241,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1858302154}
-  m_LocalRotation: {x: -.503250897, y: .863881469, z: .00871487241, w: .0192749482}
+  m_LocalRotation: {x: -.503250837, y: .86388135, z: .00871487148, w: .0192749463}
   m_LocalPosition: {x: -.796077907, y: 1.32021618, z: -.772104263}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -36049,286 +36090,6 @@ Transform:
   m_Children:
   - {fileID: 401075855}
   m_Father: {fileID: 1286399654}
---- !u!1001 &2008392355
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._numerator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._numerator._fraction._numerator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._numerator._fraction._numerator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._numerator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._numerator._fraction._denominator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._numerator._fraction._denominator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._denominator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._denominator._fraction._numerator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._denominator._fraction._numerator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._denominator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._denominator._fraction._denominator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._numerator._fraction._denominator._fraction._denominator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._numerator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._numerator._fraction._numerator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._numerator._fraction._numerator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._numerator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._numerator._fraction._denominator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._numerator._fraction._denominator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._denominator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._denominator._fraction._numerator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._denominator._fraction._numerator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._denominator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._denominator._fraction._denominator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[0]._denominator._fraction._denominator._fraction._denominator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._numerator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._numerator._fraction._numerator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._numerator._fraction._numerator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._numerator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._numerator._fraction._denominator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._numerator._fraction._denominator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._denominator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._denominator._fraction._numerator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._denominator._fraction._numerator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._denominator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._denominator._fraction._denominator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._numerator._fraction._denominator._fraction._denominator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._numerator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._numerator._fraction._numerator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._numerator._fraction._numerator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._numerator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._numerator._fraction._denominator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._numerator._fraction._denominator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._denominator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._denominator._fraction._numerator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._denominator._fraction._numerator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._denominator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._denominator._fraction._denominator._fraction._numerator._value
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-      propertyPath: debug_initialFractions.Array.data[1]._denominator._fraction._denominator._fraction._denominator._fraction._denominator._value
-      value: 2
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 30cafdf4131e44c14b412965da496799, type: 2}
-  m_RootGameObject: {fileID: 105263290}
-  m_IsPrefabParent: 0
-  m_IsExploded: 1
 --- !u!1 &2008889796
 GameObject:
   m_ObjectHideFlags: 0
@@ -37531,7 +37292,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2046718936}
-  m_LocalRotation: {x: -.503250897, y: .863881469, z: .00871487241, w: -.0192749482}
+  m_LocalRotation: {x: -.503250837, y: .86388135, z: .00871487148, w: -.0192749463}
   m_LocalPosition: {x: -.599709928, y: -9.97660436e-07, z: -2.4292051e-06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []

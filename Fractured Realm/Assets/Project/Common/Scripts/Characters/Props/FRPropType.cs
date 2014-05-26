@@ -10,8 +10,9 @@ namespace FR
 		NONE = -1,
 		
 		
-		Football = 1,
-		Magnet = 2,
+		BlackHole = 1,
+		Football = 2,
+		Magnet = 3,
 
 	}
 }
