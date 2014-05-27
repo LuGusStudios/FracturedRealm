@@ -12,7 +12,7 @@ public class OperationVisualizerAdd_Starter_magnetAtrractRight : OperationVisual
 
 	public override FR.VisualizerImplementationStatus GetImplementationStatus()
 	{
-		return FR.VisualizerImplementationStatus.IN_PROGRESS;
+		return FR.VisualizerImplementationStatus.IMPLEMENTED;
 	}
 
 	protected override void PrepareNextAnimations() 
@@ -21,11 +21,6 @@ public class OperationVisualizerAdd_Starter_magnetAtrractRight : OperationVisual
 
 		_nextAnimations.Add(FR.Animation.magnetAttractedSideLeft);
 		_nextAnimations.Add(FR.Animation.magnetAttractedSideRight);
-	}
-
-	public override IEnumerator Visualize(OperationState current, OperationState target)
-	{
-		return base.Visualize( current, target );
 	}
 
 	public override IEnumerator VisualizeAnimationPart( FR.Target part, NumberRenderer Starter, NumberRenderer Receiver )

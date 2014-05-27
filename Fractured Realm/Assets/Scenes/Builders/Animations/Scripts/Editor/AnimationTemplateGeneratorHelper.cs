@@ -377,4 +377,251 @@ public class AnimationTemplateGeneratorHelper
 		
 		// ex. call GetAssetsInFolderRecursive("Project/CharactersNew/Animations", "", output);
 	}
+
+	public static void GenerateHTMLAnimationBreakdown( UnityEditorInternal.AnimatorController ac)
+	{
+		string codePath = Application.dataPath + "/" + "Project/Common/Scripts/Characters/Animations/OperationVisualizers/";
+		string outputPath = Application.dataPath + "/" + "Scenes/Builders/Animations/Output/";
+		
+		
+		if( !Directory.Exists( codePath ) )
+		{
+			Debug.LogError("GenerateHTMLAnimationBreakdown : codePath does not exist! " + codePath);
+			return;
+		}
+		
+		if( !Directory.Exists( outputPath ) )
+		{
+			Debug.LogError("GenerateHTMLAnimationBreakdown : outputPath does not exist! " + outputPath);
+			return;
+		}
+
+		List<string> processedOperationStages = new List<string>(); // keep track of generated files
+		
+		List<FRAnimationData> animations = new List<FRAnimationData>();
+		RetrieveAnimationsFromController(0, ac.GetLayer(0).stateMachine, animations );
+		
+		Dictionary<FR.OperationType, List<FRAnimationData>> starterAnimations = new Dictionary<FR.OperationType, List<FRAnimationData>>();
+		Dictionary<FR.OperationType, List<FRAnimationData>> stage2Animations = new Dictionary<FR.OperationType, List<FRAnimationData>>(); 
+
+		
+		// first pass: gather info about various stages and generate stage-base classes where needed
+		foreach( FRAnimationData animation in animations )
+		{
+			if( animation.operation == FR.OperationType.NONE )
+				continue; 
+
+			if( !starterAnimations.ContainsKey(animation.operation) )
+				starterAnimations[ animation.operation ] = new List<FRAnimationData>();
+			if( !stage2Animations.ContainsKey(animation.operation) )
+				stage2Animations[ animation.operation ] = new List<FRAnimationData>();
+
+
+			if( animation.stage == FR.AnimationStage.Stage1 || animation.stage == FR.AnimationStage.NONE )
+				starterAnimations[ animation.operation ].Add( animation );
+			if( animation.stage == FR.AnimationStage.Stage2 )
+				stage2Animations[ animation.operation ].Add( animation );
+		}
+
+		string itemTemplate = "";
+		itemTemplate = File.ReadAllText( outputPath + "animationItemTemplate.html" );
+
+		FRAnimations.use.FillDictionary();
+
+		string output = "";
+		foreach( FR.OperationType operation in starterAnimations.Keys )
+		{
+			output += "<div class=\"operationBox\">";
+			output += "<h1>" + operation + " (" + (starterAnimations[operation].Count) + ")</h1>";
+
+			Comparison<FRAnimationData> comparison = delegate( FRAnimationData g1, FRAnimationData g2 )
+			{ 		
+				
+				g1.type = (FR.Animation) Enum.Parse( typeof(FR.Animation), g1.name );
+				g1 = FRAnimations.use.animations[ (int) g1.type ];
+				
+				g2.type = (FR.Animation) Enum.Parse( typeof(FR.Animation), g2.name );
+				g2 = FRAnimations.use.animations[ (int) g2.type ];
+				
+				// < 0 : g1 precedes g2
+				// > 0 : g1 follows g2
+
+				// want to reverse sort by enum int value here : first finished, then testing, in progress, none
+
+				if( ( (int) g1.visualizer.GetImplementationStatus()) > ( (int) g2.visualizer.GetImplementationStatus()) )
+					return -1;
+				else
+					return 1;
+			};
+
+			starterAnimations[ operation ].Sort( comparison );
+			stage2Animations[ operation ].Sort( comparison );
+
+			foreach( FRAnimationData animation in starterAnimations[ operation ] )
+			{
+				output += FillAnimationHTMLTemplate( animation, itemTemplate );
+			}
+
+			output += "<div class=\"clearer\"></div>";
+			
+			foreach( FRAnimationData animation in stage2Animations[ operation ] )
+			{
+				output += FillAnimationHTMLTemplate( animation, itemTemplate );
+			}
+			
+			output += "<div class=\"clearer\"></div>";
+			output += "</div>";
+		}
+
+
+		
+		string template = File.ReadAllText( outputPath + "indexTemplate.html" );
+		template = template.Replace( "/*", "" );
+		template = template.Replace( "*/", "" );
+		
+		template = template.Replace("{CONTENT}", output );
+		
+		if( File.Exists( outputPath + "index.html" ) )
+		{
+			File.Delete( outputPath + "index.html" );
+		}
+		
+		File.WriteAllText( outputPath + "index.html", template );
+	}
+
+	protected static string FillAnimationHTMLTemplate( FRAnimationData animation, string template )
+	{
+		List<string> errors = new List<string>();
+
+		string status = "error";
+
+		// the animation.type hasn't been assigned as of yet! construct it, and use FRAnimations to get full FRAnimationData
+		animation.type = (FR.Animation) Enum.Parse( typeof(FR.Animation), animation.name );
+
+		//Debug.Log ("ANIMATION " + animation.type);
+
+		animation = FRAnimations.use.animations[ (int) animation.type ]; // same data, but with all variables filled in!
+
+		IOperationVisualizer visualizer = animation.visualizer;
+		if( visualizer != null )
+		{
+			status = "Status" + visualizer.GetImplementationStatus();
+		}
+		else
+		{
+			Debug.LogError("FillAnimationHTMLTemplate: " + animation.name + " has no visualizer!!!");
+			errors.Add("No visualizer known!");
+		}
+
+		string description = "";
+
+		string stageName = "";
+		if( animation.stage == FR.AnimationStage.NONE )
+			stageName = "Stage0";
+		else
+			stageName = "" + animation.stage;
+
+		string nextAnimations = "";
+
+		List<FR.Animation> nexts = visualizer.NextAnimations;
+		foreach( FR.Animation next in nexts )
+		{
+			nextAnimations += "- " + next + "<br/>";
+		}
+
+		if( nextAnimations != "" )
+		{
+			nextAnimations = "NextAnimations:<br/>" + nextAnimations;
+		}
+
+		if( animation.stage == FR.AnimationStage.Stage1 && nextAnimations == "" )
+		{
+			// no follow-up animations for stage 1 : that's a paddlin'!
+			errors.Add("No NextAnimations() known for this stage1 animation! Expected at least 1");
+		}
+
+		if( visualizer.GetImplementationStatus() != FR.VisualizerImplementationStatus.NONE )
+		{
+			float duration = visualizer.ApproximateDuration();
+			if( duration < 0.0f )
+			{
+				// not really necessary at this time, not used anywhere...
+				//errors.Add("ApproximateDuration is negative!");
+			}
+			else
+			{
+				description += "(" + duration + "s) ";
+			}
+
+			if( visualizer is OperationVisualizerDivide )
+			{
+				float transitionTime = ( (OperationVisualizerDivide) visualizer ).TimeToTransition();
+				if( transitionTime < 0.0f )
+				{
+					errors.Add("TimeToTransition is negative! " + transitionTime);
+				}
+			}
+		}
+
+
+
+		List<string> todos = new List<string>();
+
+		string filePath = Application.dataPath + "/" + "Project/Common/Scripts/Characters/Animations/OperationVisualizers/";
+		filePath += animation.VisualizerClassName() + ".cs";
+
+		if( !File.Exists(filePath) )
+		{
+			errors.Add("No .cs file exists for this animation! Expected " + animation.VisualizerClassName() );
+		}
+		else
+		{
+			string fileContents = File.ReadAllText( filePath );
+			string[] lines = fileContents.Split('\n');
+
+			foreach( string line in lines )
+			{
+				if( line.Contains("TODO") || line.Contains("Todo") || line.Contains("todo") ||
+				   line.Contains("FIXME")|| line.Contains("Fixme") || line.Contains("fixme") )
+				{
+					todos.Add( line.Trim() );
+				}
+			}
+		}
+
+
+
+		description += "" + stageName;
+
+		string output = template;
+		output = output.Replace("{NAME}", animation.originalStageName + "_" + animation.name);
+		output = output.Replace("{DESCRIPTION}", "" + description);
+
+		string classnames = "animation " + stageName + " " + status; 
+
+		string errorOut = "";
+		if( errors.Count != 0 )
+		{
+			foreach( string error in errors ) 
+			{
+				errorOut += "<div class=\"errorEntry\">" + error + "</div><br/>";
+			}
+
+			classnames += " error"; 
+		}
+
+		string todoOut = "";
+		foreach( string todo in todos )
+		{
+			todoOut += "<div class=\"todoEntry\">"+ todo +"</div>";
+		}
+
+		output = output.Replace("{CLASS}", classnames);
+		output = output.Replace("{NEXT_ANIMATIONS}", nextAnimations);
+		
+		output = output.Replace("{ERRORS}", errorOut);
+		output = output.Replace("{TODOS}", todoOut);
+
+		return output;
+	}
 }

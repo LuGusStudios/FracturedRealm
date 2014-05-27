@@ -12,7 +12,7 @@ public class OperationVisualizerSubtract_Attacks_throwAmericanFootballRightHand 
 
 	public override FR.VisualizerImplementationStatus GetImplementationStatus()
 	{
-		return FR.VisualizerImplementationStatus.IN_PROGRESS;
+		return FR.VisualizerImplementationStatus.TESTING;
 	}
 
 	protected override void PrepareNextAnimations() 
@@ -23,11 +23,6 @@ public class OperationVisualizerSubtract_Attacks_throwAmericanFootballRightHand 
 		_nextAnimations.Add(FR.Animation.hitSideLeft);
 		_nextAnimations.Add(FR.Animation.hitSideRight);
 
-	}
-
-	public override IEnumerator Visualize(OperationState current, OperationState target)
-	{
-		return base.Visualize( current, target );
 	}
 
 	public override IEnumerator VisualizeAnimationPart( FR.Target part, NumberRenderer Attacker, NumberRenderer Defender )
@@ -44,6 +39,8 @@ public class OperationVisualizerSubtract_Attacks_throwAmericanFootballRightHand 
 		football.transform.localEulerAngles = new Vector3(318.2309f, 159.6911f, 14.3963f);
 
 		yield return new WaitForSeconds(1.084f);
+
+		// TODO: make football move in an arc (iTween.MoveTo path?)
 
 		football.transform.parent = null;
 		football.transform.localEulerAngles = new Vector3(318.2309f, 159.6911f, 14.3963f);

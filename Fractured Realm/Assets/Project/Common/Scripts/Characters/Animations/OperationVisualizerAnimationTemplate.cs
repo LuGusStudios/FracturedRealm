@@ -26,9 +26,9 @@ public class OperationVisualizerOPERATIONSTAGEANIMATION : OperationVisualizerOPE
 		return -1.0f; // number < 0 means no length is known
 	}
 
-	public override IEnumerator Visualize(OperationState current, OperationState target)
+	public override IEnumerator VisualizeAnimationPart( FR.Target part, NumberRenderer Attacker, NumberRenderer Defender )
 	{
-		return base.Visualize( current, target );
+		return base.VisualizeAnimationPart( part, Attacker, Defender );
 	}
 }
 */

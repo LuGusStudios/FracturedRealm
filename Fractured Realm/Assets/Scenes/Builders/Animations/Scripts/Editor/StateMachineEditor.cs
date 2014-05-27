@@ -355,6 +355,13 @@ public class StateMachineManipulatorWindow : EditorWindow
 			AnimationTemplateGeneratorHelper.GenerateOperationVisualizerClasses( ac );
 		}
 		EditorGUILayout.EndHorizontal();
+		
+		EditorGUILayout.BeginHorizontal();
+		if( GUILayout.Button("\n\nBuild HTML output\n\n") )
+		{
+			AnimationTemplateGeneratorHelper.GenerateHTMLAnimationBreakdown( ac );
+		}
+		EditorGUILayout.EndHorizontal();
 		EditorGUILayout.EndVertical();
 
 		

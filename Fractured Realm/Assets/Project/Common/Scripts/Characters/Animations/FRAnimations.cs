@@ -461,7 +461,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.hash = -1694428202;
 		animation.parentName = "Divide.Ascend";
 		animation.layer = 0;
-		animation.stage = FR.AnimationStage.Stage1;
+		animation.stage = FR.AnimationStage.Stage2;
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Ascend";
@@ -474,7 +474,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.hash = -318687071;
 		animation.parentName = "Divide.Ascend";
 		animation.layer = 0;
-		animation.stage = FR.AnimationStage.Stage1;
+		animation.stage = FR.AnimationStage.Stage2;
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Ascend";
@@ -487,7 +487,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.hash = 1603903191;
 		animation.parentName = "Divide.Ascend";
 		animation.layer = 0;
-		animation.stage = FR.AnimationStage.Stage1;
+		animation.stage = FR.AnimationStage.Stage2;
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Ascend";
@@ -500,7 +500,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.hash = 1651649906;
 		animation.parentName = "Divide.Ascend";
 		animation.layer = 0;
-		animation.stage = FR.AnimationStage.Stage1;
+		animation.stage = FR.AnimationStage.Stage2;
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Ascend";
@@ -513,7 +513,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.hash = -615105667;
 		animation.parentName = "Divide.Descend";
 		animation.layer = 0;
-		animation.stage = FR.AnimationStage.Stage2;
+		animation.stage = FR.AnimationStage.Stage1;
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Descend";
@@ -526,7 +526,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.hash = -642342877;
 		animation.parentName = "Divide.Descend";
 		animation.layer = 0;
-		animation.stage = FR.AnimationStage.Stage2;
+		animation.stage = FR.AnimationStage.Stage1;
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Descend";
@@ -539,7 +539,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.hash = 795621940;
 		animation.parentName = "Divide.Descend";
 		animation.layer = 0;
-		animation.stage = FR.AnimationStage.Stage2;
+		animation.stage = FR.AnimationStage.Stage1;
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Descend";
@@ -552,7 +552,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.hash = 392890495;
 		animation.parentName = "Divide.Descend";
 		animation.layer = 0;
-		animation.stage = FR.AnimationStage.Stage2;
+		animation.stage = FR.AnimationStage.Stage1;
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Descend";
@@ -565,7 +565,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.hash = -949686227;
 		animation.parentName = "Divide.Descend";
 		animation.layer = 0;
-		animation.stage = FR.AnimationStage.Stage2;
+		animation.stage = FR.AnimationStage.Stage1;
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Descend";
@@ -578,7 +578,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.hash = -1200648783;
 		animation.parentName = "Divide.Descend";
 		animation.layer = 0;
-		animation.stage = FR.AnimationStage.Stage2;
+		animation.stage = FR.AnimationStage.Stage1;
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Descend";
@@ -591,7 +591,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.hash = -1570082847;
 		animation.parentName = "Divide.Descend";
 		animation.layer = 0;
-		animation.stage = FR.AnimationStage.Stage2;
+		animation.stage = FR.AnimationStage.Stage1;
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Descend";
@@ -604,7 +604,7 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		animation.hash = -1921503477;
 		animation.parentName = "Divide.Descend";
 		animation.layer = 0;
-		animation.stage = FR.AnimationStage.Stage2;
+		animation.stage = FR.AnimationStage.Stage1;
 		animation.operation = FR.OperationType.DIVIDE;
 		animation.originalOperationName = "Divide";
 		animation.originalStageName = "Descend";
