@@ -55,6 +55,8 @@ public class OperationVisualizerDivide_Descend_waveAndDrop : OperationVisualizer
 
 		// move original off screen down (through the black hole)
 		original.gameObject.MoveTo( original.transform.position.yAdd( -6.0f ) ).Time (0.5f).Execute();
+		
+		yield return new WaitForSeconds(1.0f);
 
 		second.Animator.CrossFade( FR.Animation.ironManFall );
 		second.gameObject.MoveTo( animationPartTarget ).Time (0.45f).Execute();

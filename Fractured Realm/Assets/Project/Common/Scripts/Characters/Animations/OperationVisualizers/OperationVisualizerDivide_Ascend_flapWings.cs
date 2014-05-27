@@ -43,13 +43,17 @@ public class OperationVisualizerDivide_Ascend_flapWings : OperationVisualizerDiv
 		yield return new WaitForSeconds( 1.4985f );
 
 		original.gameObject.MoveTo( original.transform.position + new Vector3(0,8,0)).Time (2.0f).Execute();
+
+
 		
+		yield return new WaitForSeconds(1.0f); // wait for 1 second with both offscreen to prevent clipping
+
 		//second.transform.position = second.transform.position.yAdd( -3.7243f ); // shift a little down to compensate for root motion
 		second.transform.position = second.transform.position.yAdd( 2.25f ); // shift a little down to compensate for root motion
 		second.Animator.CrossFade( this.AnimationType() );
 
 
-		yield return new WaitForSeconds( 1.8348f );
+		yield return new WaitForSeconds( 0.8348f );
 
 		
 		// move original off screen down (through the black hole)
