@@ -15,7 +15,7 @@ public class Rotator : MonoBehaviour
     {
         if (pingPongRotation)
         {
-            iTween.RotateBy(gameObject, iTween.Hash(
+            iTween.RotateBy(this.gameObject, iTween.Hash(
             "amount", rotation,
             "time", time,
             "easetype", iTween.EaseType.easeInOutQuad,
@@ -23,7 +23,7 @@ public class Rotator : MonoBehaviour
             "space", Space.World));
         }
 
-        iTween.MoveBy(gameObject, iTween.Hash(
+        iTween.MoveBy(this.gameObject, iTween.Hash(
         "amount", hoverDistance,
         "time", time,
         "easetype", iTween.EaseType.easeInOutQuad,

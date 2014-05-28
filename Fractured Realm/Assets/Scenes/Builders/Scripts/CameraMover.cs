@@ -8,6 +8,7 @@ public class CameraMover : MonoBehaviour
     public float startingXposition = -40;
     public float endingXposition = 0;
     public float seconds = 15;
+    public bool allowMoving = true;
 
 
 	void Start () 
@@ -24,19 +25,22 @@ public class CameraMover : MonoBehaviour
         }
 	}
 
-    void OnGUI()
-    {
-        if (GUI.Button(new Rect(10, 10, 100, 50), "Restart"))
-        {
-            FRCamera.transform.position = new Vector3(startingXposition, 0, 0);
-            StartCoroutine(MoveCamera());
-        }
-    }
+    //void OnGUI()
+    //{
+    //    if (GUI.Button(new Rect(10, 10, 100, 50), "Restart"))
+    //    {
+    //        FRCamera.transform.position = new Vector3(startingXposition, 0, 0);
+    //        StartCoroutine(MoveCamera());
+    //    }
+    //}
 
     IEnumerator MoveCamera()
     {
-        yield return new WaitForSeconds(.8f);
+        if (allowMoving)
+        {
+            yield return new WaitForSeconds(.8f);
 
-        FRCamera.MoveTo(new Vector3(endingXposition, 0, 0)).Time(seconds).EaseType(easeType).Execute();
+            FRCamera.MoveTo(new Vector3(endingXposition, 0, 0)).Time(seconds).EaseType(easeType).Execute();
+        }
     }
 }

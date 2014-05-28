@@ -53,4 +53,10 @@ public class EditorTools : MonoBehaviour
 			
 		Selection.objects = new Object[]{go};	
 	}
+
+    [MenuItem("GameObject/Select Parent %w")]
+    static void SelectParent()
+    {
+        Selection.activeGameObject = Selection.activeGameObject.transform.parent.gameObject;
+    }
 }

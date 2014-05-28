@@ -67,7 +67,7 @@ public class InteractionGroup : MonoBehaviour
 		}
 	}
 	
-	void OnDrawGizmosSelected()
+	void OnDrawGizmos()
 	{	
 		/*
 		if( this.defaultSceneStartPosition )

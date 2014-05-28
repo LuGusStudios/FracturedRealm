@@ -4,7 +4,7 @@ using UnityEditor;
 
 public class SelectCamera : EditorWindow
 {
-    [MenuItem("Lugus/Select Camera")]
+    [MenuItem("FR/Select Camera")]
 
     static void Init()
     {
@@ -15,7 +15,6 @@ public class SelectCamera : EditorWindow
     {
         if (GUILayout.Button("Select FRCameras", GUILayout.Height(100)))
         {
-
             GameObject FRCameras = GameObject.Find("FRCameras");
 
             if (FRCameras == null)
@@ -25,6 +24,20 @@ public class SelectCamera : EditorWindow
             }
 
             Selection.activeTransform = FRCameras.transform;
+        }
+
+
+        if (GUILayout.Button("Select CameraMover", GUILayout.Height(50)))
+        {
+            GameObject cameraMover = GameObject.Find("CameraMover");
+
+            if (cameraMover == null)
+            {
+                Debug.Log("SelectCamera: There is no CameraMover in the scene");
+                return;
+            }
+
+            Selection.activeTransform = cameraMover.transform;
         }
 
 		GUILayout.BeginVertical();
@@ -57,5 +70,6 @@ public class SelectCamera : EditorWindow
 		}
 
 		GUILayout.EndVertical();
+
     }
 }

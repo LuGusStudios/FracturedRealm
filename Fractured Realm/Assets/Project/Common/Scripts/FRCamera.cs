@@ -178,6 +178,9 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 	public void DrawInteractionGroupSelectionGUI()
 	{
 		World world = GameObject.FindObjectOfType<World>();
+
+        if (world == null)
+            return;
  
 		int groupCount = 0;
 		if( world.numerator != null )
