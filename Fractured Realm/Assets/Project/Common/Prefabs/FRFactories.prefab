@@ -70,15 +70,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldParts_Fire:
-  - {fileID: 11400006, guid: a23fa38a55f4748f2a2811fd4bc01e15, type: 2}
+  - {fileID: 11400002, guid: 18a4ba23eb0a6ba499b311b2fc6fd119, type: 2}
   worldParts_Forest:
-  - {fileID: 11400006, guid: a23fa38a55f4748f2a2811fd4bc01e15, type: 2}
+  - {fileID: 11400030, guid: 364e37527ee990f4b95502b41d50df5c, type: 2}
   worldParts_Jungle:
-  - {fileID: 11400006, guid: a23fa38a55f4748f2a2811fd4bc01e15, type: 2}
+  - {fileID: 11400034, guid: ae0e528cd81986d46aa18c04c8e370c2, type: 2}
+  - {fileID: 11400110, guid: 2d4c25d573ec7c249982d68b203dfd41, type: 2}
   worldParts_Ice:
-  - {fileID: 11400000, guid: c9b888f51d9ca46d388770d34ddbd890, type: 2}
+  - {fileID: 11400008, guid: 268e743452bb832449ba46746047427d, type: 2}
   worldParts_Desert:
-  - {fileID: 11400000, guid: c9b888f51d9ca46d388770d34ddbd890, type: 2}
+  - {fileID: 11400008, guid: 268e743452bb832449ba46746047427d, type: 2}
   debug_initialFractions:
   - _numerator:
       _value: 2
@@ -285,6 +286,7 @@ MonoBehaviour:
       _isNumerator: 0
       _renderer: {fileID: 0}
   test: 5
+  defaultWorldType: 2
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1

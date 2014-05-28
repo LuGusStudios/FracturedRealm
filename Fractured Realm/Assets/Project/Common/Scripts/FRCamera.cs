@@ -77,7 +77,7 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 	public void MoveToDefaultPositions()
 	{
 		LugusCamera.numerator.transform.position = new Vector3(0,0, -10.0f);
-		LugusCamera.denominator.transform.position = new Vector3(0,-200, -10.0f);
+		LugusCamera.denominator.transform.position = new Vector3(0,-1200, -10.0f);
 	}
 
     void SetCharactersPosition(float zPosition)
@@ -127,8 +127,8 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 		else if( world.denominator != null )
 		{
 			groupCount = world.denominator.InteractionGroups.Length;
-		}
-		else
+		} 
+		else 
 		{
 			Debug.LogError("FRCamera:MoveToInteractionGroup : no worldparts known!" );
 			return;

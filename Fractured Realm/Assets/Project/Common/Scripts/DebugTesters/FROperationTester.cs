@@ -5,7 +5,7 @@ using System;
 
 public class FROperationTester : LugusSingletonRuntime<FROperationTester> 
 {
-	public FR.WorldType worldType = FR.WorldType.DESERT;
+	//public FR.WorldType worldType = FR.WorldType.DESERT;
 	public FR.Target cameraMode = FR.Target.BOTH;
 	
 	public bool showGUI = true;
@@ -255,7 +255,7 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 
 	protected IEnumerator ImmediateModeTestRoutine(FR.OperationType operationType, Fraction[] fractions)
 	{
-		WorldFactory.use.CreateDebugWorld( worldType, fractions, cameraMode, false );
+		WorldFactory.use.CreateDebugWorld( WorldFactory.use.defaultWorldType, fractions, cameraMode, false );
 		MathInputManager.use.InitializeOperationIcons(1);
 		LugusInput.use.acceptInput = false;
 		
@@ -285,7 +285,7 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 
 	protected IEnumerator DefaultTestRoutine(FR.OperationType operationType, Fraction[] fractions)
 	{
-		WorldFactory.use.CreateDebugWorld( worldType, fractions, cameraMode, false );
+		WorldFactory.use.CreateDebugWorld(  WorldFactory.use.defaultWorldType, fractions, cameraMode, false );
 
 		/*
 		WorldFactory.use.CreateWorld( worldType, fractions );

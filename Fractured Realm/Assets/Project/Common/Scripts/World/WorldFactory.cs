@@ -30,7 +30,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 			debug_initialFractions[1] = new Fraction(7,4);
 		}
 
-		CreateDebugWorld( FR.WorldType.DESERT, debug_initialFractions, FR.Target.BOTH, true );
+		CreateDebugWorld( defaultWorldType, debug_initialFractions, FR.Target.BOTH, true );
 	}
 	
 	// Dictionary<FR.WorldType, List<WorldPart>> is NOT SERIALIZABLE by unity!
@@ -105,6 +105,9 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 
 	public Fraction[] debug_initialFractions;
 	public int test = 5;
+
+	public FR.WorldType defaultWorldType = FR.WorldType.DESERT;
+
 	public World CreateWorld(FR.WorldType type, FR.Target composition = FR.Target.BOTH, bool fillAllInteractionGroups = false)
 	{
 		if( debug_initialFractions == null || debug_initialFractions.Length == 0 )
@@ -191,7 +194,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 			world.denominator = (WorldPart) GameObject.Instantiate( template );// worldTemplates[ index + 1 ] );
 			world.denominator.gameObject.SetActive(true); 
 			world.denominator.transform.parent = WORLD.transform;
-			world.denominator.transform.position = new Vector3(0, -200.0f, 15.0f );//LugusCamera.denominator.transform.position.zAdd( 15.0f );
+			world.denominator.transform.position = new Vector3(0, -1200.0f, 15.0f );//LugusCamera.denominator.transform.position.zAdd( 15.0f );
 			
 			Transform numeratorSpecifics = world.denominator.NumeratorSpecificObjects();
 			if( numeratorSpecifics != null )
