@@ -4,7 +4,7 @@ using UnityEditor;
 
 public class SelectCamera : EditorWindow
 {
-    [MenuItem("Lugus/Select Camera")]
+    [MenuItem("FR/Select Camera")]
 
     static void Init()
     {
@@ -15,7 +15,6 @@ public class SelectCamera : EditorWindow
     {
         if (GUILayout.Button("Select FRCameras", GUILayout.Height(100)))
         {
-
             GameObject FRCameras = GameObject.Find("FRCameras");
 
             if (FRCameras == null)
