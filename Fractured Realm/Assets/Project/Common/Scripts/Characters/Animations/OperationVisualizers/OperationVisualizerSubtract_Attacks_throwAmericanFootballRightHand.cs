@@ -15,16 +15,6 @@ public class OperationVisualizerSubtract_Attacks_throwAmericanFootballRightHand 
 		return FR.VisualizerImplementationStatus.TESTING;
 	}
 
-	protected override void PrepareNextAnimations() 
-	{ 
-		_nextAnimations = new List<FR.Animation>(); 
-		
-		_nextAnimations.Add(FR.Animation.hitFront);
-		_nextAnimations.Add(FR.Animation.hitSideLeft);
-		_nextAnimations.Add(FR.Animation.hitSideRight);
-
-	}
-
 	public override IEnumerator VisualizeAnimationPart( FR.Target part, NumberRenderer Attacker, NumberRenderer Defender )
 	{
 		yield return Attacker.Animator.RotateTowards( Defender ).Coroutine;

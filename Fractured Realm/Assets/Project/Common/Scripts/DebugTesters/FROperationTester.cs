@@ -141,8 +141,10 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 		}
 		if( operationType == FR.OperationType.DIVIDE )
 		{
-			fractions[0] = new Fraction( 2, 5 );
-			fractions[1] = new Fraction( 2, 4 );
+			//fractions[0] = new Fraction( 2, 5 );
+			//fractions[1] = new Fraction( 2, 4 );
+			fractions[0] = new Fraction( 1, 1 );
+			fractions[1] = new Fraction( 7, 7 );
 		}
 		if( operationType == FR.OperationType.SIMPLIFY )
 		{

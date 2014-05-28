@@ -15,12 +15,6 @@ public class OperationVisualizerOPERATIONSTAGEANIMATION : OperationVisualizerOPE
 		return FR.VisualizerImplementationStatus.NONE;
 	}
 
-	protected override void PrepareNextAnimations() 
-	{ 
-		_nextAnimations = new List<FR.Animation>(); 
-		NEXTANIMATION
-	}
-
 	public override float ApproximateDuration()
 	{
 		return -1.0f; // number < 0 means no length is known

@@ -62,6 +62,7 @@ public class OperationVisualizerDivide : IOperationVisualizer
 		newNumerator.transform.position = Switcher.Numerator.transform.position - new Vector3(0, 6.0f, 0);// TODO: update these "magic numbers"
 		newDenominator.transform.position = Switcher.Denominator.transform.position + new Vector3(0, 8, 0);// TODO: update these "magic numbers"
 
+
 		// need to start both animations at the same time
 		FR.Animation denominatorAnimation = this.GetRandomNextAnimation();
 		OperationVisualizerDivide denominatorVisualizer = null;
@@ -76,6 +77,9 @@ public class OperationVisualizerDivide : IOperationVisualizer
 		}
 
 		denominatorVisualizer.animationPartTarget = Switcher.Numerator.transform.position;
+		
+		this.blackHoleController = new BlackHoleController();
+		denominatorVisualizer.blackHoleController = this.blackHoleController;
 		
 		float myTime = TimeToTransition();
 		float denominatorTime = denominatorVisualizer.TimeToTransition();
@@ -114,6 +118,10 @@ public class OperationVisualizerDivide : IOperationVisualizer
 		denominatorRoutine.Release();
 
 
+		this.blackHoleController.FreeAll();
+		this.blackHoleController = null;
+		denominatorVisualizer.blackHoleController = null;
+
 
 		// now, there are nicely switched visually
 		// but in the back-end, the renderers are not coupled to the correct data-structures!!!
@@ -144,6 +152,7 @@ public class OperationVisualizerDivide : IOperationVisualizer
 	 
 	public float animationPartDelay = 0.0f;
 	public Vector3 animationPartTarget;
+	public BlackHoleController blackHoleController = null;
 
 	public override IEnumerator VisualizeAnimationPart(FR.Target part, NumberRenderer original, NumberRenderer second)
 	{

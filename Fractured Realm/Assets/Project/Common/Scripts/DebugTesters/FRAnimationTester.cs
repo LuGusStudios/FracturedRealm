@@ -102,6 +102,9 @@ public class FRAnimationTester : LugusSingletonRuntime<FRAnimationTester>
 
 			List<FR.Animation> animations = FRAnimations.use.OperationAnimations[ currentOperation ];
 
+			FRAnimationData randomDescendAnimation = null;
+			List<FR.Animation> ascendAnimations = new List<FR.Animation>();
+
 			foreach( FR.Animation animation in animations )
 			{
 				FRAnimationData animationData = FRAnimations.use.GetAnimationData( animation );
@@ -110,15 +113,74 @@ public class FRAnimationTester : LugusSingletonRuntime<FRAnimationTester>
 					continue;
 				}
 
+				if( randomDescendAnimation == null || (UnityEngine.Random.value > 0.5f) )
+					randomDescendAnimation = animationData;
+
 				if( GUILayout.Button("\n" + animationData.name + " " + ( (int) animationData.visualizer.GetImplementationStatus() ) + "\n") )
 				{
 					Debug.Log ("Start animation " + animationData.name);
 					this.gameObject.StartLugusRoutine( TestAnimationRoutine(animationData) );
 				}
+
+				foreach( FR.Animation ascender in animationData.visualizer.NextAnimations )
+				{
+					if( !ascendAnimations.Contains( ascender ) )
+					{
+						ascendAnimations.Add( ascender );
+					}
+				}
+			}
+
+			if( currentOperation == FR.OperationType.DIVIDE && randomDescendAnimation != null )
+			{
+				// we also want to test the ASCEND operations
+
+				// there is no list of ascend animations as there is of descend (normally, we get it from NextAnimations on the descends)
+				// so: we compiled it while looping over the descends above
+
+				GUILayout.Space(50);
+
+				foreach( FR.Animation animation in ascendAnimations )
+				{
+					FRAnimationData animationData = FRAnimations.use.GetAnimationData( animation );
+					if( animationData.visualizer.GetImplementationStatus() == FR.VisualizerImplementationStatus.NONE )
+					{
+						continue;
+					}
+					
+					if( GUILayout.Button("\n" + animationData.name + " " + ( (int) animationData.visualizer.GetImplementationStatus() ) + "\n") )
+					{
+						Debug.Log ("Start animation " + animationData.name);
+						this.gameObject.StartLugusRoutine( TestAnimationAscendRoutine(randomDescendAnimation, animationData) );
+					}
+				}
 			}
 
 			GUILayout.EndScrollView();
 		}
+	}
+
+	protected IEnumerator TestAnimationAscendRoutine(FRAnimationData descender, FRAnimationData ascender)
+	{
+		busy = true;
+		LugusDebug.debug = false;
+		
+		// swap the OperationAnimations list with a list containing just the one we want to test here, so it's always selected
+		List<FR.Animation> starterAnimations = FRAnimations.use.OperationAnimations[ descender.operation ];
+		FRAnimations.use.OperationAnimations[ descender.operation ] = new List<FR.Animation>();
+		FRAnimations.use.OperationAnimations[ descender.operation ].Add( descender.type );
+
+		List<FR.Animation> ascenderList = new List<FR.Animation>();
+		ascenderList.Add( ascender.type );
+		descender.visualizer.NextAnimations = ascenderList;
+		
+		yield return this.gameObject.StartLugusRoutine( FROperationTester.use.TestOperationRoutine( descender.operation, null, null, FR.Target.BOTH ) ).Coroutine;
+		
+		descender.visualizer.NextAnimations = null;
+		FRAnimations.use.OperationAnimations[ descender.operation ] = starterAnimations;
+		
+		LugusDebug.debug = true;
+		busy = false;
 	}
 
 	protected IEnumerator TestAnimationRoutine(FRAnimationData animation)

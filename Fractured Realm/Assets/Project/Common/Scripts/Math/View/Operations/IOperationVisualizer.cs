@@ -54,6 +54,10 @@ public class IOperationVisualizer
 			
 			return _nextAnimations;
 		}
+		set // NOTE: only for debugging purposes! FRAnimationTester!!!
+		{
+			_nextAnimations = value;
+		}
 	}
 	
 	public virtual FR.Animation GetRandomNextAnimation()
@@ -62,8 +66,26 @@ public class IOperationVisualizer
 		{
 			return FR.Animation.NONE;
 		}
-		
-		return NextAnimations[ UnityEngine.Random.Range(0, NextAnimations.Count) ];
+
+		FR.Animation nextAnimation = FR.Animation.NONE;
+		bool found = false;
+		int iterations = 0;
+
+		do
+		{
+			nextAnimation = NextAnimations[ UnityEngine.Random.Range(0, NextAnimations.Count) ];
+			FRAnimationData data = FRAnimations.use.GetAnimationData( nextAnimation );
+
+			found = (data.visualizer.GetImplementationStatus() != FR.VisualizerImplementationStatus.NONE);
+			if( !found )
+				found = iterations > 50;
+
+			++iterations;
+		}
+		while( !found );
+
+
+		return nextAnimation;
 	}
 
 

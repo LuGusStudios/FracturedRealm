@@ -15,12 +15,6 @@ public class OperationVisualizerDivide_Ascend_flapWings : OperationVisualizerDiv
 		return FR.VisualizerImplementationStatus.IN_PROGRESS;
 	}
 
-	protected override void PrepareNextAnimations() 
-	{ 
-		_nextAnimations = new List<FR.Animation>(); 
-
-	}
-
 	public override float TimeToTransition()
 	{
 		return 3.0f;
@@ -37,6 +31,7 @@ public class OperationVisualizerDivide_Ascend_flapWings : OperationVisualizerDiv
 		if( animationPartDelay > 0.0f )
 			yield return new WaitForSeconds( animationPartDelay );
 
+		// FIXME: doesn't work properly with numbers > 6 (>6 part directly visible above! + wrong offset at end)
 		
 		original.Animator.CrossFade( this.AnimationType() );
 		
