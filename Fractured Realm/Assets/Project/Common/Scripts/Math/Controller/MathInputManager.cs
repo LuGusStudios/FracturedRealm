@@ -247,7 +247,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 	{
 		if( LugusInput.use.down )
 		{
-			Transform hit = LugusInput.use.RayCastFromMouse( LugusCamera.ui );
+			Transform hit = LugusInput.use.RaycastFromScreenPoint2D( LugusCamera.ui, LugusInput.use.lastPoint );
 			if( hit == null )
 			{
 				//Debug.LogError("No operation hit ! " + LugusInput.use.lastPoint);
@@ -263,6 +263,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 			// check if we've clicked one of the operation icons
 			foreach( OperationIcon icon in operationIcons )
 			{
+				//Debug.Log("Checking icon " + icon.name + " -> " + hit.name + " from " + LugusCamera.ui.name);
 				if( hit == icon.transform )
 				{
 					clickedIcon = icon;
@@ -272,7 +273,12 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 
 			// if no icon selected, nothing to do here
 			if( clickedIcon == null )
+			{
+				
+				Debug.LogError("No operation hit 222 ! " + LugusInput.use.lastPoint);
 				return; 
+			}
+
 
 			mouseDownPosition = LugusInput.use.lastPoint;
 

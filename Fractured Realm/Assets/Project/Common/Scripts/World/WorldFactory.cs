@@ -17,6 +17,9 @@ namespace FR
 
 public class WorldFactory : LugusSingletonExisting<WorldFactory> 
 {	
+	public delegate void OnWorldGenerated(FR.WorldType worldType, FR.Target composition);
+	public OnWorldGenerated onWorldGenerated = null;
+
 	public void Start()
 	{
 		// TODO: CHANGE!
@@ -297,6 +300,10 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 			ValidateInternalFraction( fr2, "fraction 2 : ");
 		}
 
+		if( onWorldGenerated != null )
+		{
+			onWorldGenerated( type, composition );
+		}
 
 		return world;
 	}
