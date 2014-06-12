@@ -223,6 +223,7 @@ public class GameManager : LugusSingletonRuntime<GameManager>
 	void Start () 
 	{
 		MathInputManager mim = MathInputManager.use; // make sure it's initialized
+		ExerciseManager em = ExerciseManager.use;
 	}
 	
 	// Update is called once per frame

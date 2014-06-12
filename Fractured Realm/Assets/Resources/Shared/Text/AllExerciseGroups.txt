@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ExerciseGroups>
+	<ExerciseGroup>ExerciseGroup_Test_Series1</ExerciseGroup>
+	<ExerciseGroup>ExerciseGroup_Test_Series2</ExerciseGroup>
+</ExerciseGroups>
