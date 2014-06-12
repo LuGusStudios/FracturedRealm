@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-#if !UNITY_WEBPLAYER
+#if !UNITY_WEBPLAYER && !UNITY_ANDROID && !UNITY_IPHONE
 using System.IO;
 #endif
 using System.Collections;
@@ -60,7 +60,7 @@ public class LugusConfigDefault : MonoBehaviour
 	protected List<ILugusConfigProfile> _profiles = new List<ILugusConfigProfile>();	// All profiles registered in this configuration, incl. system profile.
 	#endregion
 
-	#if !UNITY_WEBPLAYER
+#if !UNITY_WEBPLAYER && !UNITY_ANDROID && !UNITY_IPHONE
 	// Reload all profiles found in the Config folder.
 	public void ReloadDefaultProfiles()
 	{
