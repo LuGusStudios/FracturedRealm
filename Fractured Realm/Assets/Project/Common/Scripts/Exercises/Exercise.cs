@@ -25,6 +25,8 @@ public class Exercise
 	public List<ExercisePart> parts = new List<ExercisePart>();
 	protected int currentPartIndex = -1;
 
+	public ExercisePart currentPart = null;
+
 	public ExercisePart Next()
 	{
 		if( parts == null || parts.Count == 0 )
@@ -36,11 +38,13 @@ public class Exercise
 		
 		if( currentPartIndex >= parts.Count )
 		{
+			currentPart = null;
 			return null;
 		}
 		else
 		{
-			return parts[ currentPartIndex ];
+			currentPart = parts[ currentPartIndex ];
+			return currentPart;
 		}
 	}
 }

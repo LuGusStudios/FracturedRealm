@@ -9,6 +9,8 @@ public class ExerciseGroup
 	public List<Exercise> exercises = new List<Exercise>();
 	protected int currentExerciseIndex = -1;
 
+	public Exercise currentExercise = null;
+
 	public Exercise NextExercise()
 	{
 		if( exercises == null || exercises.Count == 0 )
@@ -20,11 +22,13 @@ public class ExerciseGroup
 
 		if( currentExerciseIndex >= exercises.Count )
 		{
+			currentExercise = null;
 			return null;
 		}
 		else
 		{
-			return exercises[ currentExerciseIndex ];
+			currentExercise = exercises[ currentExerciseIndex ];
+			return currentExercise;
 		}
 	}
 }

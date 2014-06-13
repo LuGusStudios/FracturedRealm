@@ -24,7 +24,8 @@ public class ExerciseManager : LugusSingletonRuntime<ExerciseManager>
 		}
 		else
 		{
-			return LoadExerciseGroup( allExerciseGroups[ currentExerciseGroupIndex ] );
+			currentExerciseGroup = LoadExerciseGroup( allExerciseGroups[ currentExerciseGroupIndex ] );
+			return currentExerciseGroup;
 		}
 	}
 
@@ -43,8 +44,8 @@ public class ExerciseManager : LugusSingletonRuntime<ExerciseManager>
 			return;
 		}
 
-		NextExerciseGroup();
-		NextExerciseGroup();
+		//NextExerciseGroup();
+		//NextExerciseGroup();
 
 		/*
 		ExerciseGroup group = null;
@@ -129,4 +130,71 @@ public class ExerciseManager : LugusSingletonRuntime<ExerciseManager>
 			return group;
 		}
 	}
+
+	public void OnGUI()
+	{
+		if( !LugusDebug.debug )
+			return;
+
+		ShowExerciseGroupGUI();
+	}
+	
+	protected Vector2 guiScrollPos1 = Vector2.zero;
+	public void ShowExerciseGroupGUI()
+	{
+		GUILayout.BeginArea( new Rect(Screen.width - 300, Screen.height / 2.0f, 300, (Screen.height / 2.0f) - 100), GUI.skin.box );
+		
+		guiScrollPos1 = GUILayout.BeginScrollView(guiScrollPos1);
+		
+		if( currentExerciseGroup == null )
+		{
+			GUILayout.Label("No current exercise group!");
+		}
+		else
+		{
+			GUILayout.Label("" + currentExerciseGroup.name + "( " + currentExerciseGroupIndex + "/" + (allExerciseGroups.Count - 1) + " )" );
+
+			foreach( Exercise exercise in currentExerciseGroup.exercises )
+			{
+				if( exercise != null )
+				{
+					GUILayout.Label("x " + exercise.difficulty );
+
+					foreach( ExercisePart part in exercise.parts )
+					{
+						if( part != null )
+						{
+							GUILayout.Label("   p " + part.ToString() );
+						}
+						else
+						{
+							Color c = GUI.color;
+							GUI.color = Color.red;
+							GUILayout.Label("   p NULL");
+							GUI.color = c;
+						}
+					}
+				}
+				else
+				{
+					Color c = GUI.color;
+					GUI.color = Color.red;
+					GUILayout.Label("x NULL");
+					GUI.color = c;
+				}
+			}
+		}
+		  
+		   
+		GUILayout.EndScrollView();
+		
+		
+		if( GUILayout.Button("Next group") )
+		{
+			NextExerciseGroup();
+		}
+
+		GUILayout.EndArea();
+	}
+		  
 }

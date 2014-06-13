@@ -56,10 +56,10 @@ public class ExerciseLoader
 				Exercise e = ParseExercise( parser );
 				//Debug.Log("ExerciseLoader:LoadAllGroupsNames : found group " + (output[output.Count - 1]));
 
-				if( e != null )
-				{
+				//if( e != null )
+				//{
 					output.exercises.Add( e );
-				}
+				//}
 			}
 		}
 
@@ -97,16 +97,37 @@ public class ExerciseLoader
 							Debug.LogError("ExerciseLoader:ParseExercise : difficulty could not be parsed! " + parser.content);
 							output.difficulty = FR.ExerciseDifficulty.NONE;
 						}
-						Debug.Log ("DIFFICULTY : " + output.difficulty);
+						//Debug.Log ("DIFFICULTY : " + output.difficulty);
 						break;
 					}
 					case "ExercisePart":
 					{
-						ParseExercisePart( parser );
+						ExercisePart part = ParseExercisePart( parser );
+						//if( part != null )
+						//{
+							output.parts.Add( part );
+						//}
 						break;
 					}
 				}
 			}
+		}
+
+		bool error = false;
+		foreach( ExercisePart part in output.parts )
+		{
+			if( part == null )
+			{
+				error = true;
+				break;
+			}
+		}
+
+		if( error || output.difficulty == FR.ExerciseDifficulty.NONE ||
+		    output.parts == null || output.parts.Count == 0 )
+		{
+			Debug.LogError("ExerciseLoader:ParseExercise : exercise had error or didn't have difficulty or parts set correctly!");
+			return null;
 		}
 
 		Debug.Log ("ExerciseLoader:ParseExercise done");
@@ -127,6 +148,7 @@ public class ExerciseLoader
 
 		ExercisePart output = new ExercisePart();
 
+		bool error = false;
 		while (parser.Read("ExercisePart"))
 		{
 			if (parser.tagType == TinyXmlReader.TagType.OPENING)
@@ -135,25 +157,59 @@ public class ExerciseLoader
 				{
 					case "Fraction":
 					{
-						output.fractions.Add( new Fraction(1,3) );
+						//output.fractions.Add( new Fraction(1,3) );
+						output.fractions.Add( new Fraction(parser.content) );
 						//output.difficulty = (FR.ExerciseDifficulty) Enum.Parse(typeof(FR.ExerciseDifficulty), parser.content);
+						
+						Fraction f = output.fractions[ output.fractions.Count - 1 ];
+						if( f.Numerator.Value == -1 || f.Denominator.Value == - 1 )
+							error = true;
+
 						break;
 					}
 					case "Outcome":
 					{
-						output.outcomes.Add( new Fraction(2,5) );
+						output.outcomes.Add( new Fraction(parser.content) );
+						//output.outcomes.Add( new Fraction(2,5) );
+					
+						Fraction f = output.outcomes[ output.outcomes.Count - 1 ];
+						if( f.Numerator.Value == -1 || f.Denominator.Value == - 1 )
+							error = true;
+
 						break;
 					}
 					case "Operation":
 					{
-						output.operations.Add( FR.OperationType.SIMPLIFY );
+						FR.OperationType operation = FR.OperationType.NONE;
+						try
+						{
+							operation = (FR.OperationType) Enum.Parse(typeof(FR.OperationType), parser.content);
+						}
+						catch(Exception e)
+						{
+							Debug.LogError("ExerciseLoader:ParseExercisePart : operation could not be parsed! " + parser.content);
+							operation = FR.OperationType.NONE;
+						}
+						
+						output.operations.Add(operation);
+
 						break;
 					}
 				}
 			}
 		}
-		
-		Debug.Log ("ExerciseLoader:ParseExercisePart done : " + output.ToString() );
+
+		if( error || output.fractions == null || output.fractions.Count < 2 ||
+		   output.outcomes == null || output.outcomes.Count == 0 ||
+		   output.operations == null || output.operations.Count == 0 )
+		{
+			Debug.LogError("ExerciseLoader:ParseExercisePart : exercisePart has error or doesn't contain at least 2 fractions, 1 outcome and/or 1 operation! " + output.ToString());
+			return null;
+		}
+		else
+		{
+			Debug.Log ("ExerciseLoader:ParseExercisePart done : " + output.ToString() );
+		}
 
 		return output;
 	}

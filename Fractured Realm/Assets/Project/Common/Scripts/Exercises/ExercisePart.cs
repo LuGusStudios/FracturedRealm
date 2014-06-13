@@ -36,6 +36,6 @@ public class ExercisePart
 
 	public override string ToString ()
 	{
-		return string.Format ("{0} {2} {1} = {3}", First, Last, operations[0], outcomes[0]);
+		return string.Format ("{0} {2} {1} = {3}", First, Last, ((operations.Count > 0 ) ? operations[0] : FR.OperationType.NONE), ((outcomes.Count > 0) ? outcomes[0] : null));
 	}
 }

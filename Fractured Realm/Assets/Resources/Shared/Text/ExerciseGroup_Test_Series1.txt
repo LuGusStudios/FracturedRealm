@@ -17,4 +17,55 @@
 			</ExercisePart>
 		</ExerciseParts>
 	</Exercise>
+	<Exercise>
+		<Difficulty>Medium</Difficulty>
+		<ExerciseParts>
+			<ExercisePart>
+				<Fraction>1/2</Fraction>
+				<Fraction>3/2</Fraction> 
+				<Outcome>4/2</Outcome>
+				<Operation>ADD</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>4/2</Fraction>
+				<Fraction>3/2</Fraction> 
+				<Outcome>1/2</Outcome>
+				<Operation>SUBTRACT</Operation>
+			</ExercisePart>
+		</ExerciseParts>
+	</Exercise>
+	<Exercise>
+		<Difficulty>Hardest</Difficulty>
+		<ExerciseParts>
+			<ExercisePart>
+				<Fraction>1/2</Fraction>
+				<Fraction>3/2</Fraction> 
+				<Outcome>4/2</Outcome>
+				<Operation>ADD</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>4/2</Fraction>
+				<Fraction>3/2</Fraction> 
+				<Outcome>1/2</Outcome>
+				<Operation>SUBTRACT</Operation>
+			</ExercisePart>
+		</ExerciseParts>
+	</Exercise>
+	<Exercise>
+		<Difficulty>Easiest</Difficulty>
+		<ExerciseParts>
+			<ExercisePart>
+				<Fraction>1/2</Fraction>
+				<Fraction>3/2</Fraction> 
+				<Outcome>4/2</Outcome>
+				<Operation>ADD</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>4/2</Fraction>
+				<Fraction>3/2</Fraction> 
+				<Outcome>1/2</Outcome>
+				<Operation>SUBTRACT</Operation>
+			</ExercisePart>
+		</ExerciseParts>
+	</Exercise>
 </ExerciseGroup>
