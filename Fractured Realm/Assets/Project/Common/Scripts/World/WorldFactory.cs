@@ -92,7 +92,10 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 
 	public World CreateDebugWorld(FR.WorldType type, Fraction[] fractions, FR.Target composition = FR.Target.BOTH, bool fillAllInteractionGroups = true)
 	{
-		World output = CreateWorld(type, fractions, composition, fillAllInteractionGroups);
+		World output = CreateWorld(type, composition);
+		List<Fraction> fractionList = new List<Fraction>();
+		fractionList.AddRange( fractions );
+		RendererFactory.use.CreateRenderers( output, fractionList, fillAllInteractionGroups );
 		FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
 		HUDManager.use.SetMode( composition );
 
@@ -112,6 +115,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 
 	public FR.WorldType defaultWorldType = FR.WorldType.DESERT;
 
+	/*
 	public World CreateWorld(FR.WorldType type, FR.Target composition = FR.Target.BOTH, bool fillAllInteractionGroups = false)
 	{
 		if( debug_initialFractions == null || debug_initialFractions.Length == 0 )
@@ -123,8 +127,9 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		
 		return CreateWorld(type, debug_initialFractions, composition, fillAllInteractionGroups);
 	}
+	*/
 	
-	public World CreateWorld(FR.WorldType type, Fraction[] fractions, FR.Target composition = FR.Target.BOTH, bool fillAllInteractionGroups = false ) 
+	public World CreateWorld(FR.WorldType type, FR.Target composition = FR.Target.BOTH ) 
 	{
 		/*
 		if( !worldTypes.Contains(type) )
@@ -223,83 +228,6 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 
 
 
-		// Spawn the LEFT fraction (fraction 0)
-		int groupCount = 1;
-		if( fillAllInteractionGroups )
-		{
-			if( composition.HasNumerator() )
-				groupCount = world.numerator.InteractionGroups.Length;
-			else
-				groupCount = world.denominator.InteractionGroups.Length;
-		}
-
-		for( int i = 0; i < groupCount; ++i )
-		{
-			Fraction fr = new Fraction(fractions[0].Numerator.Value, fractions[0].Denominator.Value); 
-			
-			FractionRenderer frr = RendererFactory.use.CreateRenderer( fr );
-
-			if( fr.Numerator.Value != 0 && composition.HasNumerator() )
-			{
-				frr.Numerator.transform.parent = world.numerator.transform;
-				frr.Numerator.SpawnPosition = world.numerator.InteractionGroups[i].Spawn1.position;
-				frr.Numerator.transform.position = world.numerator.InteractionGroups[i].Spawn1.position;
-
-
-				Portal p = RendererFactory.use.CreatePortal( fr.Numerator.Value, FR.Target.NUMERATOR );
-				p.transform.position = world.numerator.InteractionGroups[i].PortalEntry.position;
-				p.transform.parent = world.numerator.transform;
-			}
-			if( fr.Denominator.Value != 0 && composition.HasDenominator() )
-			{
-				frr.Denominator.transform.parent = world.denominator.transform;
-				frr.Denominator.SpawnPosition = world.denominator.InteractionGroups[i].Spawn1.position;
-				frr.Denominator.transform.position = world.denominator.InteractionGroups[i].Spawn1.position;
-
-
-				Portal p = RendererFactory.use.CreatePortal( fr.Denominator.Value, FR.Target.DENOMINATOR );
-				p.transform.position = world.denominator.InteractionGroups[i].PortalEntry.position;
-				p.transform.parent = world.denominator.transform;
-			}
-			
-			ValidateInternalFraction( fr,  "fraction 1 : ");
-		}
-
-		
-		// Spawn the RIGHT fraction (fraction 1)
-		for( int i = 0; i < groupCount; ++i )
-		{
-			Fraction fr2 = new Fraction(fractions[1].Numerator.Value, fractions[1].Denominator.Value); 
-			
-			FractionRenderer frr2 = RendererFactory.use.CreateRenderer( fr2 );
-			
-			if( fr2.Numerator.Value != 0 && composition.HasNumerator() )
-			{
-				frr2.Numerator.transform.parent = world.numerator.transform;
-				frr2.Numerator.SpawnPosition = world.numerator.InteractionGroups[i].Spawn2.position;
-				frr2.Numerator.transform.position = world.numerator.InteractionGroups[i].Spawn2.position;
-
-				// TODO: calculate expected end-value for the portal
-				Portal p = RendererFactory.use.CreatePortal( fr2.Numerator.Value, FR.Target.NUMERATOR );
-				p.transform.position = world.numerator.InteractionGroups[i].PortalExit.position;
-				p.transform.parent = world.numerator.transform;
-			}
-			if( fr2.Denominator.Value != 0 && composition.HasDenominator() )
-			{
-				frr2.Denominator.transform.parent = world.denominator.transform; 
-				frr2.Denominator.SpawnPosition = world.denominator.InteractionGroups[i].Spawn2.position;
-				frr2.Denominator.transform.position = world.denominator.InteractionGroups[i].Spawn2.position;
-
-				
-				// TODO: calculate expected end-value for the portal
-				Portal p = RendererFactory.use.CreatePortal( fr2.Denominator.Value, FR.Target.DENOMINATOR );
-				p.transform.position = world.denominator.InteractionGroups[i].PortalExit.position;
-				p.transform.parent = world.denominator.transform;
-			
-			}
-			
-			ValidateInternalFraction( fr2, "fraction 2 : ");
-		}
 
 		if( onWorldGenerated != null )
 		{
@@ -310,6 +238,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 	}
 
 
+	/*
 	// TODO: remove, just for debugging
 	public void CreateFractions(Fraction[] fractions)
 	{
@@ -333,95 +262,10 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		ValidateInternalFraction( fr,  "fraction 1 : ");
 		ValidateInternalFraction( fr2, "fraction 2 : ");
 	}
+	*/
 
 
-	// TODO: remove, or just move : just for debugging
-	protected void ValidateInternalFraction( Fraction fr, string messagePrefix )
-	{
-		if( fr.Numerator == null )
-		{
-			Debug.LogError(messagePrefix + "Validate: fraction doesn't have a Numerator!");
-		}
-		
-		if( fr.Denominator == null )
-		{
-			Debug.LogError(messagePrefix + "Validate: fraction doesn't have a Denominator!");
-		}
 
-		if( fr.Renderer == null )
-		{
-			Debug.LogError(messagePrefix + "Validate: fraction doesn't have a renderer!");
-		}
-		
-		if( fr.Renderer.Animator == null )
-		{
-			Debug.LogError(messagePrefix + "Validate: fraction doesn't have an animator!");
-		}
-
-
-		if( fr.Numerator.Fraction != fr )
-		{
-			Debug.LogError(messagePrefix + "Validate: Numerators fraction isn't what we expect! " + fr.Numerator.Fraction);
-		}
-		if( fr.Denominator.Fraction != fr )
-		{
-			Debug.LogError(messagePrefix + "Validate: Denominators fraction isn't what we expect! " + fr.Denominator.Fraction);
-		}
-
-		if( !fr.Numerator.IsNumerator )
-			Debug.LogError(messagePrefix + "Validate: Numerator isn't marked as numerator! " + fr.Numerator.IsNumerator + " // " + fr.Numerator.IsDenominator );
-
-		if( !fr.Denominator.IsDenominator )
-			Debug.LogError(messagePrefix + "Validate: Denominator isn't marked as Denominator! " + fr.Denominator.IsDenominator + " // " + fr.Denominator.IsNumerator );
-
-
-		if( fr.Numerator.OtherNumber != fr.Denominator )
-			Debug.LogError(messagePrefix + "Validate: Numerator other number isn't the Denominator! " + fr.Numerator.OtherNumber);
-		
-		if( fr.Denominator.OtherNumber != fr.Numerator )
-			Debug.LogError(messagePrefix + "Validate: Denominator other number isn't the Numerator! " + fr.Denominator.OtherNumber);
-
-
-		if( fr.Numerator.Value == 0 && fr.Numerator.Renderer != null )
-			Debug.LogError(messagePrefix + "Validate: Numerator has value 0, but still has a renderer! " + fr.Numerator.Renderer);
-		
-		if( fr.Denominator.Value == 0 && fr.Denominator.Renderer != null )
-			Debug.LogError(messagePrefix + "Validate: Denominator has value 0, but still has a renderer! " + fr.Denominator.Renderer);
-
-		
-		if( fr.Numerator.Value != 0 && fr.Numerator.Renderer == null )
-			Debug.LogError(messagePrefix + "Validate: Numerator has value != 0, but renderer is null! " + fr.Numerator.Renderer);
-		
-		if( fr.Denominator.Value != 0 && fr.Denominator.Renderer == null )
-			Debug.LogError(messagePrefix + "Validate: Denominator has value != 0, but renderer is null! " + fr.Denominator.Renderer);
-
-		if( fr.Numerator.ValuePast6 > 0 && fr.Numerator.Renderer.Characters.Length != 2 )
-			Debug.LogError(messagePrefix + "Validate: Numerator is larger than 6, but has not 2 characters! " + fr.Numerator.Renderer.Characters.Length);
-
-		if( fr.Denominator.ValuePast6 > 0 && fr.Denominator.Renderer.Characters.Length != 2 )
-			Debug.LogError(messagePrefix + "Validate: Denominator is larger than 6, but has not 2 characters! " + fr.Denominator.Renderer.Characters.Length);
-		
-
-		if( fr.Numerator.Value != 0 )
-		{
-			if( fr.Numerator.ValuePast6 == 0 && fr.Numerator.Renderer.Characters.Length != 1 )
-				Debug.LogError(messagePrefix + "Validate: Numerator is <= 6, but has not 1 character! " + fr.Numerator.Renderer.Characters.Length);
-			
-			if( fr.Numerator.Renderer.interactionCharacter == null )
-				Debug.LogError(messagePrefix + "Validate: Numerator has no InteractionCharacter! " + fr.Numerator.Renderer.interactionCharacter);
-		}
-
-		if( fr.Denominator.Value != 0 )
-		{
-			if( fr.Denominator.ValuePast6 == 0 && fr.Denominator.Renderer.Characters.Length != 1 )
-				Debug.LogError(messagePrefix + "Validate: Denominator is <= 6, but has not 1 character! " + fr.Denominator.Renderer.Characters.Length);
-
-			if( fr.Denominator.Renderer.interactionCharacter == null )
-				Debug.LogError(messagePrefix + "Validate: Denominator has no InteractionCharacter! " + fr.Denominator.Renderer.interactionCharacter);
-		}
-
-		//Debug.Log (messagePrefix + "Validate : function completed");
-	}
 
 	protected void OnGUI()
 	{

@@ -87,7 +87,7 @@ public class FRValidator : EditorWindow
 		GUILayout.EndVertical();
 		GUILayout.EndHorizontal();
 
-		
+		/*
 		if( GUILayout.Button("Spawn just the numbers") )
 		{
 			Fraction[] fractions = new Fraction[2];
@@ -101,6 +101,7 @@ public class FRValidator : EditorWindow
 			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
 			HUDManager.use.SetMode( FR.Target.BOTH );
 		}
+		*/
 		
 		GUILayout.Space(10);
 
@@ -144,7 +145,8 @@ public class FRValidator : EditorWindow
 			WorldFactory.use.debug_initialFractions = fractions;
 			EditorUtility.SetDirty(WorldFactory.use);
 			
-			WorldFactory.use.CreateWorld(FR.WorldType.DESERT, fractions, FR.Target.NUMERATOR, true);
+			World world = WorldFactory.use.CreateWorld(FR.WorldType.DESERT, FR.Target.NUMERATOR);
+			RendererFactory.use.CreateRenderers(world, fractions, true );
 			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
 			HUDManager.use.SetMode( FR.Target.NUMERATOR );
 			FRCamera.use.MoveToInteractionGroup( 1, 1, false );
@@ -159,10 +161,11 @@ public class FRValidator : EditorWindow
 			WorldFactory.use.debug_initialFractions = fractions;
 			EditorUtility.SetDirty(WorldFactory.use);
 
-			WorldFactory.use.CreateWorld(FR.WorldType.DESERT, fractions, FR.Target.DENOMINATOR, true);
+			World world = WorldFactory.use.CreateWorld(FR.WorldType.DESERT, FR.Target.DENOMINATOR);
+			RendererFactory.use.CreateRenderers(world, fractions, true );
 			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
 			HUDManager.use.SetMode( FR.Target.DENOMINATOR );
-			FRCamera.use.MoveToInteractionGroup( 1, 1, false );
+			FRCamera.use.MoveToInteractionGroup( 1, 1, false ); 
 		}
 		
 		GUILayout.Label("-------------------");
