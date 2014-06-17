@@ -136,11 +136,12 @@ public class ExerciseManager : LugusSingletonRuntime<ExerciseManager>
 		if( !LugusDebug.debug )
 			return;
 
-		ShowExerciseGroupGUI();
+		ShowGroupContentsGUI();
 	}
+
 	
 	protected Vector2 guiScrollPos1 = Vector2.zero;
-	public void ShowExerciseGroupGUI()
+	public void ShowGroupContentsGUI()
 	{
 		GUILayout.BeginArea( new Rect(Screen.width - 300, Screen.height / 2.0f, 300, (Screen.height / 2.0f) - 100), GUI.skin.box );
 		

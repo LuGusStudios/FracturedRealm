@@ -100,6 +100,40 @@ public class ExerciseLoader
 						//Debug.Log ("DIFFICULTY : " + output.difficulty);
 						break;
 					}
+					case "Composition":
+					{
+						try
+						{
+							output.composition = (FR.Target) Enum.Parse(typeof(FR.Target), parser.content);
+						}
+						catch(Exception e)
+						{
+							Debug.LogError("ExerciseLoader:ParseExercise : composition could not be parsed! " + parser.content);
+							output.composition = FR.Target.BOTH;
+						}
+						if( output.composition != FR.Target.BOTH &&
+						    output.composition != FR.Target.NUMERATOR &&
+						    output.composition != FR.Target.DENOMINATOR )
+						{
+							Debug.LogError("ExerciseLoader:ParseExercise composition can only be BOTH, NUMERATOR and DENOMINATOR");
+							output.composition = FR.Target.BOTH;
+						}
+						//Debug.Log ("DIFFICULTY : " + output.difficulty);
+						break;
+					}
+					case "WorldType":
+					{
+						try
+						{
+							output.worldType = (FR.WorldType) Enum.Parse(typeof(FR.WorldType), parser.content);
+						}
+						catch(Exception e)
+						{
+							Debug.LogError("ExerciseLoader:ParseExercise : WorldType could not be parsed! " + parser.content);
+							output.worldType = FR.WorldType.NONE;
+						}
+						break;
+					}
 					case "ExercisePart":
 					{
 						ExercisePart part = ParseExercisePart( parser );

@@ -1,17 +1,18 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 namespace FR
 {
 	public enum WorldType
 	{
-		NONE,
-		FOREST,
-		DESERT,
-		FIRE,
-		ICE,
-		JUNGLE
+		NONE = 0,
+		FOREST = 1,
+		DESERT = 2,
+		FIRE = 3,
+		ICE = 4,
+		JUNGLE = 5
 	}
 }
 
@@ -140,7 +141,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		}
 		
 		List<WorldPart> templates = GetWorldParts( type );
-		if( templates.Count == 0 )
+		if( templates == null || templates.Count == 0 )
 		{
 			Debug.LogError("WorldFactory:CreateWorld : no prefabs defined for world type " + type);
 			return null;
@@ -154,7 +155,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		WORLD.transform.position = new Vector3(0, 0, 0);
 
 
-		WorldPart template = templates[ Random.Range(0, templates.Count) ];
+		WorldPart template = templates[ UnityEngine.Random.Range(0, templates.Count) ];
 		
 		World world = WORLD.AddComponent<World>();
 
@@ -421,4 +422,33 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 
 		//Debug.Log (messagePrefix + "Validate : function completed");
 	}
+
+	protected void OnGUI()
+	{
+		if( !LugusDebug.debug )
+			return;
+		
+		GUILayout.BeginArea( new Rect(0, Screen.height - 200 , 200, 200 ), GUI.skin.box);
+		GUILayout.BeginVertical();
+		
+		FR.WorldType[] worldTypes = (FR.WorldType[]) Enum.GetValues(typeof(FR.WorldType));
+		foreach( FR.WorldType worldType in worldTypes )
+		{
+			if( worldType == FR.WorldType.NONE )
+				continue;
+			
+			if( GUILayout.Button("Create " + worldType + "\n") )
+			{
+				Fraction[] fractions = new Fraction[2];
+				fractions[0] = new Fraction( 6, 3 );
+				fractions[1] = new Fraction( 2, 3 );
+				
+				WorldFactory.use.CreateDebugWorld( worldType, fractions );
+			}
+		}
+		
+		GUILayout.EndVertical();
+		GUILayout.EndArea();
+	}
+
 }

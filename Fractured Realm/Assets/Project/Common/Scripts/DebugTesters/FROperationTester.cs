@@ -167,6 +167,15 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 	// use .EVERYTHING to do BOTH + NUMERATOR + DENOMINATOR
 	public IEnumerator TestOperationRoutine(FR.OperationType operationType, Fraction fr1 = null, Fraction fr2 = null, FR.Target cameras = FR.Target.EVERYTHING)
 	{
+		if( cameras == FR.Target.EVERYTHING )
+		{
+			yield return this.gameObject.StartLugusRoutine( TestOperationRoutine( operationType, fr1, fr2, FR.Target.BOTH )).Coroutine;
+			yield return this.gameObject.StartLugusRoutine( TestOperationRoutine( operationType, fr1, fr2, FR.Target.NUMERATOR )).Coroutine;
+			yield return this.gameObject.StartLugusRoutine( TestOperationRoutine( operationType, fr1, fr2, FR.Target.DENOMINATOR )).Coroutine;
+			yield break;
+		}
+
+
 		if( fr1 == null || fr2 == null )
 		{
 			Fraction[] frs = GetRandomFractions(operationType); 
@@ -176,60 +185,49 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 
 		busy = true;
 	
+
 		Fraction[] fractions = new Fraction[2];
+		fractions[0] = fr1.CopyData();
+		fractions[1] = fr2.CopyData();
+		cameraMode = FR.Target.BOTH;
 
-		if( cameras == FR.Target.BOTH || cameras == FR.Target.EVERYTHING )
+		if( cameras != FR.Target.BOTH && operationType != FR.OperationType.DIVIDE )
 		{
-			fractions[0] = fr1.CopyData();
-			fractions[1] = fr2.CopyData();
-			
-			cameraMode = FR.Target.BOTH;
-
-			if( immediateMode )
-				yield return gameObject.StartLugusRoutine( ImmediateModeTestRoutine(operationType, fractions) ).Coroutine;
-			else
-				yield return gameObject.StartLugusRoutine( DefaultTestRoutine(operationType, fractions) ).Coroutine;
-
-			yield return new WaitForSeconds(1.5f);
-		}
-
-		if( cameras != FR.Target.BOTH )
-		{
-			if( cameras.HasNumerator() && operationType != FR.OperationType.DIVIDE )
+			if( cameras.HasNumerator() )
 			{
-				// Numerator only
 				cameraMode = FR.Target.NUMERATOR;
-				fractions[0] = fr1.CopyData();
-				fractions[1] = fr2.CopyData();
 				fractions[0].Denominator.Value = 0;
 				fractions[1].Denominator.Value = 0;
-
-				if( immediateMode )
-					yield return gameObject.StartLugusRoutine( ImmediateModeTestRoutine(operationType, fractions) ).Coroutine;
-				else
-					yield return gameObject.StartLugusRoutine( DefaultTestRoutine(operationType, fractions) ).Coroutine;
-
-				yield return new WaitForSeconds(1.5f);
-			}
-
-			if( cameras.HasDenominator() && operationType != FR.OperationType.DIVIDE )
+			}	
+			if( cameras.HasDenominator()  )
 			{
-				// Denominator only
 				cameraMode = FR.Target.DENOMINATOR;
-				fractions[0] = fr1.CopyData();
-				fractions[1] = fr2.CopyData();
 				fractions[0].Numerator.Value = 0;
 				fractions[1].Numerator.Value = 0;
-
-				if( immediateMode )
-					yield return gameObject.StartLugusRoutine( ImmediateModeTestRoutine(operationType, fractions) ).Coroutine;
-				else
-					yield return gameObject.StartLugusRoutine( DefaultTestRoutine(operationType, fractions) ).Coroutine;
-
-				yield return new WaitForSeconds(1.5f);
 			}
 		}
 
+		if( skipStartSequence || immediateMode )
+		{
+			GameManager.use.StartGame(  WorldFactory.use.defaultWorldType, fractions, cameraMode, FR.GameState.WaitingForInput );
+		}
+		else
+		{
+			GameManager.use.currentState = FR.GameState.NONE;
+			GameManager.use.StartGame(  WorldFactory.use.defaultWorldType, fractions, cameraMode, FR.GameState.Start );
+		}
+
+			
+		if( immediateMode )
+		{
+			yield return gameObject.StartLugusRoutine( ImmediateModeTestRoutine(operationType) ).Coroutine;
+		}
+		else
+		{
+			yield return gameObject.StartLugusRoutine( DefaultTestRoutine(operationType) ).Coroutine;
+		}
+		
+		yield return new WaitForSeconds(1.5f);
 
 		busy = false;
 	}
@@ -254,9 +252,8 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 	}
 	*/
 
-	protected IEnumerator ImmediateModeTestRoutine(FR.OperationType operationType, Fraction[] fractions)
+	public IEnumerator ImmediateModeTestRoutine(FR.OperationType operationType)
 	{
-		GameManager.use.StartGame(  WorldFactory.use.defaultWorldType, fractions, cameraMode, FR.GameState.WaitingForInput );
 
 		MathInputManager.use.InitializeOperationIcons(1);
 		LugusInput.use.acceptInput = false;
@@ -285,23 +282,21 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 		yield break;
 	}
 
-	protected IEnumerator DefaultTestRoutine(FR.OperationType operationType, Fraction[] fractions)
+	public IEnumerator DefaultTestRoutine(FR.OperationType operationType)
 	{
-		GameManager.use.currentState = FR.GameState.NONE;
-
-		if( skipStartSequence )
-			GameManager.use.StartGame(  WorldFactory.use.defaultWorldType, fractions, cameraMode, FR.GameState.WaitingForInput );
-		else
-			GameManager.use.StartGame(  WorldFactory.use.defaultWorldType, fractions, cameraMode, FR.GameState.Start );
-
-
 		MathInputManager.use.InitializeOperationIcons(1);
 		
 		LugusInput.use.acceptInput = false;
 
+		//Debug.Log ("DefaultTestRoutine opTester 1");
 
 		while( GameManager.use.currentState != FR.GameState.WaitingForInput )
+		{
+			//Debug.Log ("gamemanager has to be in waitingForInput. Is in " + GameManager.use.currentState);
 			yield return null;
+		}
+		
+		//Debug.Log ("DefaultTestRoutine opTester 2");
 
 		/*
 		WorldFactory.use.CreateWorld( worldType, fractions );
@@ -411,7 +406,7 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 			return;
 
 		if( !busy )
-			GUILayout.BeginArea( new Rect(0, 0, 200, 400), GUI.skin.box );
+			GUILayout.BeginArea( new Rect(0, 0, 200, 250), GUI.skin.box );
 		else
 			GUILayout.BeginArea( new Rect(0, 0, 200, 30), GUI.skin.box );
 
@@ -436,66 +431,66 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 			bool direct = false;
 
 			GUILayout.BeginHorizontal();
-			if( GUILayout.Button("Test ADD") )
+			if( GUILayout.Button("Test ADD\n") )
 			{
 				operationType = FR.OperationType.ADD;
 			}
-			if( GUILayout.Button("direct", GUILayout.Width(50)) )
+			if( GUILayout.Button("direct\n", GUILayout.Width(50)) )
 			{
 				operationType = FR.OperationType.ADD;
 				direct = true;
 			}
 			GUILayout.EndHorizontal();
 			GUILayout.BeginHorizontal();
-			if( GUILayout.Button("Test SUBTRACT") )
+			if( GUILayout.Button("Test SUBTRACT\n") )
 			{
 				operationType = FR.OperationType.SUBTRACT;
 			}
-			if( GUILayout.Button("direct", GUILayout.Width(50)) )
+			if( GUILayout.Button("direct\n", GUILayout.Width(50)) )
 			{
 				operationType = FR.OperationType.SUBTRACT;
 				direct = true;
 			}
 			GUILayout.EndHorizontal();
 			GUILayout.BeginHorizontal();
-			if( GUILayout.Button("Test MULTIPLY") )
+			if( GUILayout.Button("Test MULTIPLY\n") )
 			{
 				operationType = FR.OperationType.MULTIPLY;
 			}
-			if( GUILayout.Button("direct", GUILayout.Width(50)) )
+			if( GUILayout.Button("direct\n", GUILayout.Width(50)) )
 			{
 				operationType = FR.OperationType.MULTIPLY;
 				direct = true;
 			}
 			GUILayout.EndHorizontal();
 			GUILayout.BeginHorizontal();
-			if( GUILayout.Button("Test DIVIDE") )
+			if( GUILayout.Button("Test DIVIDE\n") )
 			{
 				operationType = FR.OperationType.DIVIDE;
 			}
-			if( GUILayout.Button("direct", GUILayout.Width(50)) )
+			if( GUILayout.Button("direct\n", GUILayout.Width(50)) )
 			{
 				operationType = FR.OperationType.DIVIDE;
 				direct = true;
 			}
 			GUILayout.EndHorizontal();
 			GUILayout.BeginHorizontal();
-			if( GUILayout.Button("Test SIMPLIFY") )
+			if( GUILayout.Button("Test SIMPLIFY\n") )
 			{
 				operationType = FR.OperationType.SIMPLIFY;
 			}
-			if( GUILayout.Button("direct", GUILayout.Width(50)) )
+			if( GUILayout.Button("direct\n", GUILayout.Width(50)) )
 			{
 				operationType = FR.OperationType.SIMPLIFY;
 				direct = true;
 			}
 			GUILayout.EndHorizontal();
 			GUILayout.BeginHorizontal();
-			if( GUILayout.Button("Test DOUBLE") )
+			if( GUILayout.Button("Test DOUBLE\n") )
 			{
 				operationType = FR.OperationType.DOUBLE;
 			}
-			if( GUILayout.Button("direct", GUILayout.Width(50)) )
+			if( GUILayout.Button("direct\n", GUILayout.Width(50)) )
 			{
 				operationType = FR.OperationType.DOUBLE;
 				direct = true;
@@ -524,24 +519,6 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 				
 				FROperationTester.use.TestOperation( operationType, fractions[0], fractions[1] );
 				
-			}
-
-			GUILayout.Space(20);
-
-			FR.WorldType[] worldTypes = (FR.WorldType[]) Enum.GetValues(typeof(FR.WorldType));
-			foreach( FR.WorldType worldType in worldTypes )
-			{
-				if( worldType == FR.WorldType.NONE )
-					continue;
-
-				if( GUILayout.Button("Create " + worldType + "\n") )
-				{
-					fractions = new Fraction[2];
-					fractions[0] = new Fraction( 6, 3 );
-					fractions[1] = new Fraction( 2, 3 );
-
-					WorldFactory.use.CreateDebugWorld( worldType, fractions );
-				}
 			}
 
 			/*

@@ -17,7 +17,7 @@ namespace FR
 	}
 }
 
-public class GameManager : LugusSingletonRuntime<GameManager>
+public class GameManager : LugusSingletonExisting<GameManager>
 {
 	public delegate void OnStateChanged(FR.GameState oldState, FR.GameState newState);
 	public OnStateChanged onStateChanged = null;
@@ -25,6 +25,17 @@ public class GameManager : LugusSingletonRuntime<GameManager>
 	public FR.GameState currentState = FR.GameState.NONE;
 
 	public World currentWorld = null;
+
+	public void StartGame( ExerciseGroup exercises, FR.GameState startFromState = FR.GameState.Start )
+	{
+
+	}
+
+	public void StartGame( Exercise exercise, FR.GameState startFromState = FR.GameState.Start )
+	{
+		// TODO: Change this!!!
+		StartGame( exercise.worldType, exercise.parts[0].fractions.ToArray(), exercise.composition, startFromState );
+	}
 
 	public void StartGame( FR.WorldType type, Fraction[] fractions, FR.Target composition = FR.Target.BOTH, FR.GameState startFromState = FR.GameState.Start )
 	{
@@ -230,4 +241,5 @@ public class GameManager : LugusSingletonRuntime<GameManager>
 	void Update () {
 	
 	}
+
 }

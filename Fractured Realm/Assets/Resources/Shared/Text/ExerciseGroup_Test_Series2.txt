@@ -2,6 +2,8 @@
 <ExerciseGroup>
 	<Exercise>
 		<Difficulty>Medium</Difficulty>
+		<Composition>BOTH</Composition>
+		<WorldType>JUNGLE</WorldType>
 		<ExerciseParts>
 			<ExercisePart>
 				<Fraction>2/3</Fraction>
