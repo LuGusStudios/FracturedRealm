@@ -146,7 +146,7 @@ public class FRValidator : EditorWindow
 			EditorUtility.SetDirty(WorldFactory.use);
 			
 			World world = WorldFactory.use.CreateWorld(FR.WorldType.DESERT, FR.Target.NUMERATOR);
-			RendererFactory.use.CreateRenderers(world, fractions, true );
+			RendererFactory.use.CreateRenderers(world, fractions, -1 );
 			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
 			HUDManager.use.SetMode( FR.Target.NUMERATOR );
 			FRCamera.use.MoveToInteractionGroup( 1, 1, false );
@@ -162,7 +162,7 @@ public class FRValidator : EditorWindow
 			EditorUtility.SetDirty(WorldFactory.use);
 
 			World world = WorldFactory.use.CreateWorld(FR.WorldType.DESERT, FR.Target.DENOMINATOR);
-			RendererFactory.use.CreateRenderers(world, fractions, true );
+			RendererFactory.use.CreateRenderers(world, fractions, -1 );
 			FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
 			HUDManager.use.SetMode( FR.Target.DENOMINATOR );
 			FRCamera.use.MoveToInteractionGroup( 1, 1, false ); 

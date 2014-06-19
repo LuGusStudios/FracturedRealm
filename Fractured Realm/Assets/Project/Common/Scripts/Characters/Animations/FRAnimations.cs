@@ -12,7 +12,7 @@ namespace FR
 		Stage1 = 1,
 		Stage2 = 2
 	}
-	
+
 	public enum Animation
 {
 	NONE = -1, 

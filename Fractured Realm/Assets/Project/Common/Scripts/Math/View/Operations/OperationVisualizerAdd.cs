@@ -23,7 +23,7 @@ public class OperationVisualizerAdd : IOperationVisualizer
 
 		yield return LugusCoroutines.use.StartRoutine( VisualizeAnimation(Starter, Receiver) ).Coroutine;
 		
-		// wait untill the height of the hit effect (covering all)
+		// wait until the height of the hit effect (covering all)
 		yield return new WaitForSeconds(0.2f);
 
 		Starter.Fraction.Numerator.Value = target.StartFraction.Numerator.Value;

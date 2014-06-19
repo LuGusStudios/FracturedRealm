@@ -266,6 +266,28 @@ public class CharacterAnimator : MonoBehaviour
 			}
 		}
 
+		// rotation animation has a little bit of rootmotion, so we are usually out of alignment with the NumberRenderer transform which is our parent
+		// (aka: our localPosition is no longer 0,0,0)
+		// so we need to reset this to make sure we remain on a decent position vis-a-vis our NumberRenderer parent
+		// only do this for the interactionCharacter though!
+		if( this.Renderer == this.Renderer.NumberRenderer.interactionCharacter )
+		{
+			Vector3 worldPos = this.Renderer.transform.position;
+
+			CharacterRenderer[] characters = this.Renderer.NumberRenderer.Characters;
+			foreach( CharacterRenderer character in characters )
+			{
+				character.transform.parent = null;
+			}
+
+			this.Renderer.NumberRenderer.transform.position = worldPos;
+			foreach( CharacterRenderer character in characters )
+			{
+				character.transform.parent = this.Renderer.NumberRenderer.transform;
+			}
+		}
+
+
 		// now that we have rotated, we might still be off by a couple of degrees (5 max) due to the animations
 		// just interpolate to correct, but allow other animations to start already
 

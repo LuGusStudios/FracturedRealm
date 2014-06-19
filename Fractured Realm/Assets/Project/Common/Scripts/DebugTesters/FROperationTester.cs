@@ -209,12 +209,12 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 
 		if( skipStartSequence || immediateMode )
 		{
-			GameManager.use.StartGame(  WorldFactory.use.defaultWorldType, fractions, cameraMode, FR.GameState.WaitingForInput );
+			GameManager.use.StartGameDebug(  WorldFactory.use.defaultWorldType, fractions, cameraMode, FR.GameState.WaitingForInput );
 		}
 		else
 		{
 			GameManager.use.currentState = FR.GameState.NONE;
-			GameManager.use.StartGame(  WorldFactory.use.defaultWorldType, fractions, cameraMode, FR.GameState.Start );
+			GameManager.use.StartGameDebug(  WorldFactory.use.defaultWorldType, fractions, cameraMode, FR.GameState.ExerciseStart );
 		}
 
 			
@@ -328,9 +328,9 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 
 		yield return new WaitForSeconds(1.0f);
 
-		GameManager.use.ChangeState(FR.GameState.EndSequence);
+		GameManager.use.ChangeState(FR.GameState.PartEndSequence);
 
-		while( GameManager.use.currentState != FR.GameState.End )
+		while( GameManager.use.currentState != FR.GameState.PartEnd )
 		{
 			yield return null;
 		}

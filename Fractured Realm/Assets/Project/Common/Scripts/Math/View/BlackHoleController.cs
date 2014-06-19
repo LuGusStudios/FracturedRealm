@@ -27,7 +27,7 @@ public class BlackHoleController
 
 		if( minDistance < 1.0f )
 		{
-			Debug.LogError("Hole position is too close to existing : RE-USE!");
+			//Debug.LogError("Hole position is too close to existing : RE-USE!");
 
 			closestHole.useCount++;
 
@@ -36,7 +36,7 @@ public class BlackHoleController
 		}
 		else
 		{
-			Debug.LogError("Hole position is far out! create new one");
+			//Debug.LogError("Hole position is far out! create new one");
 
 			// position is far from existing holes (or the first hole) : create new one
 			BlackHole hole = new BlackHole(position);
@@ -53,7 +53,7 @@ public class BlackHoleController
 	protected bool freeingAll = false;
 	public void FreeHole(BlackHole hole)
 	{
-		Debug.LogError("BlackHoleController : freeing hole! " + hole.renderer.transform.position);
+		//Debug.LogError("BlackHoleController : freeing hole! " + hole.renderer.transform.position);
 
 		if( !freeingAll ) // shouldn't remove stuff from collection if we're looping over it
 			holes.Remove( hole ); 

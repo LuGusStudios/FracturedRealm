@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -25,7 +25,11 @@ public class FRGameTester : LugusSingletonRuntime<FRGameTester>
 	{
 		foreach( Exercise exercise in exercises.exercises )
 		{
+			//Debug.LogError("TestExerciseGroupRoutine : starting exercise test");
 			yield return this.gameObject.StartLugusRoutine( TestExerciseRoutine(exercise) ).Coroutine;
+			//Debug.LogError("TestExerciseGroupRoutine : stopping exercise test");
+
+			yield return new WaitForSeconds(1.0f);
 		}
 
 		yield break;
@@ -49,7 +53,7 @@ public class FRGameTester : LugusSingletonRuntime<FRGameTester>
 		}
 		else
 		{
-			GameManager.use.StartGame(exercise, FR.GameState.Start );
+			GameManager.use.StartGame(exercise, FR.GameState.ExerciseStart );
 		}
 
 		foreach( ExercisePart part in exercise.parts )
@@ -83,6 +87,11 @@ public class FRGameTester : LugusSingletonRuntime<FRGameTester>
 			
 			yield return new WaitForSeconds(1.5f);
 
+		}
+
+		while( GameManager.use.currentState != FR.GameState.ExerciseEnd )
+		{
+			yield return null;
 		}
 		
 		Debug.Log ("Stopped exercise routine " + (exercise) );

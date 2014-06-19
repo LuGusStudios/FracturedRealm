@@ -3,12 +3,12 @@
 	<Exercise>
 		<Difficulty>Easiest</Difficulty>
 		<Composition>BOTH</Composition>
-		<WorldType>FIRE</WorldType>
+		<WorldType>DESERT</WorldType>
 		<ExerciseParts>
 			<ExercisePart>
-				<Fraction>1/2</Fraction>
-				<Fraction>3/2</Fraction> 
-				<Outcome>4/2</Outcome>
+				<Fraction>6/9</Fraction>
+				<Fraction>3/9</Fraction> 
+				<Outcome>9/9</Outcome>
 				<Operation>ADD</Operation>
 			</ExercisePart>
 			<ExercisePart>
@@ -22,7 +22,7 @@
 	<Exercise>
 		<Difficulty>Medium</Difficulty>
 		<Composition>BOTH</Composition>
-		<WorldType>JUNGLE</WorldType>
+		<WorldType>FIRE</WorldType>
 		<ExerciseParts>
 			<ExercisePart>
 				<Fraction>1/2</Fraction>
@@ -41,7 +41,7 @@
 	<Exercise>
 		<Difficulty>Hardest</Difficulty>
 		<Composition>BOTH</Composition>
-		<WorldType>DESERT</WorldType>
+		<WorldType>FOREST</WorldType>
 		<ExerciseParts>
 			<ExercisePart>
 				<Fraction>1/2</Fraction>

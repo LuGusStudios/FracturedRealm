@@ -46,7 +46,7 @@ public class OperationVisualizerAdd_Starter_magnetAtrractRight : OperationVisual
 		
 		yield return new WaitForSeconds( 0.8f );
 
-		// DONT DO THIS : Receiver.Animator.MoveTo( Starter ); // this also triggers running animation, which we don't want here
+		// DONT DO THIS : Receiver.Animator.RunTo( Starter ); // this also triggers running animation, which we don't want here
 
 
 		foreach( CharacterRenderer rend in Receiver.Characters )

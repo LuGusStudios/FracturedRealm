@@ -30,7 +30,7 @@ public class OperationVisualizerSubtract_Attacks_throwAmericanFootballRightHand 
 
 		yield return new WaitForSeconds(1.084f);
 
-		// TODO: make football move in an arc (iTween.MoveTo path?)
+		// TODO: make football move in an arc + SPIN (iTween.MoveTo path?)
 
 		football.transform.parent = null;
 		football.transform.localEulerAngles = new Vector3(318.2309f, 159.6911f, 14.3963f);

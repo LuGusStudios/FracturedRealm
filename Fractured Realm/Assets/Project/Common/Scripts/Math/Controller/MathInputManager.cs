@@ -644,6 +644,8 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		GUILayout.Box("Current operation : " + MathManager.use.currentOperation);
 		
 		GUILayout.Box("Current state : " + MathManager.use.state);
+		
+		GUILayout.Box("Current gameState : " + GameManager.use.currentState );
 
 		if( MathManager.use.operationInfo != null )
 		{

@@ -30,6 +30,16 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 		return CreatePortal( number );
 	}
 
+	public Portal CreatePortal( Transform position, int value, FR.Target part )
+	{
+		Portal output = CreatePortal( value, part );
+
+		output.transform.position = position.position;
+		output.transform.parent = position.parent.parent; // position is portalEntry or portalExit, within an InteractionGroup, which is within numerator or denominator
+
+		return output;
+	}
+
 	public Portal CreatePortal(Number number)
 	{
 		Portal prefab = null;
@@ -64,28 +74,38 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 		return portal;
 	}
 
-	public void CreateRenderers(World world, Fraction[] fractions, bool fillAllInteractionGroups = false)
+	public List<FractionRenderer> CreateRenderers(World world, Fraction[] fractions, int interactionGroupIndex = 0)
 	{
 		List<Fraction> fractionList = new List<Fraction>();
 		fractionList.AddRange( fractions );
 
-		CreateRenderers(world, fractionList, fillAllInteractionGroups);
+		return CreateRenderers(world, fractionList, interactionGroupIndex);
 	}
 
-	public void CreateRenderers(World world, List<Fraction> fractions, bool fillAllInteractionGroups = false)
+	// use interactionGroupIndex = -1 to fill all interaction groups (debug purposes)
+	public List<FractionRenderer> CreateRenderers(World world, List<Fraction> fractions, int interactionGroupIndex = 0)
 	{
+		List<FractionRenderer> output = new List<FractionRenderer>();
+
 		// Spawn the LEFT fraction (fraction 0)
-		int groupCount = 1;
-		if( fillAllInteractionGroups )
+		int groupStart = interactionGroupIndex;
+		int groupEnd = groupStart + 1;
+		if( interactionGroupIndex == -1 )
 		{
 			if( world.numerator != null )
-				groupCount = world.numerator.InteractionGroups.Length;
+				groupEnd = world.numerator.InteractionGroups.Length;
 			else
-				groupCount = world.denominator.InteractionGroups.Length;
+				groupEnd = world.denominator.InteractionGroups.Length;
+
+			groupStart = 0;
 		}
 		
-		for( int i = 0; i < groupCount; ++i )
+		//Debug.LogError("Creating world renderers " + groupStart + " -> " + groupEnd );
+		
+		for( int i = groupStart; i < groupEnd; ++i )
 		{
+			//Debug.LogError("Creating left renderers for interactionGroupIndex " + i );
+
 			Fraction fr = new Fraction(fractions[0].Numerator.Value, fractions[0].Denominator.Value); 
 			
 			FractionRenderer frr = RendererFactory.use.CreateRenderer( fr );
@@ -96,10 +116,14 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 				frr.Numerator.SpawnPosition = world.numerator.InteractionGroups[i].Spawn1.position;
 				frr.Numerator.transform.position = world.numerator.InteractionGroups[i].Spawn1.position;
 				
-				
-				Portal p = RendererFactory.use.CreatePortal( fr.Numerator.Value, FR.Target.NUMERATOR );
-				p.transform.position = world.numerator.InteractionGroups[i].PortalEntry.position;
-				p.transform.parent = world.numerator.transform;
+				if( interactionGroupIndex == -1 ) // debug
+				{
+					//Portal p = RendererFactory.use.CreatePortal( fr.Numerator.Value, FR.Target.NUMERATOR );
+					//p.transform.position = world.numerator.InteractionGroups[i].PortalEntry.position;
+					//p.transform.parent = world.numerator.transform;
+
+					CreatePortal( world.numerator.InteractionGroups[i].PortalEntry, fr.Numerator.Value, FR.Target.NUMERATOR );
+				}
 			}
 			if( fr.Denominator.Value != 0 && (world.denominator != null) )
 			{
@@ -108,9 +132,14 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 				frr.Denominator.transform.position = world.denominator.InteractionGroups[i].Spawn1.position;
 				
 				
-				Portal p = RendererFactory.use.CreatePortal( fr.Denominator.Value, FR.Target.DENOMINATOR );
-				p.transform.position = world.denominator.InteractionGroups[i].PortalEntry.position;
-				p.transform.parent = world.denominator.transform;
+				if( interactionGroupIndex == -1 ) // debug
+				{
+					CreatePortal( world.denominator.InteractionGroups[i].PortalEntry, fr.Denominator.Value, FR.Target.DENOMINATOR );
+
+					//Portal p = RendererFactory.use.CreatePortal( fr.Denominator.Value, FR.Target.DENOMINATOR );
+					//p.transform.position = world.denominator.InteractionGroups[i].PortalEntry.position;
+					//p.transform.parent = world.denominator.transform;
+				}
 			}
 			
 			ValidateInternalFraction( fr,  "fraction 1 : ");
@@ -118,8 +147,10 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 		
 		
 		// Spawn the RIGHT fraction (fraction 1)
-		for( int i = 0; i < groupCount; ++i )
+		for( int i = groupStart; i < groupEnd; ++i )
 		{
+			//Debug.LogError("Creating right renderers for interactionGroupIndex " + i );
+
 			Fraction fr2 = new Fraction(fractions[1].Numerator.Value, fractions[1].Denominator.Value); 
 			
 			FractionRenderer frr2 = RendererFactory.use.CreateRenderer( fr2 );
@@ -131,9 +162,14 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 				frr2.Numerator.transform.position = world.numerator.InteractionGroups[i].Spawn2.position;
 				
 				// TODO: calculate expected end-value for the portal
-				Portal p = RendererFactory.use.CreatePortal( fr2.Numerator.Value, FR.Target.NUMERATOR );
-				p.transform.position = world.numerator.InteractionGroups[i].PortalExit.position;
-				p.transform.parent = world.numerator.transform;
+				if( interactionGroupIndex == -1 ) // debug
+				{
+					CreatePortal( world.numerator.InteractionGroups[i].PortalExit, fr2.Numerator.Value, FR.Target.NUMERATOR );
+
+					//Portal p = RendererFactory.use.CreatePortal( fr2.Numerator.Value, FR.Target.NUMERATOR );
+					//p.transform.position = world.numerator.InteractionGroups[i].PortalExit.position;
+					//p.transform.parent = world.numerator.transform;
+				}
 			}
 			if( fr2.Denominator.Value != 0 && (world.denominator != null) )
 			{
@@ -143,15 +179,22 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 				
 				
 				// TODO: calculate expected end-value for the portal
-				Portal p = RendererFactory.use.CreatePortal( fr2.Denominator.Value, FR.Target.DENOMINATOR );
-				p.transform.position = world.denominator.InteractionGroups[i].PortalExit.position;
-				p.transform.parent = world.denominator.transform;
+				
+				if( interactionGroupIndex == -1 ) // debug
+				{
+					CreatePortal( world.denominator.InteractionGroups[i].PortalExit, fr2.Denominator.Value, FR.Target.DENOMINATOR );
+
+					//Portal p = RendererFactory.use.CreatePortal( fr2.Denominator.Value, FR.Target.DENOMINATOR );
+					//p.transform.position = world.denominator.InteractionGroups[i].PortalExit.position;
+					//p.transform.parent = world.denominator.transform;
+				}
 				
 			}
 			
 			ValidateInternalFraction( fr2, "fraction 2 : ");
 		}
 	
+		return output;
 	}
 
 	

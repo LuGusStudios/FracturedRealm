@@ -140,6 +140,19 @@ public class Fraction
 		
 		return false;
 	}
+
+	public void Destroy()
+	{
+		if( this.HasNumerator() )
+		{
+			GameObject.Destroy( this.Numerator.Renderer );
+		}
+
+		if( this.HasDenominator() )
+		{
+			GameObject.Destroy( this.Denominator.Renderer );
+		}
+	}
 	
 	[SerializeField]
 	protected Number _numerator = null;

@@ -95,9 +95,10 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		World output = CreateWorld(type, composition);
 		List<Fraction> fractionList = new List<Fraction>();
 		fractionList.AddRange( fractions );
-		RendererFactory.use.CreateRenderers( output, fractionList, fillAllInteractionGroups );
+		RendererFactory.use.CreateRenderers( output, fractionList, ((fillAllInteractionGroups) ? -1 : 0) );
 		FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
 		HUDManager.use.SetMode( composition );
+
 
 		FRCamera.use.MoveToInteractionGroup( 1, 1, false );
 
