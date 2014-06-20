@@ -64,6 +64,14 @@ public class Number
 				return _value - 6;
 		}
 	}
+
+	public FR.Target ToTarget()
+	{
+		if( this.IsNumerator )
+			return FR.Target.NUMERATOR;
+		else
+			return FR.Target.DENOMINATOR;
+	}
 	
 	// the parent fraction
 	[SerializeField]

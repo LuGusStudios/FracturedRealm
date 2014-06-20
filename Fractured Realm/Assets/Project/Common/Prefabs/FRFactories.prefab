@@ -11,6 +11,7 @@ GameObject:
   - 114: {fileID: 11400000}
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400004}
+  - 114: {fileID: 11400006}
   m_Layer: 0
   m_Name: FRFactories
   m_TagString: Untagged
@@ -55,8 +56,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d6402e1b06830cd4aad56e3239daa198, type: 2}
   - {fileID: 11400000, guid: b5d897e1132591c4eaa15e892918bd64, type: 2}
   Portals:
-  - {fileID: 11400000, guid: 27e89515d04204aed84bc9aba389dcdc, type: 2}
-  - {fileID: 11400000, guid: 27e89515d04204aed84bc9aba389dcdc, type: 2}
+  - {fileID: 11400000, guid: c17038ae870efbb4898f383a5184918b, type: 2}
+  - {fileID: 11400000, guid: c17038ae870efbb4898f383a5184918b, type: 2}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -68,130 +69,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08ac408b4fcc24b69835ea6b31bd80d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldTypes: 01000000020000000300000004000000
-  worldTemplates:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 11400000, guid: c9b888f51d9ca46d388770d34ddbd890, type: 2}
-  - {fileID: 11400000, guid: c9b888f51d9ca46d388770d34ddbd890, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  worldParts_Fire:
+  - {fileID: 11400002, guid: 18a4ba23eb0a6ba499b311b2fc6fd119, type: 2}
+  worldParts_Forest:
+  - {fileID: 11400030, guid: 364e37527ee990f4b95502b41d50df5c, type: 2}
+  worldParts_Jungle:
+  - {fileID: 11400034, guid: ae0e528cd81986d46aa18c04c8e370c2, type: 2}
+  - {fileID: 11400110, guid: 2d4c25d573ec7c249982d68b203dfd41, type: 2}
+  worldParts_Ice:
+  - {fileID: 11400008, guid: 268e743452bb832449ba46746047427d, type: 2}
+  worldParts_Desert:
+  - {fileID: 11400008, guid: 268e743452bb832449ba46746047427d, type: 2}
   debug_initialFractions:
   - _numerator:
-      _value: 3
+      _value: 2
       _fraction:
         _numerator:
-          _value: 3
+          _value: 2
           _fraction:
             _numerator:
-              _value: 3
+              _value: 2
               _fraction:
                 _numerator:
-                  _value: 3
-                _denominator:
-                  _value: 1
-              _isNumerator: 1
-              _renderer: {fileID: 0}
-            _denominator:
-              _value: 1
-              _fraction:
-                _numerator:
-                  _value: 3
-                _denominator:
-                  _value: 1
-              _isNumerator: 0
-              _renderer: {fileID: 0}
-          _isNumerator: 1
-          _renderer: {fileID: 0}
-        _denominator:
-          _value: 1
-          _fraction:
-            _numerator:
-              _value: 3
-              _fraction:
-                _numerator:
-                  _value: 3
-                _denominator:
-                  _value: 1
-              _isNumerator: 1
-              _renderer: {fileID: 0}
-            _denominator:
-              _value: 1
-              _fraction:
-                _numerator:
-                  _value: 3
-                _denominator:
-                  _value: 1
-              _isNumerator: 0
-              _renderer: {fileID: 0}
-          _isNumerator: 0
-          _renderer: {fileID: 0}
-      _isNumerator: 1
-      _renderer: {fileID: 0}
-    _denominator:
-      _value: 1
-      _fraction:
-        _numerator:
-          _value: 3
-          _fraction:
-            _numerator:
-              _value: 3
-              _fraction:
-                _numerator:
-                  _value: 3
-                _denominator:
-                  _value: 1
-              _isNumerator: 1
-              _renderer: {fileID: 0}
-            _denominator:
-              _value: 1
-              _fraction:
-                _numerator:
-                  _value: 3
-                _denominator:
-                  _value: 1
-              _isNumerator: 0
-              _renderer: {fileID: 0}
-          _isNumerator: 1
-          _renderer: {fileID: 0}
-        _denominator:
-          _value: 1
-          _fraction:
-            _numerator:
-              _value: 3
-              _fraction:
-                _numerator:
-                  _value: 3
-                _denominator:
-                  _value: 1
-              _isNumerator: 1
-              _renderer: {fileID: 0}
-            _denominator:
-              _value: 1
-              _fraction:
-                _numerator:
-                  _value: 3
-                _denominator:
-                  _value: 1
-              _isNumerator: 0
-              _renderer: {fileID: 0}
-          _isNumerator: 0
-          _renderer: {fileID: 0}
-      _isNumerator: 0
-      _renderer: {fileID: 0}
-  - _numerator:
-      _value: 3
-      _fraction:
-        _numerator:
-          _value: 3
-          _fraction:
-            _numerator:
-              _value: 3
-              _fraction:
-                _numerator:
-                  _value: 3
+                  _value: 2
                 _denominator:
                   _value: 2
               _isNumerator: 1
@@ -200,7 +100,7 @@ MonoBehaviour:
               _value: 2
               _fraction:
                 _numerator:
-                  _value: 3
+                  _value: 2
                 _denominator:
                   _value: 2
               _isNumerator: 0
@@ -211,10 +111,10 @@ MonoBehaviour:
           _value: 2
           _fraction:
             _numerator:
-              _value: 3
+              _value: 2
               _fraction:
                 _numerator:
-                  _value: 3
+                  _value: 2
                 _denominator:
                   _value: 2
               _isNumerator: 1
@@ -223,7 +123,7 @@ MonoBehaviour:
               _value: 2
               _fraction:
                 _numerator:
-                  _value: 3
+                  _value: 2
                 _denominator:
                   _value: 2
               _isNumerator: 0
@@ -236,13 +136,13 @@ MonoBehaviour:
       _value: 2
       _fraction:
         _numerator:
-          _value: 3
+          _value: 2
           _fraction:
             _numerator:
-              _value: 3
+              _value: 2
               _fraction:
                 _numerator:
-                  _value: 3
+                  _value: 2
                 _denominator:
                   _value: 2
               _isNumerator: 1
@@ -251,7 +151,7 @@ MonoBehaviour:
               _value: 2
               _fraction:
                 _numerator:
-                  _value: 3
+                  _value: 2
                 _denominator:
                   _value: 2
               _isNumerator: 0
@@ -262,10 +162,10 @@ MonoBehaviour:
           _value: 2
           _fraction:
             _numerator:
-              _value: 3
+              _value: 2
               _fraction:
                 _numerator:
-                  _value: 3
+                  _value: 2
                 _denominator:
                   _value: 2
               _isNumerator: 1
@@ -274,7 +174,109 @@ MonoBehaviour:
               _value: 2
               _fraction:
                 _numerator:
-                  _value: 3
+                  _value: 2
+                _denominator:
+                  _value: 2
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 0
+          _renderer: {fileID: 0}
+      _isNumerator: 0
+      _renderer: {fileID: 0}
+  - _numerator:
+      _value: 2
+      _fraction:
+        _numerator:
+          _value: 2
+          _fraction:
+            _numerator:
+              _value: 2
+              _fraction:
+                _numerator:
+                  _value: 2
+                _denominator:
+                  _value: 2
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 2
+              _fraction:
+                _numerator:
+                  _value: 2
+                _denominator:
+                  _value: 2
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 1
+          _renderer: {fileID: 0}
+        _denominator:
+          _value: 2
+          _fraction:
+            _numerator:
+              _value: 2
+              _fraction:
+                _numerator:
+                  _value: 2
+                _denominator:
+                  _value: 2
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 2
+              _fraction:
+                _numerator:
+                  _value: 2
+                _denominator:
+                  _value: 2
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 0
+          _renderer: {fileID: 0}
+      _isNumerator: 1
+      _renderer: {fileID: 0}
+    _denominator:
+      _value: 2
+      _fraction:
+        _numerator:
+          _value: 2
+          _fraction:
+            _numerator:
+              _value: 2
+              _fraction:
+                _numerator:
+                  _value: 2
+                _denominator:
+                  _value: 2
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 2
+              _fraction:
+                _numerator:
+                  _value: 2
+                _denominator:
+                  _value: 2
+              _isNumerator: 0
+              _renderer: {fileID: 0}
+          _isNumerator: 1
+          _renderer: {fileID: 0}
+        _denominator:
+          _value: 2
+          _fraction:
+            _numerator:
+              _value: 2
+              _fraction:
+                _numerator:
+                  _value: 2
+                _denominator:
+                  _value: 2
+              _isNumerator: 1
+              _renderer: {fileID: 0}
+            _denominator:
+              _value: 2
+              _fraction:
+                _numerator:
+                  _value: 2
                 _denominator:
                   _value: 2
               _isNumerator: 0
@@ -284,6 +286,7 @@ MonoBehaviour:
       _isNumerator: 0
       _renderer: {fileID: 0}
   test: 5
+  defaultWorldType: 2
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -305,6 +308,21 @@ MonoBehaviour:
   - {fileID: 11400024, guid: 39088e5df9941814891cfeea7e4f2209, type: 2}
   - {fileID: 11400000, guid: ef67af0c1d187423a9f56c15711bfde6, type: 2}
   - {fileID: 11400000, guid: ef67af0c1d187423a9f56c15711bfde6, type: 2}
+--- !u!114 &11400006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d26c8ac0c3de480dbaef4d2ce423fbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  props:
+  - {fileID: 11400000, guid: 700e5e7a84a584385be08f23b9fa3fe2, type: 2}
+  - {fileID: 11400000, guid: 91e940fe7763d478b83147a8ac008124, type: 2}
+  - {fileID: 11400000, guid: f2ecb32a17b694c70b3f645ce73c13dc, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

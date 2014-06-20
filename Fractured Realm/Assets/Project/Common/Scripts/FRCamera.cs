@@ -77,7 +77,7 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 	public void MoveToDefaultPositions()
 	{
 		LugusCamera.numerator.transform.position = new Vector3(0,0, -10.0f);
-		LugusCamera.denominator.transform.position = new Vector3(0,-200, -10.0f);
+		LugusCamera.denominator.transform.position = new Vector3(0,-1200, -10.0f);
 	}
 
     void SetCharactersPosition(float zPosition)
@@ -127,8 +127,8 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 		else if( world.denominator != null )
 		{
 			groupCount = world.denominator.InteractionGroups.Length;
-		}
-		else
+		} 
+		else 
 		{
 			Debug.LogError("FRCamera:MoveToInteractionGroup : no worldparts known!" );
 			return;
@@ -175,6 +175,7 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 			MoveTo( LugusCamera.denominator, targetDenominator, animate );
 	}
 
+	protected Vector2 scrollPos = Vector2.zero;
 	public void DrawInteractionGroupSelectionGUI()
 	{
 		World world = GameObject.FindObjectOfType<World>();
@@ -200,13 +201,14 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 		GUILayout.BeginVertical();
 
 		GUILayout.Space(10);
+		scrollPos = GUILayout.BeginScrollView(scrollPos);
 
 		for( int i = 0; i < groupCount; ++i )
 		{			
 
 			GUILayout.BeginHorizontal();
 
-			GUILayout.Label("Group " + (i+1) + " ", GUILayout.MaxWidth(100) );
+			GUILayout.Label("" + (i+1) + " ", GUILayout.MaxWidth(100) );
 
 			if( GUILayout.Button("\nEntry\n") )
 			{
@@ -247,6 +249,8 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 			GUILayout.EndHorizontal();
 		}
 
+		GUILayout.EndScrollView();
+
 		if( Application.isPlaying )
 		{
 			if( GUILayout.Button("\nCycle through all\n") )
@@ -261,7 +265,7 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 
 	protected IEnumerator InteractionGroupCycleRoutine(int groupCount)
 	{
-		World world = GameObject.FindObjectOfType<World>();
+		//World world = GameObject.FindObjectOfType<World>();
 
 		float waitTime = 2.0f;
 

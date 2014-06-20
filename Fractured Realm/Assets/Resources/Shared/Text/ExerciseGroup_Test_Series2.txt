@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ExerciseGroup>
+	<Exercise>
+		<Difficulty>Medium</Difficulty>
+		<Composition>BOTH</Composition>
+		<WorldType>JUNGLE</WorldType>
+		<ExerciseParts>
+			<ExercisePart>
+				<Fraction>2/3</Fraction>
+				<Fraction>4/2</Fraction> 
+				<Outcome>8/6</Outcome>
+				<Operation>MULTIPLY</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>2/3</Fraction>
+				<Fraction>4/2</Fraction> 
+				<Outcome>12/4</Outcome>
+				<Operation>DIVIDE</Operation>
+			</ExercisePart>
+		</ExerciseParts>
+	</Exercise>
+</ExerciseGroup>

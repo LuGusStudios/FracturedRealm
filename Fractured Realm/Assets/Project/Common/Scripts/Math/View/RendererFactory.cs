@@ -98,6 +98,14 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 
 		if( newValue.Value != 0 )
 		{
+			// make sure we stick to the visualization of the current renderer (needed during division in the multiply visualizers)
+			bool tempIsNumerator = newValue.IsNumerator;
+
+			if( renderer.VisualizedAsNumerator )
+				newValue.IsNumerator = true;
+			else
+				newValue.IsNumerator = false;
+
 			newRenderer = CreateRenderer(newValue);
 			newRenderer.transform.parent = renderer.transform.parent;
 			newRenderer.transform.position = renderer.transform.position;
@@ -106,6 +114,8 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 			
 			newRenderer.interactionCharacter.transform.position = renderer.interactionCharacter.transform.position;
 			newRenderer.interactionCharacter.transform.rotation = renderer.interactionCharacter.transform.rotation;
+
+			newValue.IsNumerator = tempIsNumerator;
 		}
 		
 		/*
@@ -195,6 +205,11 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 		renderer.Characters[0].Number = number;
 		*/
 
+		if( number.IsNumerator )
+			renderer.VisualizedAsNumerator = true;
+		else
+			renderer.VisualizedAsDenominator = true;
+
 		number.Renderer = renderer;
 		renderer.Number = number;
 
@@ -273,11 +288,22 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 	public CharacterRenderer CreateCharacter(Number number, int value)
 	{
 		CharacterRenderer[] pool;
-		if( number.IsNumerator )
-			pool = Numerators;
-		else 
-			pool = Denominators;
-		
+
+		if( number.Renderer != null )
+		{
+			if( number.Renderer.VisualizedAsNumerator )
+				pool = Numerators;
+			else
+				pool = Denominators;
+		}
+		else
+		{
+			if( number.IsNumerator )
+				pool = Numerators;
+			else 
+				pool = Denominators;
+		}
+
 		// TODO: add actual pooling and re-use of objects!
 		value -= 1; // make it 0-based (use as index)
 		if( number.Value == 0 || value < 0 || value >= pool.Length ) 

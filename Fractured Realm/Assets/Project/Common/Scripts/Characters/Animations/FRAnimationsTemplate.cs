@@ -4,32 +4,41 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-ENUM
+namespace FR
+{
+	public enum AnimationStage
+	{
+		NONE = -1,
+		Stage1 = 1,
+		Stage2 = 2
+	}
 	
-public class FRAnimations
+	ENUM
+}
+
+public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 {
 
-	public static FRAnimation TypeFromString( string animationName )
+	public FR.Animation TypeFromString( string animationName )
 	{
 		try
 		{
-			return (FRAnimation) Enum.Parse( typeof(FRAnimation), animationName ); 
+			return (FR.Animation) Enum.Parse( typeof(FR.Animation), animationName ); 
 
 		}
 		catch( ArgumentException e )
 		{
-			return FRAnimation.NONE;
+			return FR.Animation.NONE;
 		}
 	}
 	
-	protected static Dictionary<int, FRAnimationData> _animations = null;
-	public static Dictionary<int, FRAnimationData> animations
+	protected Dictionary<int, FRAnimationData> _animations = null;
+	public Dictionary<int, FRAnimationData> animations
 	{
 		get
 		{
 			if( _animations == null )
 			{
-				_animations = new Dictionary<int, FRAnimationData>();
 				FillDictionary();
 			}
 
@@ -37,8 +46,15 @@ public class FRAnimations
 		}
 	}
 
-	public static void FillDictionary()
+	public FRAnimationData GetAnimationData( FR.Animation animation )
 	{
+		return _animations[ (int) animation];
+	}
+
+	public void FillDictionary()
+	{
+		_animations = new Dictionary<int, FRAnimationData>();
+				
 		INIT
 	}
 

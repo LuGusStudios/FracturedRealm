@@ -52,7 +52,7 @@ public class AnimationSequenceTester : MonoBehaviour
 		foreach( Waypoint w in waypoints )
 		{
 			yield return character.Animator.RotateTowards( w.transform.position ).Coroutine;
-			yield return character.Animator.MoveTo( w.transform.position ).Coroutine;
+			yield return character.Animator.RunTo( w.transform.position ).Coroutine;
 		}
 	}
 
@@ -198,11 +198,11 @@ public class AnimationSequenceTester : MonoBehaviour
 			
 			//Debug.Log ("Animator is in transition now. " + animator.GetCurrentAnimatorStateInfo(0).normalizedTime );
 			
-			
-			animator.CrossFade( (int) FRAnimation.running /*"/Movements.running"*/, 0.15f );
+
+			animator.CrossFade( (int) FR.Animation.running /*"/Movements.running"*/, 0.15f );
 			//animator.Play ( "running" );
-			
-			while( animator.GetCurrentAnimatorStateInfo(0).nameHash != (int) FRAnimation.running )
+
+			while( animator.GetCurrentAnimatorStateInfo(0).nameHash != (int) FR.Animation.running )
 			{
 				yield return null;
 			}
@@ -373,7 +373,7 @@ public class AnimationSequenceTester : MonoBehaviour
 				animator.SetTrigger("turnRight90"); 
 
 
-				while( animator.GetCurrentAnimatorStateInfo(0).nameHash != (int) FRAnimation.turnRight90 )
+				while( animator.GetCurrentAnimatorStateInfo(0).nameHash != (int) FR.Animation.turnRight90 )
 				{
 					yield return null;
 				}
@@ -394,7 +394,7 @@ public class AnimationSequenceTester : MonoBehaviour
 			animator.CrossFade( "/Movements.running", 0.15f );
 			//animator.Play ( "running" );
 
-			while( animator.GetCurrentAnimatorStateInfo(0).nameHash != (int) FRAnimation.running )
+			while( animator.GetCurrentAnimatorStateInfo(0).nameHash != (int) FR.Animation.running )
 			{
 				yield return null;
 			}

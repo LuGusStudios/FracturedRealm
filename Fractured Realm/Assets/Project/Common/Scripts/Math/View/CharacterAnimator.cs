@@ -199,11 +199,11 @@ public class CharacterAnimator : MonoBehaviour
 		   info.positionType == CharacterOrientationInfo.RelativePosition.FRONT )
 		{
 			// TODO: possibly still rotate, but without animation (just use lookRotation and Quaternion.Lerp)
-			Debug.LogWarning("CharacterAnimator:RotateTowardsRoutine : no rotation needed, already facing target");
+			//Debug.LogWarning(Time.frameCount + " : CharacterAnimator:RotateTowardsRoutine : no rotation needed, already facing target : " + transform.name);
 			yield break;
 		}
 
-		FRAnimation turnAnimationType = FRAnimation.NONE;
+		FR.Animation turnAnimationType = FR.Animation.NONE;
 		string animationName = "turnLeft";
 
 		if( info.positionType == CharacterOrientationInfo.RelativePosition.RIGHT )
@@ -213,14 +213,14 @@ public class CharacterAnimator : MonoBehaviour
 
 		animationName += info.animationDegrees;
 
-		//Debug.Log("CharacterAnimator:RotateTowardsRoutine : Rotating "+ info.positionType +" by " + info.angle + " degrees with animation degrees " + info.animationDegrees + " and anim " + animationName + " // " + this.transform.name );
+		//Debug.Log(Time.frameCount + " : CharacterAnimator:RotateTowardsRoutine : Rotating "+ info.positionType +" by " + info.angle + " degrees with animation degrees " + info.animationDegrees + " and anim " + animationName + " // " + this.transform.name );
 
 
 
 
-		turnAnimationType = FRAnimations.TypeFromString( animationName );
+		turnAnimationType = FRAnimations.use.TypeFromString( animationName );
 
-		if( turnAnimationType == FRAnimation.NONE )
+		if( turnAnimationType == FR.Animation.NONE )
 		{
 			Debug.LogError("CharacterAnimator:RotateTowardsRoutine : turnAnimationType was NONE for string " + animationName);
 			yield break;
@@ -228,7 +228,7 @@ public class CharacterAnimator : MonoBehaviour
 
 		//Debug.Log ("Looking up FRANimationData for key " + turnAnimationType + "//" + ( (int) turnAnimationType) + " from string " + animationName );
 
-		FRAnimationData turnAnimation = FRAnimations.animations[ (int) turnAnimationType ];
+		FRAnimationData turnAnimation = FRAnimations.use.animations[ (int) turnAnimationType ];
 		
 		Animator animator = GetComponent<Animator>();
 
@@ -289,9 +289,9 @@ public class CharacterAnimator : MonoBehaviour
 
 	public void CrossFade( string animationName, float fadeDuration )
 	{
-		FRAnimation animationType = FRAnimations.TypeFromString( animationName );
+		FR.Animation animationType = FRAnimations.use.TypeFromString( animationName );
 		
-		if( animationType == FRAnimation.NONE )
+		if( animationType == FR.Animation.NONE )
 		{
 			Debug.LogError("CharacterAnimator:CrossFade : animationType was NONE for string " + animationName);
 			return;
@@ -302,10 +302,10 @@ public class CharacterAnimator : MonoBehaviour
 
 	public void CrossFade( FRAnimationData animation, float fadeDuration )
 	{
-		CrossFade( (FRAnimation) animation.hash, fadeDuration );
+		CrossFade( (FR.Animation) animation.hash, fadeDuration );
 	}
 
-	public void CrossFade( FRAnimation animation, float fadeDuration )
+	public void CrossFade( FR.Animation animation, float fadeDuration )
 	{
 		_animator.CrossFade( (int) animation, 0.05f );
 	}

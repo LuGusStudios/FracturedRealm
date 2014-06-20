@@ -116,7 +116,8 @@ public class FRValidator : EditorWindow
 				Fraction[] fractions = new Fraction[2];
 				fractions[0] = new Fraction( fr1_numerator, fr1_denominator );
 				fractions[1] = new Fraction( fr2_numerator, fr2_denominator );
-				
+
+				WorldFactory.use.defaultWorldType = worldType;
 				WorldFactory.use.debug_initialFractions = fractions;
 				EditorUtility.SetDirty(WorldFactory.use);
 				

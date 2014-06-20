@@ -10,6 +10,9 @@ GameObject:
   - 4: {fileID: 400000}
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400000}
+  - 114: {fileID: 11400004}
+  - 114: {fileID: 11400006}
+  - 114: {fileID: 11400008}
   m_Layer: 0
   m_Name: FRManagers
   m_TagString: Untagged
@@ -41,6 +44,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acceptInput: 1
   state: -1
+  errorShowStartTime: -10
+  errorMessage: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -52,11 +57,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5104d129e7cf5405c99a613b49d8238e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceptInput: 1
   dragging: 0
   down: 0
   up: 0
   inputPoints: []
   lastPoint: {x: 0, y: 0, z: 0}
+--- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd207f93f81544c2b9ebc4a45fde053b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  errorTexture: {fileID: 2800000, guid: 865de1001ffa2447295eebe2ac970872, type: 3}
+  errorAudio: {fileID: 8300000, guid: 0fa16d6fe3fc1417884c629183bb4d41, type: 3}
+  errorSprite: {fileID: 21300000, guid: 2067d9695409449ecba5a7528016e876, type: 3}
+  errorTextAsset: {fileID: 4900000, guid: a603b6030d588494b9368828530c1d35, type: 3}
+--- !u!114 &11400006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 431e0edf708ef4bfc8403103a6a135d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allExerciseGroups: []
+  currentExerciseGroupIndex: -1
+--- !u!114 &11400008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dd2163cfdad7426fa65233449a4ed0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: -1
+  currentWorld: {fileID: 0}
+  currentInteractionGroupIndex: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

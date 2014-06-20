@@ -8,9 +8,9 @@ public class Fraction
 	// when using the class purely as data structure
 	public Fraction(int numeratorValue, int denominatorValue)
 	{
-		this.Numerator 		= new Number(numeratorValue, this, true);
-		this.Denominator 	= new Number(denominatorValue, this, false);
+		Fill ( numeratorValue, denominatorValue );
 	}
+
 
 	public Fraction( Number numerator, Number demoninator )
 	{
@@ -25,6 +25,69 @@ public class Fraction
 		
 		this.Denominator.IsNumerator = false;
 		this.Denominator.IsDenominator = true;
+	}
+
+	public Fraction( string data )
+	{
+		bool error = true;
+		if( data.Contains("/") )
+		{
+			string[] split = data.Split('/');
+
+			if( split.Length == 2 )
+			{
+				error = false;
+				Fill ( split[0], split[1] );
+			}
+		}
+		else if( data.Contains("\\") )
+		{
+			string[] split = data.Split('\\');
+			
+			if( split.Length == 2 )
+			{
+				error = false;
+				Fill ( split[0], split[1] );
+			}
+		}
+
+		if( error )
+		{
+			Debug.LogError("Fraction: string " + data + " is not wellformed. Has to be of format x / y or x \\ y");
+		}
+	}
+
+	protected void Fill( string numeratorValue, string denominatorValue )
+	{
+		int num = -1;
+		int denom = -1;
+		try
+		{
+			num = int.Parse(numeratorValue.Trim ());
+		}
+		catch(Exception e)
+		{
+			Debug.LogError("Fraction: numeratorValue " + numeratorValue + " is not an int!");
+			num = -1;
+		}
+		
+		try
+		{
+			denom = int.Parse(denominatorValue.Trim ());
+		}
+		catch(Exception e)
+		{
+			Debug.LogError("Fraction: denominatorValue " + denominatorValue + " is not an int!");
+			denom = -1;
+		}
+
+		Fill ( num, denom );
+	}
+
+	protected void Fill( int numeratorValue, int denominatorValue )
+	{
+		this.Numerator 		= new Number(numeratorValue, this, true);
+		this.Denominator 	= new Number(denominatorValue, this, false);
 	}
 	
 	public Fraction CopyData()
@@ -94,7 +157,23 @@ public class Fraction
 		get{ return _denominator; }
 		set{ _denominator = value; }
 	}
+
+	public bool HasNumerator()
+	{
+		if( _numerator == null )
+			return false;
+
+		return _numerator.Value != 0;
+	}
 	
+	public bool HasDenominator()
+	{
+		if( _denominator == null )
+			return false;
+		
+		return _denominator.Value != 0;
+	}
+
 	protected FractionRenderer _renderer = null;
 	public FractionRenderer Renderer
 	{
