@@ -29,6 +29,49 @@ public class HUDManager : LugusSingletonExisting<HUDManager>
 		FRCamera.use.SetMode( mode );
 		MathInputManager.use.SetMode( mode );
 	}
+
+	public void UpdateOperationIcons(int amount)
+	{
+		Dictionary<FR.OperationType, int> counts = new Dictionary<FR.OperationType, int>();
+
+		List<OperationIcon> operationIcons = new List<OperationIcon>();
+		operationIcons.AddRange ( GameObject.FindObjectsOfType<OperationIcon>() );
+		
+		foreach( OperationIcon icon in operationIcons )
+		{
+			if( icon.type == FR.OperationType.SIMPLIFY || icon.type == FR.OperationType.DOUBLE )
+				counts[icon.type] = (amount == 0 ) ? 0 : -1;
+			else if( amount == 666 )
+				counts[icon.type] = Random.Range(0, 3);
+			else
+				counts[icon.type] = amount;
+		}
+
+		UpdateOperationIcons( counts );
+	}
+
+	// pass null to get 3 icons for all operations (Beside simplify and double)
+	public void UpdateOperationIcons( Dictionary<FR.OperationType, int> counts = null )
+	{
+		List<OperationIcon> operationIcons = new List<OperationIcon>();
+		operationIcons.AddRange ( GameObject.FindObjectsOfType<OperationIcon>() );
+
+		if( counts == null )
+		{
+			UpdateOperationIcons(3);
+			return;
+		}
+
+		foreach( OperationIcon icon in operationIcons )
+		{
+			icon.Clear();
+
+			if( counts.ContainsKey( icon.type ) )
+			{
+				icon.OperationAmount = counts[ icon.type ];
+			}
+		}
+	}
 	
 	public void Update()
 	{

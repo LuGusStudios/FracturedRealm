@@ -217,6 +217,7 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 			GameManager.use.StartGameDebug(  WorldFactory.use.defaultWorldType, fractions, cameraMode, FR.GameState.ExerciseStart );
 		}
 
+		HUDManager.use.UpdateOperationIcons(1);
 			
 		if( immediateMode )
 		{
@@ -254,8 +255,6 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 
 	public IEnumerator ImmediateModeTestRoutine(FR.OperationType operationType)
 	{
-
-		MathInputManager.use.InitializeOperationIcons(1);
 		LugusInput.use.acceptInput = false;
 		
 		yield return new WaitForSeconds(0.5f * interactionSpeed);
@@ -284,7 +283,6 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 
 	public IEnumerator DefaultTestRoutine(FR.OperationType operationType)
 	{
-		MathInputManager.use.InitializeOperationIcons(1);
 		
 		LugusInput.use.acceptInput = false;
 

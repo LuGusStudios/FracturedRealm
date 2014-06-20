@@ -183,6 +183,7 @@ public class ExerciseLoader
 		ExercisePart output = new ExercisePart();
 
 		bool error = false;
+		bool availableAll = false;
 		while (parser.Read("ExercisePart"))
 		{
 			if (parser.tagType == TinyXmlReader.TagType.OPENING)
@@ -229,6 +230,40 @@ public class ExerciseLoader
 
 						break;
 					}
+				case "OperationAvailable":
+				{
+					if( parser.content == "ALL" )
+					{
+						availableAll = true;
+					}
+					else
+					{
+						FR.OperationType operation = FR.OperationType.NONE;
+						try
+						{
+							operation = (FR.OperationType) Enum.Parse(typeof(FR.OperationType), parser.content);
+						}
+						catch(Exception e)
+						{
+							Debug.LogError("ExerciseLoader:ParseExercisePart : operationAvailable could not be parsed! " + parser.content);
+							operation = FR.OperationType.NONE;
+						}
+
+						if( operation != FR.OperationType.NONE )
+						{
+							if( output.availableOperations == null )
+							{
+								output.availableOperations = new Dictionary<FR.OperationType, int>();
+							}
+
+							if( output.availableOperations.ContainsKey(operation) )
+								output.availableOperations[operation] += 1;
+							else
+								output.availableOperations[operation] = 1;
+						}
+					}
+					break;
+				}
 				}
 			}
 		}
@@ -242,6 +277,29 @@ public class ExerciseLoader
 		}
 		else
 		{
+			if( !availableAll )
+			{
+				// add the operations to the availableOperations
+				if( output.availableOperations == null )
+				{
+					output.availableOperations = new Dictionary<FR.OperationType, int>();
+				}
+
+				foreach( FR.OperationType operation in output.operations )
+				{
+					if( output.availableOperations.ContainsKey(operation) )
+						output.availableOperations[operation] += 1;
+					else
+						output.availableOperations[operation] = 1;
+				}
+			}
+			else
+			{
+				// if availableOperations is null, we present the user with a choice of ALL the operations, with at least 3 of each
+				// comes in handy with puzzle challenges / late game
+				output.availableOperations = null;
+			}
+
 			Debug.Log ("ExerciseLoader:ParseExercisePart done : " + output.ToString() );
 		}
 

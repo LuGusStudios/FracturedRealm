@@ -25,6 +25,7 @@ public class GameManager : LugusSingletonExisting<GameManager>
 	public OnStateChanged onStateChanged = null;
 
 	public FR.GameState currentState = FR.GameState.NONE;
+	public ExercisePart currentExercisePart = null;
 
 	public World currentWorld = null;
 
@@ -45,7 +46,8 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		
 		FRCamera.use.mode = FR.Target.NONE; // force mode reset on cam
 		HUDManager.use.SetMode( exercise.composition );
-		MathInputManager.use.InitializeOperationIcons(1);
+		//HUDManager.use.UpdateOperationIcons(1);
+		HUDManager.use.UpdateOperationIcons(0); // make sure there are no icons visible here
 		
 		FRCamera.use.MoveToInteractionGroup( 1, 1, false );
 
@@ -88,7 +90,7 @@ public class GameManager : LugusSingletonExisting<GameManager>
 
 		List<FractionRenderer> rends = RendererFactory.use.CreateRenderers( currentWorld, part.fractions, currentInteractionGroupIndex );
 
-
+		currentExercisePart = part;
 	}
 
 	public void StartGameDebug( FR.WorldType type, Fraction[] fractions, FR.Target composition = FR.Target.BOTH, FR.GameState startFromState = FR.GameState.ExerciseStart )
@@ -152,6 +154,10 @@ public class GameManager : LugusSingletonExisting<GameManager>
 			LugusCoroutines.use.StartRoutine( PartStartSequenceRoutine() );
 		} 
 
+		if( newState == FR.GameState.ProcessingOperation )
+		{
+			HUDManager.use.UpdateOperationIcons(0);
+		}
 
 
 		if( newState == FR.GameState.PartEndSequence )
@@ -247,7 +253,7 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		left.Denominator.Renderer.gameObject.ScaleTo(scale2).Time (2.0f).Execute();
 
 		yield return new WaitForSeconds(2.0f);
-		 
+
 		GameObject.Destroy( portal1.gameObject );
 		GameObject.Destroy( portal2.gameObject );
 
@@ -265,6 +271,7 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		// TODO: should be shown here, and hidden after input accepted
 		// MathInputManager.use.InitializeOperationIcons(1);
 
+		HUDManager.use.UpdateOperationIcons( currentExercisePart.availableOperations );
 
 		ChangeState( FR.GameState.WaitingForInput );
 
@@ -273,6 +280,9 @@ public class GameManager : LugusSingletonExisting<GameManager>
 
 	protected IEnumerator PartEndSequenceRoutine()
 	{
+		HUDManager.use.UpdateOperationIcons(0);
+
+
 		Fraction left = FindFraction(true);
 
 		Debug.Log (Time.frameCount + " before turn to exit ");

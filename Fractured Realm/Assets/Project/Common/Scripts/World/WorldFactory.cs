@@ -105,7 +105,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 		if( Application.isPlaying )
 		{
 			//Debug.LogError("App is playing, so initialize operation icons");
-			MathInputManager.use.InitializeOperationIcons(1);
+			HUDManager.use.UpdateOperationIcons(1);
 		}
 
 		return output;

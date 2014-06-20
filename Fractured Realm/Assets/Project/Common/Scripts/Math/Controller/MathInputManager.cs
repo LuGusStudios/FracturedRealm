@@ -63,7 +63,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 
 	public void Start()
 	{
-		InitializeOperationIcons(666);
+		HUDManager.use.UpdateOperationIcons(666);
 
 		ChangeState( InputState.IDLE );
 	}
@@ -80,6 +80,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		yield break;
 	}
 
+	/*
 	public void InitializeOperationIcons(int amount)
 	{
 		operationIcons = new List<OperationIcon>();
@@ -97,6 +98,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 				icon.OperationAmount = amount;
 		}
 	}
+	*/
 
 	public void SetMode( FR.Target mode )
 	{
@@ -190,7 +192,8 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 	{
 		if( !acceptInput) 
 			return;
-		
+
+		/*
 		if( LugusInput.use.KeyDown(KeyCode.S) ) // "spawn"
 		{
 			InitializeOperationIcons(666);
@@ -213,6 +216,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		{
 			operationIcons[0].OperationAmount = -1;
 		}
+		*/
 		
 		// we need to have selected an operation to be able to continue
 		//if( MathManager.use.currentOperation == null )
@@ -259,6 +263,12 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 			//}
 
 			OperationIcon clickedIcon = null;
+
+			if( operationIcons == null )
+			{
+				operationIcons = new List<OperationIcon>();
+				operationIcons.AddRange ( GameObject.FindObjectsOfType<OperationIcon>() );
+			} 
 
 			// check if we've clicked one of the operation icons
 			foreach( OperationIcon icon in operationIcons )

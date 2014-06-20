@@ -8,6 +8,11 @@ public class ExercisePart
 	public List<FR.OperationType> operations = new List<FR.OperationType>();
 	public List<Fraction> outcomes = new List<Fraction>();
 
+	// if none in file: take operations, provide 1 each
+	// if ALL defined: leave null
+	// if specified: take 1 of each in operations list + the ones specified as extras (duh) 
+	public Dictionary<FR.OperationType, int> availableOperations = null;
+
 	public Fraction First
 	{
 		get

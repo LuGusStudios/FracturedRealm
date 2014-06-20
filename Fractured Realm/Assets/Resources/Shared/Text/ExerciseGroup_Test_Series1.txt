@@ -10,12 +10,22 @@
 				<Fraction>3/9</Fraction> 
 				<Outcome>9/9</Outcome>
 				<Operation>ADD</Operation>
+				<OperationAvailable>SUBTRACT</OperationAvailable>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>1/2</Fraction>
+				<Fraction>3/2</Fraction> 
+				<Outcome>4/2</Outcome>
+				<Operation>ADD</Operation>
+				<OperationAvailable>MULTIPLY</OperationAvailable>
+				<OperationAvailable>DIVIDE</OperationAvailable>
 			</ExercisePart>
 			<ExercisePart>
 				<Fraction>4/2</Fraction>
 				<Fraction>3/2</Fraction> 
 				<Outcome>1/2</Outcome>
 				<Operation>SUBTRACT</Operation>
+				<OperationAvailable>ALL</OperationAvailable>
 			</ExercisePart>
 		</ExerciseParts>
 	</Exercise>
