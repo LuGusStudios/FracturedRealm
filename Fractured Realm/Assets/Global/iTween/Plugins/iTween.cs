@@ -84,6 +84,15 @@ public class iTween : MonoBehaviour{
 	private Vector3 postUpdate;
 	private NamedValueColor namedcolorvalue;
 
+	/* ADDED BY LUGUS */
+	private Vector3 projectile_initialPosition;
+	private Vector3 projectile_initialVelocity;
+	private Vector3 projectile_accelerationAll = new Vector3(0, -9.81f, 0);
+	private float projectile_percentageModifier = 1.0f; 
+	private float projectile_velocity = 0.0f; // velocity per component (x y z)
+	private float projectile_acceleration = 0.0f; // acceleration per component (x y z)
+	private float projectile_initial = 0.0f;
+
     private float lastRealTime; // Added by PressPlay
     private bool useRealTime; // Added by PressPlay
 
@@ -129,7 +138,10 @@ public class iTween : MonoBehaviour{
 		easeOutElastic,
 		easeInOutElastic,
 		/* GFX47 MOD END */
-		punch
+		punch,
+		/* LUGUS MOD BEGIN */
+		projectile, 
+		/* LUGUS MOD END */
 	}
 	
 	/// <summary>
@@ -206,6 +218,92 @@ public class iTween : MonoBehaviour{
 	#endregion
 	
 	#region #1 Static Registers
+
+	public static void ProjectileTo(GameObject target, Vector3 position, float heightIndicator, float time)
+	{
+		// heightindicator is actual "time" in seconds that is used to calculate the initial velocity
+
+		
+		Vector3 startPos = target.transform.position;
+		Vector3 acceleration =  new Vector3(0, -9.81f, 0);
+		
+		Vector3 v1 = Vector3.zero;
+		v1.x = (position.x - startPos.x - (0.5f * acceleration.x * heightIndicator * heightIndicator)) / heightIndicator;
+		v1.y = (position.y - startPos.y - (0.5f * acceleration.y * heightIndicator * heightIndicator)) / heightIndicator;
+		v1.z = (position.z - startPos.z - (0.5f * acceleration.z * heightIndicator * heightIndicator)) / heightIndicator;
+
+		float percentageModifier = 1.0f;
+		// if time > heightIndicator: move slower than normal
+		// if time < heightIndicator: move faster than normal
+		percentageModifier = heightIndicator / time;
+
+		Debug.Log("PERCENTAGE MODIFIER = " + heightIndicator + " / " + time + " = " + percentageModifier );
+
+		Hashtable h = new Hashtable();
+		h.Add( "projectile_initialposition", target.transform.position );
+		h.Add( "projectile_accelerationall", acceleration );
+		h.Add( "projectile_initialvelocity", v1 );
+		h.Add( "projectile_percentagemodifier", percentageModifier );
+		
+		h.Add ("orienttopath", true);
+		
+		h.Add("position",position );
+		h.Add("time",time);
+		
+		ProjectileTo(target, h);
+
+	}
+
+	public static void ProjectileTo(GameObject target, Vector3 position, float time)
+	{
+		// see for math formulas : http://code.tutsplus.com/tutorials/simulate-projectile-motion-with-actionscript-3-0--active-4107
+		// we use the top formula in the ease function, and solve it for v1 to get the initial velocity here (d(s) is the end position, so we can use total time for delta-t)
+
+		Vector3 startPos = target.transform.position;
+		Vector3 acceleration =  new Vector3(0, -9.81f, 0);
+
+		Vector3 v1 = Vector3.zero;
+		v1.x = (position.x - startPos.x - (0.5f * acceleration.x * time * time)) / time;
+		v1.y = (position.y - startPos.y - (0.5f * acceleration.y * time * time)) / time;
+		v1.z = (position.z - startPos.z - (0.5f * acceleration.z * time * time)) / time;
+
+		Hashtable h = new Hashtable();
+		h.Add( "projectile_initialposition", target.transform.position );
+		h.Add( "projectile_accelerationall", acceleration );
+		h.Add( "projectile_initialvelocity", v1 );
+		h.Add( "projectile_percentagemodifier", 1.0f );
+
+		h.Add ("orienttopath", true);
+
+		h.Add("position",position );
+		h.Add("time",time);
+
+		ProjectileTo(target, h);
+	}	
+
+	public static void ProjectileTo(GameObject target, Hashtable args){
+		//clean args:
+		args = iTween.CleanArgs(args);
+
+		
+		args.Add("easetype", EaseType.projectile);
+
+		//additional property to ensure ConflictCheck can work correctly since Transforms are refrences:		
+		if(args.Contains("position"))
+		{
+			if (args["position"].GetType() == typeof(Transform)) {
+				Transform transform = (Transform)args["position"];
+				args["position"]=new Vector3(transform.position.x,transform.position.y,transform.position.z);
+				args["rotation"]=new Vector3(transform.eulerAngles.x,transform.eulerAngles.y,transform.eulerAngles.z);
+				args["scale"]=new Vector3(transform.localScale.x,transform.localScale.y,transform.localScale.z);
+			}
+		}		
+		
+		//establish iTween:
+		args["type"]="projectile";
+		args["method"]="to";
+		Launch(target,args);
+	}
 
 	/// <summary>
 	/// Sets up a GameObject to avoid hiccups when an initial iTween is added. It's advisable to run this on every object you intend to run iTween on in its Start or Awake.
@@ -3169,6 +3267,14 @@ public class iTween : MonoBehaviour{
 					break;
 				}
 			break;
+			case "projectile":
+				switch (method) {
+					case "to":
+						GenerateMoveToTargets();
+						apply = new ApplyTween(ApplyProjectileToTargets);
+					break;
+				}
+			break;
 			case "scale":
 				switch (method){
 					case "to":
@@ -4217,6 +4323,53 @@ public class iTween : MonoBehaviour{
 			}
 		}
 			
+		//need physics?
+		postUpdate=transform.position;
+		if(physics){
+			transform.position=preUpdate;
+			rigidbody.MovePosition(postUpdate);
+		}
+	}
+	
+	void ApplyProjectileToTargets(){
+
+		//Debug.LogError("ApplyProjectileToTargets " + percentage);
+
+		//record current:
+		preUpdate=transform.position;
+		
+		//calculate:
+		projectile_velocity = projectile_initialVelocity.x;
+		projectile_acceleration = projectile_accelerationAll.x;
+		projectile_initial = projectile_initialPosition.x;
+		vector3s[2].x = ease(vector3s[0].x,vector3s[1].x,percentage);
+
+		projectile_velocity = projectile_initialVelocity.y;
+		projectile_acceleration = projectile_accelerationAll.y;
+		projectile_initial = projectile_initialPosition.y;
+		vector3s[2].y = ease(vector3s[0].y,vector3s[1].y,percentage);
+		
+		projectile_velocity = projectile_initialVelocity.z;
+		projectile_acceleration = projectile_accelerationAll.z;
+		projectile_initial = projectile_initialPosition.z;
+		vector3s[2].z = ease(vector3s[0].z,vector3s[1].z,percentage);
+		
+		//apply:	
+		if (isLocal) {
+			transform.localPosition=vector3s[2];
+		}else{
+			transform.position=vector3s[2];
+		}
+		
+		//dial in:
+		if(percentage==1){
+			if (isLocal) {
+				transform.localPosition=vector3s[1];		
+			}else{
+				transform.position=vector3s[1];
+			}
+		}
+		
 		//need physics?
 		postUpdate=transform.position;
 		if(physics){
@@ -6898,13 +7051,28 @@ public class iTween : MonoBehaviour{
             useRealTime = Defaults.useRealTime;
         }
 
+		/* ADDED BY LUGUS */
+		if( ( (string)tweenArguments["type"]) == "projectile" )
+		{
+			Debug.Log ("HAs " + tweenArguments.Contains("projectile_initialvelocity") );
+			projectile_initialVelocity = (Vector3) tweenArguments["projectile_initialvelocity"];
+			projectile_initialPosition = (Vector3) tweenArguments["projectile_initialposition"];
+			projectile_accelerationAll = (Vector3) tweenArguments["projectile_accelerationall"]; 
+			projectile_percentageModifier = (float) tweenArguments["projectile_percentagemodifier"];
+		}
+
+
 		//instantiates a cached ease equation reference:
 		GetEasingFunction();
 	}	
 	
 	//instantiates a cached ease equation refrence:
 	void GetEasingFunction(){
-		switch (easeType){
+		switch (easeType)
+		{
+		case EaseType.projectile:
+			ease = new EasingFunction(easeProjectile);
+			break;
 		case EaseType.easeInQuad:
 			ease  = new EasingFunction(easeInQuad);
 			break;
@@ -7131,7 +7299,17 @@ public class iTween : MonoBehaviour{
 	#endregion	
 	
 	#region Easing Curves
-	
+
+	private float easeProjectile(float start, float end, float value)
+	{
+		float time = this.runningTime * projectile_percentageModifier;
+		float val = (0.5f * projectile_acceleration * time * time) + (projectile_velocity * time) + projectile_initial;
+
+		//Debug.Log ("Porjectile ease " + val + " = " + value + " ~ " + time + " // " + projectile_acceleration + " // " + projectile_velocity + " // " + projectile_initial + " // " );
+
+		return val;
+	}
+
 	private float linear(float start, float end, float value){
 		return Mathf.Lerp(start, end, value);
 	}
