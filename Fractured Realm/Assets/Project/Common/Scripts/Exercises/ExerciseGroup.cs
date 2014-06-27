@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class ExerciseGroup
 {
 	public string name = "";
+	public string description = "";
 
 	public List<Exercise> exercises = new List<Exercise>();
 	protected int currentExerciseIndex = -1;

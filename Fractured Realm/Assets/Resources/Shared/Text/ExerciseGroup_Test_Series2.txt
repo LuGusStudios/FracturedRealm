@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ExerciseGroup>
+	<Description>Test series 2</Description>
 	<Exercise>
 		<Difficulty>Medium</Difficulty>
 		<Composition>BOTH</Composition>

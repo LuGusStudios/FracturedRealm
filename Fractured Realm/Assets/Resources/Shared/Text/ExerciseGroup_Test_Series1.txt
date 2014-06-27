@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ExerciseGroup>
+	<Description>Test series 1</Description>
 	<Exercise>
 		<Difficulty>Easiest</Difficulty>
 		<Composition>BOTH</Composition>
@@ -34,7 +35,7 @@
 		<Composition>BOTH</Composition>
 		<WorldType>FIRE</WorldType>
 		<ExerciseParts>
-			<ExercisePart>
+			<ExercisePart> 
 				<Fraction>1/2</Fraction>
 				<Fraction>3/2</Fraction> 
 				<Outcome>4/2</Outcome>

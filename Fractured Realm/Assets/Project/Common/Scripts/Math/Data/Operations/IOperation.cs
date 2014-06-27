@@ -125,6 +125,36 @@ public class IOperation
 		
 	}
 
+	public static string OperationTypeToString(FR.OperationType type)
+	{
+		if( type == FR.OperationType.ADD )
+		{
+			return "+";
+		}
+		else if( type == FR.OperationType.SUBTRACT )
+		{
+			return "-";
+		}
+		else if( type == FR.OperationType.MULTIPLY )
+		{
+			return "x";
+		}
+		else if( type == FR.OperationType.DIVIDE )
+		{
+			return "/";
+		}
+		else if( type == FR.OperationType.SIMPLIFY )
+		{
+			return "/2";
+		}
+		else if( type == FR.OperationType.DOUBLE )
+		{
+			return "x2";
+		}
+
+		return "" + type;
+	}
+
 	public FR.OperationMessage lastMessage = FR.OperationMessage.None;
 
 

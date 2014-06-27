@@ -9,11 +9,11 @@ namespace FR
 	{
 		NONE = -1,
 
-		Easiest = 1,
-		Easy = 3,
-		Medium = 5,
-		Hard = 7,
-		Hardest = 9
+		EASIEST = 1,
+		EASY = 3,
+		MEDIUM = 5,
+		HARD = 7,
+		HARDEST = 9
 	}
 }
 

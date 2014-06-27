@@ -27,7 +27,7 @@ public class Fraction
 		this.Denominator.IsDenominator = true;
 	}
 
-	public Fraction( string data )
+	public Fraction( string data, FR.Target composition = FR.Target.BOTH )
 	{
 		bool error = true;
 		if( data.Contains("/") )
@@ -50,10 +50,44 @@ public class Fraction
 				Fill ( split[0], split[1] );
 			}
 		}
+		else
+		{
+			// no / found : if composition is just 1 of both, this is possible
+			if( composition == FR.Target.BOTH )
+			{
+				Debug.LogError("Fraction : string " + data + " doesn't contain / but is supposed to be for composition BOTH..");
+				Fill ( -1, -1 );
+			}
+			else
+			{
+				if( composition == FR.Target.NUMERATOR )
+				{
+					error = false;
+					Fill ( data, "" + 0 );
+				}
+				else if( composition == FR.Target.DENOMINATOR )
+				{
+					error = false;
+					Fill ( "" + 0, data );
+				}
+				else
+				{
+					Debug.LogError("Fraction: invalid composition! " + composition);
+					Fill ( -1, -1 );
+				}
+			}
+		}
+
+		// allow users to switch composition without switching fraction values
+		if( composition == FR.Target.NUMERATOR )
+			this.Denominator.Value = 0;
+		else if( composition == FR.Target.DENOMINATOR )
+			this.Numerator.Value = 0;
+
 
 		if( error )
 		{
-			Debug.LogError("Fraction: string " + data + " is not wellformed. Has to be of format x / y or x \\ y");
+			Debug.LogError("Fraction: string " + data + " is not wellformed. Has to be of format x / y or x \\ y. Or composition needs to be 1 of both (" + composition + ")");
 		}
 	}
 

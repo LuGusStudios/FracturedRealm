@@ -1,0 +1,235 @@
+
+html, body {
+
+	background-color: #FFF;
+
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+
+	text-align: center;
+
+	font-size: 12px;
+
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+
+	color: #000;
+
+}
+
+
+#container {
+	
+	background-color: #FFF;
+
+	position: relative;
+
+	margin: 0 auto;
+
+	width: 95%;
+
+	text-align: left;
+
+}
+
+#content{
+
+	width: 400px;
+
+	margin-left: 20px;
+	margin-right: 20px;
+
+	background-color: #F00;
+
+	padding: 0;
+
+
+	/*border: 1px solid #000;*/
+
+}
+
+.clearer
+{
+	clear: both;
+}
+
+img{
+	border: none;
+}
+
+span{
+	font-weight: bold;
+}
+
+h1{
+	color: #000;
+	font-weight: normal;
+
+	padding: 0;
+	margin: 0;
+
+
+}
+
+a:link { color : #000; text-decoration: underline; }
+a:active { color : #000; text-decoration: underline;   }
+a:visited { color : #000; text-decoration: underline;  }
+
+a:hover { text-decoration: none; color : #000; }
+
+.Exercise
+{
+	width: 100%;
+	margin-left: 10px;
+	padding-left: 10px;
+}
+
+.FIRE
+{
+	border-left: 20px solid #c73a3a;
+}
+
+.DESERT
+{
+	border-left: 20px solid #ffda81;
+}
+
+.FOREST
+{
+	border-left: 20px solid #88d05f;
+}
+
+.JUNGLE
+{
+	border-left: 20px solid #2d9e30;
+}
+
+.ICE
+{
+	border-left: 20px solid #80eed3;
+}
+
+.ERROR
+{
+	min-height: 200px;
+	border-left: 300px solid red;
+}
+
+.ExercisePart
+{
+	float: left;
+	
+	width: 15%;
+	min-width: 250px;
+
+	font-size: 14px;
+	
+	border: 1px solid #000;
+	margin: 2px;
+	padding: 5px;
+}
+
+/* http://stackoverflow.com/questions/7525977/how-to-write-fraction-value-using-html */
+span.frac {
+  display: inline-block;
+  /*font-size: 50%;*/
+  text-align: center;
+}
+span.frac > sup {
+  display: block;
+  border-bottom: 1px solid;
+  font: inherit;
+}
+span.frac > span {
+  display: none;
+}
+span.frac > sub {
+  display: block;
+  font: inherit;
+}
+
+span.oper
+{
+	display: inline-block;
+	font-size: 200%;
+}
+
+span.oper > span
+{
+  display: block;
+  font: inherit;
+  border-top: 1px solid;
+}
+span.oper > sub {
+  display: block;
+  font: inherit;
+}
+
+
+.StatusNONE
+{
+	background-color: #FFF;
+}
+
+.StatusIN_PROGRESS
+{
+	background-color: orange;
+}
+
+.StatusTESTING
+{
+	background-color: yellow;
+}
+
+.StatusIMPLEMENTED
+{
+	background-color: green;
+}
+
+.Stage0, .Stage1
+{
+	height: 200px;
+	border-right: 5px solid #FFF;
+}
+
+.Stage2
+{
+	height: 130px;
+	clear: right;
+	
+	border-right: 5px solid #000;
+}
+
+.ExerciseGroup
+{
+	width: 100%;
+	
+	padding-bottom: 40px;
+	border-top: 2px solid #00F;
+}
+
+.operationBox h1
+{
+	width: 100%;
+}
+
+.error
+{
+	background-color: #F00;
+}
+
+.errorEntry
+{
+	color: #FFF;
+	border: 1px solid #FFF;
+	padding: 5px;
+}
+
+.todoEntry
+{
+	background-color: #00F;
+	color: #FFF;
+	
+	padding: 2px;
+}

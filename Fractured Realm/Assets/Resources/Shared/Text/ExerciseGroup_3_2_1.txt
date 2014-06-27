@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ExerciseGroup>
+	<Description>Fraction multiply</Description>
+	<Exercise>
+		<Difficulty>Hard</Difficulty>
+		<Composition>BOTH</Composition>
+		<WorldType>FIRE</WorldType>
+		<ExerciseParts>
+			<ExercisePart>
+				<Fraction>1/2</Fraction>
+				<Fraction>1/2</Fraction> 
+				<Outcome>1/4</Outcome>
+				<Operation>MULTIPLY</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>3/4</Fraction>
+				<Fraction>2/1</Fraction> 
+				<Outcome>6/4</Outcome>
+				<Operation>MULTIPLY</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>6/4</Fraction>
+				<Fraction>2/2</Fraction> 
+				<Outcome>12/8</Outcome>
+				<Operation>MULTIPLY</Operation>
+			</ExercisePart>
+		</ExerciseParts>
+	</Exercise>
+</ExerciseGroup>

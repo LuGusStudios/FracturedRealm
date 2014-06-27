@@ -40,6 +40,7 @@ public class ExerciseLoader
 		
 		if( file == LugusResources.use.errorTextAsset )
 		{
+			Debug.LogError("ExerciseGroup " + name + " not found. ErrorTextAsset returned!");
 			return output;
 		}
 
@@ -61,6 +62,11 @@ public class ExerciseLoader
 					output.exercises.Add( e );
 				//}
 			}
+			else if( (parser.tagType == TinyXmlReader.TagType.OPENING) &&
+			        (parser.tagName == "Description"))
+			{
+				output.description = parser.content;
+			}
 		}
 
 
@@ -78,7 +84,11 @@ public class ExerciseLoader
 		
 		Debug.Log ("ExerciseLoader:ParseExercise started");
 
+		FR.WorldType previousWorldType = FR.WorldType.NONE;
+		bool forceWorldTypeRandom = false;
+
 		Exercise output = new Exercise();
+		string temp = "";
 
 		while (parser.Read("Exercise"))
 		{
@@ -90,7 +100,8 @@ public class ExerciseLoader
 					{
 						try
 						{
-							output.difficulty = (FR.ExerciseDifficulty) Enum.Parse(typeof(FR.ExerciseDifficulty), parser.content);
+							temp = parser.content.ToUpper();
+							output.difficulty = (FR.ExerciseDifficulty) Enum.Parse(typeof(FR.ExerciseDifficulty), temp);
 						}
 						catch(Exception e)
 						{
@@ -104,7 +115,8 @@ public class ExerciseLoader
 					{
 						try
 						{
-							output.composition = (FR.Target) Enum.Parse(typeof(FR.Target), parser.content);
+							temp = parser.content.ToUpper();
+							output.composition = (FR.Target) Enum.Parse(typeof(FR.Target), temp);
 						}
 						catch(Exception e)
 						{
@@ -123,20 +135,34 @@ public class ExerciseLoader
 					}
 					case "WorldType":
 					{
-						try
+						temp = parser.content.ToUpper();
+						
+						if( temp == "PREVIOUS" )
 						{
-							output.worldType = (FR.WorldType) Enum.Parse(typeof(FR.WorldType), parser.content);
+							output.worldType = previousWorldType;
 						}
-						catch(Exception e)
+						else
 						{
-							Debug.LogError("ExerciseLoader:ParseExercise : WorldType could not be parsed! " + parser.content);
-							output.worldType = FR.WorldType.NONE;
+							try
+							{
+								output.worldType = (FR.WorldType) Enum.Parse(typeof(FR.WorldType), temp);
+
+								if( output.worldType == FR.WorldType.NONE )
+								{
+									forceWorldTypeRandom = true;
+								}
+							}
+							catch(Exception e)
+							{
+								Debug.LogError("ExerciseLoader:ParseExercise : WorldType could not be parsed! " + parser.content);
+								output.worldType = FR.WorldType.NONE;
+							}
 						}
 						break;
 					}
 					case "ExercisePart":
 					{
-						ExercisePart part = ParseExercisePart( parser );
+						ExercisePart part = ParseExercisePart( output, parser );
 						//if( part != null )
 						//{
 							output.parts.Add( part );
@@ -145,6 +171,14 @@ public class ExerciseLoader
 					}
 				}
 			}
+
+			if( output.worldType == FR.WorldType.NONE && !forceWorldTypeRandom )
+			{
+				output.worldType = previousWorldType;
+			}
+
+			forceWorldTypeRandom = false;
+			previousWorldType = output.worldType;
 		}
 
 		bool error = false;
@@ -169,7 +203,7 @@ public class ExerciseLoader
 		return output;
 	}
 
-	protected static ExercisePart ParseExercisePart(TinyXmlReader parser)
+	protected static ExercisePart ParseExercisePart(Exercise parent, TinyXmlReader parser)
 	{
 		if ((parser.tagType != TinyXmlReader.TagType.OPENING) ||
 		    (parser.tagName != "ExercisePart"))
@@ -181,6 +215,7 @@ public class ExerciseLoader
 		Debug.Log ("ExerciseLoader:ParseExercisePart started");
 
 		ExercisePart output = new ExercisePart();
+		string temp = "";
 
 		bool error = false;
 		bool availableAll = false;
@@ -193,7 +228,7 @@ public class ExerciseLoader
 					case "Fraction":
 					{
 						//output.fractions.Add( new Fraction(1,3) );
-						output.fractions.Add( new Fraction(parser.content) );
+						output.fractions.Add( new Fraction(parser.content, parent.composition) );
 						//output.difficulty = (FR.ExerciseDifficulty) Enum.Parse(typeof(FR.ExerciseDifficulty), parser.content);
 						
 						Fraction f = output.fractions[ output.fractions.Count - 1 ];
@@ -204,7 +239,7 @@ public class ExerciseLoader
 					}
 					case "Outcome":
 					{
-						output.outcomes.Add( new Fraction(parser.content) );
+						output.outcomes.Add( new Fraction(parser.content, parent.composition) );
 						//output.outcomes.Add( new Fraction(2,5) );
 					
 						Fraction f = output.outcomes[ output.outcomes.Count - 1 ];
@@ -218,7 +253,8 @@ public class ExerciseLoader
 						FR.OperationType operation = FR.OperationType.NONE;
 						try
 						{
-							operation = (FR.OperationType) Enum.Parse(typeof(FR.OperationType), parser.content);
+							temp = parser.content.ToUpper();
+							operation = (FR.OperationType) Enum.Parse(typeof(FR.OperationType), temp);
 						}
 						catch(Exception e)
 						{
@@ -230,40 +266,41 @@ public class ExerciseLoader
 
 						break;
 					}
-				case "OperationAvailable":
-				{
-					if( parser.content == "ALL" )
+					case "OperationAvailable":
 					{
-						availableAll = true;
-					}
-					else
-					{
-						FR.OperationType operation = FR.OperationType.NONE;
-						try
+						temp = parser.content.ToUpper();
+						if( temp == "ALL" )
 						{
-							operation = (FR.OperationType) Enum.Parse(typeof(FR.OperationType), parser.content);
+							availableAll = true;
 						}
-						catch(Exception e)
+						else
 						{
-							Debug.LogError("ExerciseLoader:ParseExercisePart : operationAvailable could not be parsed! " + parser.content);
-							operation = FR.OperationType.NONE;
-						}
-
-						if( operation != FR.OperationType.NONE )
-						{
-							if( output.availableOperations == null )
+							FR.OperationType operation = FR.OperationType.NONE;
+							try
 							{
-								output.availableOperations = new Dictionary<FR.OperationType, int>();
+								operation = (FR.OperationType) Enum.Parse(typeof(FR.OperationType), temp);
+							}
+							catch(Exception e)
+							{
+								Debug.LogError("ExerciseLoader:ParseExercisePart : operationAvailable could not be parsed! " + parser.content);
+								operation = FR.OperationType.NONE;
 							}
 
-							if( output.availableOperations.ContainsKey(operation) )
-								output.availableOperations[operation] += 1;
-							else
-								output.availableOperations[operation] = 1;
+							if( operation != FR.OperationType.NONE )
+							{
+								if( output.availableOperations == null )
+								{
+									output.availableOperations = new Dictionary<FR.OperationType, int>();
+								}
+
+								if( output.availableOperations.ContainsKey(operation) )
+									output.availableOperations[operation] += 1;
+								else
+									output.availableOperations[operation] = 1;
+							}
 						}
+						break;
 					}
-					break;
-				}
 				}
 			}
 		}

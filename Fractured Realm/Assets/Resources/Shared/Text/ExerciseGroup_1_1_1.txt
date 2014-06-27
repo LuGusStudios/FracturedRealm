@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ExerciseGroup>
+	<Description>ADD to 6</Description>
+	<Exercise>
+		<Difficulty>Easiest</Difficulty>
+		<Composition>NUMERATOR</Composition>
+		<WorldType>DESERT</WorldType>
+		<ExerciseParts>
+			<ExercisePart>
+				<Fraction>1</Fraction>
+				<Fraction>1</Fraction> 
+				<Outcome>2</Outcome>
+				<Operation>ADD</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>2</Fraction>
+				<Fraction>1</Fraction> 
+				<Outcome>3</Outcome>
+				<Operation>ADD</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>3</Fraction>
+				<Fraction>2</Fraction> 
+				<Outcome>5</Outcome>
+				<Operation>ADD</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>5</Fraction>
+				<Fraction>1</Fraction> 
+				<Outcome>6</Outcome>
+				<Operation>ADD</Operation>
+			</ExercisePart>
+		</ExerciseParts>
+	</Exercise>
+</ExerciseGroup>
