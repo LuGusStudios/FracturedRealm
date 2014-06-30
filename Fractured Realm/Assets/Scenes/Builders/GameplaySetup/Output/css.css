@@ -116,6 +116,11 @@ a:hover { text-decoration: none; color : #000; }
 	border-left: 300px solid red;
 }
 
+.SCENE
+{
+	border-left: 20px solid #00F;
+}
+
 .ExercisePart
 {
 	float: left;
@@ -129,6 +134,18 @@ a:hover { text-decoration: none; color : #000; }
 	margin: 2px;
 	padding: 5px;
 }
+
+.ExercisePart img
+{
+	width: 30%;
+}
+
+.ExercisePart img.operationOptional
+{
+	width: 20%;
+}
+
+
 
 /* http://stackoverflow.com/questions/7525977/how-to-write-fraction-value-using-html */
 span.frac {

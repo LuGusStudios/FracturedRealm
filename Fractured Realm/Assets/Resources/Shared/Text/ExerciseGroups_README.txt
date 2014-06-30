@@ -6,19 +6,22 @@ x = wereld (1 = gewoon, 2 = geesten, 3 = combo, 4 = special)
 y = reeks binnen wereld
 z = plaats binnen reeks
 
+1
 1. Story element: introductie
 2. Gewone wereld, +, getallen t.e.m. 6
 3. Gewone wereld, –, getallen t.e.m. 6
 4. Gewone wereld + en -, getallen t.e.m 6 (kort)
 5. Story element: vorige eindigt op 6, in story komt er nog 1tje bij met plus -> duidelijk maken dat de 6 dan gaat zweven
 4. Gewone wereld, + en –, getallen t.e.m. 12
-5. Story element: grote gebeurtenis verandert alles naar geestenwereld
+
+2
+1. Story element: grote gebeurtenis verandert alles naar geestenwereld
 x. Story element: + en - doen niks
-6. Geestenwereld, + en -, getallen t.e.m. 12 (2 oefs maar) : + en - doen niks, blijft gewoon hetzelfde
+2. Geestenwereld, + en -, getallen t.e.m. 12 (2 oefs maar) : + en - doen niks, blijft gewoon hetzelfde
 x. Story element: introductie vereenvoudigen (ongelijke komen elkaar tegen grote vs kleine, force field kan niet door, vereenvoudigen)
-7. Geestenwereld, + en - en vereenvoudigen, 12
+3. Geestenwereld, + en - en vereenvoudigen, 12
 x. Story element: introductie vergroten (ongelijke komen elkaar tegen kleine vs grote, force field kan niet door, vergroten)
-8. Geestenwereld, + en - en vergroten (x2), 12
+4. Geestenwereld, + en - en vergroten (x2), 12
 8. Geestenwereld, + en -, vereenvoudigen en vergroten (x2), 12
 x. Story element: introductie x kracht met voorbeeld (x kracht breekt forcefield ookal zijn ze niet gelijk) 
 9. Geestenwereld, x, getallen t.e.m. 12

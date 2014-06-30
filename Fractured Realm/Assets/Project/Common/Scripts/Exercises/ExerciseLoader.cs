@@ -67,6 +67,16 @@ public class ExerciseLoader
 			{
 				output.description = parser.content;
 			}
+			else if( (parser.tagType == TinyXmlReader.TagType.OPENING) &&
+			        (parser.tagName == "PreScene"))
+			{
+				output.preSceneName = parser.content;
+			}
+			else if( (parser.tagType == TinyXmlReader.TagType.OPENING) &&
+			        (parser.tagName == "PostScene"))
+			{
+				output.postSceneName = parser.content;
+			}
 		}
 
 

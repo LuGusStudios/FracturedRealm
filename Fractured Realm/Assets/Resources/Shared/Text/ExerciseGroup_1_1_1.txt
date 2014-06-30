@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ExerciseGroup>
+	<PreScene>Story_1_1_intro</PreScene>
 	<Description>ADD to 6</Description>
 	<Exercise>
 		<Difficulty>Easiest</Difficulty>

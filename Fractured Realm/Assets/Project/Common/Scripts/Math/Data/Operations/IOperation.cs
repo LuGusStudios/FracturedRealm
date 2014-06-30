@@ -151,6 +151,10 @@ public class IOperation
 		{
 			return "x2";
 		}
+		else if( type == FR.OperationType.NONE )
+		{
+			return "...";
+		}
 
 		return "" + type;
 	}

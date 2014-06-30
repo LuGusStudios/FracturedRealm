@@ -81,6 +81,101 @@ public class ExerciseManagerEditor : Editor
 		}
 		
 		File.WriteAllText( basePath + "AllExerciseGroups.txt", output );
+	
+	}
+
+	protected string HTMLOperationButtonURI(FR.OperationType type)
+	{
+		string output = "../../../../Project/UI/HUD/Textures/";
+
+		if( type == FR.OperationType.ADD )
+		{
+			output += "ButtonAdd01";
+		}
+		else if( type == FR.OperationType.SUBTRACT )
+		{
+			output += "ButtonSubtract01";
+		}
+		else if( type == FR.OperationType.MULTIPLY )
+		{
+			output += "ButtonMultiply01";
+		}
+		else if( type == FR.OperationType.DIVIDE )
+		{
+			output += "ButtonDivide01";
+		}
+		else if( type == FR.OperationType.SIMPLIFY )
+		{
+			output += "ButtonCollapse01";
+		}
+		else if( type == FR.OperationType.DOUBLE )
+		{
+			output += "ButtonExpand01";
+		}
+		else if( type == FR.OperationType.NONE )
+		{
+			return "../../../../Resources/Shared/Textures/error.png";
+		}
+
+		output += ".png";
+
+		return output;
+	}
+
+	protected string HTMLFormattedOperation(FR.OperationType operationType, Fraction start, Fraction stop, Fraction result)
+	{
+		// mathematically speaking, 1 is the wildcard nr for the denominator
+		// otherwhise we would get 3/0 + 2/0 = 5/0 etc. instead of 3/1 + 2/1 = 5/1
+		start = start.CopyData();
+		//if( start.Numerator.Value == 0 )
+		//	start.Numerator.Value = 1;
+		if( start.Denominator.Value == 0 )
+			start.Denominator.Value = 1;
+
+		if( stop != null )
+		{
+			stop = stop.CopyData();
+			
+			//if( stop.Numerator.Value == 0 )
+			//	stop.Numerator.Value = 1;
+			if( stop.Denominator.Value == 0 )
+				stop.Denominator.Value = 1;
+		}
+
+
+		string resultNumerator = "0";
+		string resultDenominator = "0";
+
+		if( result != null )
+		{
+			resultNumerator = "" + result.Numerator.Value;
+			resultDenominator = "" + result.Denominator.Value;
+
+			//if( resultNumerator == "0" )
+			//	resultNumerator = "1";
+			if( resultDenominator == "0" )
+				resultDenominator = "1";
+		}
+		else
+		{
+			resultNumerator = "?";
+			resultDenominator = "?";
+		}
+
+		string output = "";
+		output += "<span class=\"frac\"><sup>"+ start.Numerator.Value +"</sup><span>/</span><sub>"+ start.Denominator.Value +"</sub></span>";
+		output += "<span class=\"oper\"><sup>&nbsp;&nbsp;"+ IOperation.OperationTypeToString(operationType) +"&nbsp;&nbsp;</sup></span>";
+		
+		if( operationType != FR.OperationType.SIMPLIFY &&
+		   operationType != FR.OperationType.DOUBLE )
+		{
+			output += "<span class=\"frac\"><sup>"+ stop.Numerator.Value +"</sup><span>/</span><sub>"+ stop.Denominator.Value +"</sub></span>";
+		}
+		
+		output += "<span class=\"oper\"><sup>&nbsp;&nbsp;=&nbsp;&nbsp;</sup></span>";
+		output += "<span class=\"frac\"><sup>"+ resultNumerator +"</sup><span>/</span><sub>"+ resultDenominator +"</sub></span><br/>";
+
+		return output;
 	}
 
 	public void WriteHTMLOutput()
@@ -117,8 +212,15 @@ public class ExerciseManagerEditor : Editor
 			}
 
 			output += "<div class=\"ExerciseGroup\">";
-			output += "<h1>" + group.name + "</h1>";
-			output += "<p>" + group.description + "</p>";
+			output += "<h1>" + group.name + " : " + group.description + "</h1>";
+			//output += "<p>" +  + "</p>";
+
+			if( !string.IsNullOrEmpty( group.preSceneName ) )
+			{
+				output += "<div class=\"Exercise SCENE\">";
+				output += "<h2>" + group.preSceneName + "</h2>";
+				output += "</div>";
+			}
 
 			foreach( Exercise exercise in group.exercises )
 			{
@@ -141,6 +243,18 @@ public class ExerciseManagerEditor : Editor
 
 					output += "<div class=\"ExercisePart\">";
 
+					if( part.operations.Count > 1 )
+					{
+						// complex exercise : show the start state first, then show the steps
+						// could do this for simple ones as well, but should be clear enough without since it's only 1 operation
+
+						output += HTMLFormattedOperation( FR.OperationType.NONE, part.First, part.Last, part.outcomes[ part.outcomes.Count - 1 ] );
+						output += "<hr>";
+					}
+
+
+					Fraction startFraction = part.First;
+
 					foreach( FR.OperationType operationType in part.operations )
 					{
 						IOperation operation = null;
@@ -158,43 +272,58 @@ public class ExerciseManagerEditor : Editor
 
 
 
-						Fraction fr1 = part.First;
-						OperationState operationInfo = new OperationState(operationType, fr1, null); 
+						//Fraction fr1 = part.First;
+						OperationState operationInfo = new OperationState(operationType, startFraction, null); 
 
 
 						bool ok = operation.AcceptState( operationInfo );
 						if( !ok )
 						{
-							output += "ERROR : just 1 : " + operation.lastMessage;
+							output += "ERROR : start : " + operation.lastMessage;
 							continue;
 						}
 
-						operationInfo.StopFraction = part.Last;
-
-						ok = operation.AcceptState( operationInfo );
-						if( !ok )
+						if( operationType != FR.OperationType.SIMPLIFY &&
+						    operationType != FR.OperationType.DOUBLE )
 						{
-							output += "ERROR : after 2 : " + operation.lastMessage;
-							continue;
+							operationInfo.StopFraction = part.Last;
+
+							ok = operation.AcceptState( operationInfo );
+							if( !ok )
+							{
+								output += "ERROR : stop : " + operation.lastMessage;
+								continue;
+							}
 						}
 						
 						OperationState result = operation.Process( operationInfo );
 
-						output += "<span class=\"frac\"><sup>"+ part.First.Numerator.Value +"</sup><span>/</span><sub>"+ part.First.Denominator.Value +"</sub></span>";
-						output += "<span class=\"oper\"><sup>&nbsp;&nbsp;"+ IOperation.OperationTypeToString(operationType) +"&nbsp;&nbsp;</sup></span>";
-						output += "<span class=\"frac\"><sup>"+ part.Last.Numerator.Value +"</sup><span>/</span><sub>"+ part.Last.Denominator.Value +"</sub></span>";
-						output += "<span class=\"oper\"><sup>&nbsp;&nbsp;=&nbsp;&nbsp;</sup></span>";
-						output += "<span class=\"frac\"><sup>"+ result.StartFraction.Numerator.Value +"</sup><span>/</span><sub>"+ result.StartFraction.Denominator.Value +"</sub></span><br/>";
+						output += HTMLFormattedOperation( operationType, startFraction, part.Last, result.StartFraction );
+
+						startFraction = result.StartFraction;
 					}
 
 					output += "<p>";
+
+					List<FR.OperationType> necessaryOperations = new List<FR.OperationType>();
+					necessaryOperations.AddRange( part.operations );
+
 					if( part.availableOperations != null )
 					{
 						foreach( KeyValuePair<FR.OperationType, int> pair in part.availableOperations )
 						{
+							string imgClass = " class=\"\"";
+							if( !necessaryOperations.Contains(pair.Key) )
+							{
+								imgClass = " class=\"operationOptional\"";
+							}
+
 							for( int i = 0; i < pair.Value; ++i )
 							{
-								output += "" + IOperation.OperationTypeToString(pair.Key) + " ";
+								//output += "" + IOperation.OperationTypeToString(pair.Key) + " ";
+								output += "<img "+ imgClass +" src=\""+ HTMLOperationButtonURI(pair.Key) +"\" />";
+
+								necessaryOperations.Remove( pair.Key );
 							}
 						}
 					}
@@ -213,7 +342,14 @@ public class ExerciseManagerEditor : Editor
 				output += "<div class=\"clearer\"></div></div>";
 			}
 
+			
+			if( !string.IsNullOrEmpty( group.postSceneName ) )
+			{
+				output += "<div class=\"Exercise SCENE\">";
+				output += "<h2>" + group.postSceneName + "</h2>";
+				output += "</div>";
 
+			}
 			
 			output += "</div>";
 		}
