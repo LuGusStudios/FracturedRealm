@@ -192,10 +192,12 @@ public class FRGameTester : LugusSingletonRuntime<FRGameTester>
 	{
 		SetupGlobal();
 	}
-	
+
+	protected Vector2 scrollPosition = Vector2.zero;
 	protected void ShowGroupSelectGUI()
 	{
 		GUILayout.BeginArea( new Rect(0, 250 , 200, 200 ), GUI.skin.box);
+		scrollPosition = GUILayout.BeginScrollView( scrollPosition );
 		GUILayout.BeginVertical();
 		
 		foreach( string group in ExerciseManager.use.allExerciseGroups )
@@ -216,6 +218,7 @@ public class FRGameTester : LugusSingletonRuntime<FRGameTester>
 		}
 		
 		GUILayout.EndVertical();
+		GUILayout.EndScrollView();
 		GUILayout.EndArea();
 	}
 	

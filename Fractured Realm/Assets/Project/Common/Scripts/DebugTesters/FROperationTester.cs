@@ -317,7 +317,7 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 			yield return TriggerClick( GetScreenPosition( FindFraction(false) ) );
 		}
 
-		GameManager.use.ChangeState( FR.GameState.ProcessingOperation );
+		//GameManager.use.ChangeState( FR.GameState.ProcessingOperation );
 		
 		while( MathManager.use.operationInfo != null )
 		{
@@ -326,7 +326,7 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 
 		yield return new WaitForSeconds(1.0f);
 
-		GameManager.use.ChangeState(FR.GameState.PartEndSequence);
+		//GameManager.use.ChangeState(FR.GameState.PartEndSequence);
 
 		while( GameManager.use.currentState != FR.GameState.PartEnd )
 		{

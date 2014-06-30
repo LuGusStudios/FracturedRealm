@@ -34,6 +34,25 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 	{
 		Portal output = CreatePortal( value, part );
 
+		Number number = new Number(value);
+		number.IsNumerator = (part == FR.Target.NUMERATOR);
+		
+		// TODO: probably this has to be replaced with another visualization instead of just a new NumberRenderer...
+		NumberRenderer numberR = CreateRenderer( number );
+
+		numberR.transform.parent = output.transform;
+		numberR.transform.localPosition = new Vector3(0.0f, 3.0f, 0.0f);
+
+		foreach( CharacterRenderer c in numberR.Characters )
+		{
+			c.ShowBody(false);
+		}
+
+		numberR.enabled = false;
+		GameObject.Destroy( numberR ); // remove the renderer component, other scripts are searching for these and shouldn't find this one
+
+		numberR.transform.localScale = numberR.transform.localScale * 0.75f;
+
 		output.transform.position = position.position;
 		output.transform.parent = position.parent.parent; // position is portalEntry or portalExit, within an InteractionGroup, which is within numerator or denominator
 

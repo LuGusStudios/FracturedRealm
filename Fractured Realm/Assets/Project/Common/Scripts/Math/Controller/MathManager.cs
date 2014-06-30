@@ -225,6 +225,7 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 
 	public void ProcessCurrentOperation()
 	{
+
 		lastOperationMessage = FR.OperationMessage.None;
 
 		//Debug.LogError ("ProcessCurrentOperation " + currentOperation.type);
@@ -234,6 +235,9 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 
 	protected IEnumerator ProcessCurrentOperationRoutine()
 	{
+		GameManager.use.ChangeState( FR.GameState.ProcessingOperation );
+
+
 		ChangeState( MathState.Visualizing );
 
 		OperationState outcome = currentOperation.Process( operationInfo );
@@ -251,7 +255,10 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 		
 		if( onOperationCompleted != null )
 			onOperationCompleted( currentOperation );
+
 		
+		GameManager.use.ChangeState( FR.GameState.PartEndSequence, 0.75f ); // extra delay to make sure the visualizer is 100% complete (all tweeners etc.)
+
 		Reset();
 
 		yield break;

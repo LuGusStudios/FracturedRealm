@@ -31,8 +31,23 @@ public class GameManager : LugusSingletonExisting<GameManager>
 
 	public void StartGame( ExerciseGroup exercises, FR.GameState startFromState = FR.GameState.ExerciseStart )
 	{
-		// TODO: change me! 
-		StartGame( exercises.exercises[0], startFromState );
+		this.gameObject.StartLugusRoutine( StartGameGroupRoutine(exercises, startFromState) );
+	}
+
+	protected IEnumerator StartGameGroupRoutine(  ExerciseGroup exercises, FR.GameState startFromState = FR.GameState.ExerciseStart )
+	{
+		foreach( Exercise exercise in exercises.exercises )
+		{
+			StartGame( exercise, startFromState );
+
+			yield return null;
+			while( currentState != FR.GameState.ExerciseEnd )
+				yield return null;
+			
+			yield return new WaitForSeconds(3.0f); // 3s fade out at the end, see the appropriate Routine for that
+		}
+		
+		yield break;
 	}
 
 	public void StartGame( Exercise exercise, FR.GameState startFromState = FR.GameState.ExerciseStart )
@@ -102,19 +117,26 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		ChangeState( startFromState );
 	}
 
-	public void ChangeState(FR.GameState newState)
+	public void ChangeState(FR.GameState newState, float delay = -1.0f)
 	{
 		//Debug.Log (Time.frameCount + " GameManager:ChangeState : from " + currentState + " to " + newState );
 
 		// use separate routine here, to make sure there's at least 1 frame between states
-		LugusCoroutines.use.StartRoutine( ChangeStateRoutine(newState) );
+		LugusCoroutines.use.StartRoutine( ChangeStateRoutine(newState, delay) );
 	}
 
-	protected IEnumerator ChangeStateRoutine(FR.GameState newState)
+	protected IEnumerator ChangeStateRoutine(FR.GameState newState, float delay = -1.0f)
 	{
-		// make sure there's at least 1 frame between states
-		// otherwhise, we can't wait for currentState to be a certain value in other coroutines / other parts of the setup
-		yield return null;
+		if( delay > 0.0f )
+		{
+			yield return new WaitForSeconds(delay);
+		}
+		else
+		{
+			// make sure there's at least 1 frame between states
+			// otherwhise, we can't wait for currentState to be a certain value in other coroutines / other parts of the setup
+			yield return null;
+		}
 
 		FR.GameState oldState = currentState;
 		currentState = newState;
@@ -214,26 +236,82 @@ public class GameManager : LugusSingletonExisting<GameManager>
 
 	public int currentInteractionGroupIndex = 0;
 
-	public IEnumerator PartStartSequenceRoutine()
-	{
-		
-		Fraction right = FindFraction(false);
-		Fraction left = FindFraction(true);
+	protected bool cameraMoving = false;
 
+	protected IEnumerator PartStartSequenceSubRoutine( FR.Target composition, NumberRenderer left, NumberRenderer right, WorldPart worldPart )
+	{
 		// Scaling to Vector3.zero doesn't keep the invidiual Characters' localPosition for some reason
 		// so the (value > 6)-character doesn't float, it stays at the feet of the interactionCharacter after scaling back up... very weird
 		// scaling to something very small but non-zero seems to fix it though...
-		Vector3 scale1 = left.Numerator.Renderer.transform.localScale;
-		left.Numerator.Renderer.transform.localScale = new Vector3(0.001f, 0.001f, 0.001f);//Vector3.zero;
-		
-		Vector3 scale2 = left.Denominator.Renderer.transform.localScale;
-		left.Denominator.Renderer.transform.localScale = new Vector3(0.001f, 0.001f, 0.001f);//Vector3.zero;
+		Vector3 originalScale = left.transform.localScale;
+		left.transform.localScale = new Vector3(0.001f, 0.001f, 0.001f);//Vector3.zero;
 
+		yield return null; // give control back to PartStartSequenceRoutine after setup (Camera will start moving)
+
+		while( cameraMoving )
+		{
+			yield return null;
+		}
+
+		worldPart.InteractionGroups[currentInteractionGroupIndex].OpenPortal( true, left.Number, composition );
+			//RendererFactory.use.CreatePortal( worldPart.InteractionGroups[currentInteractionGroupIndex].PortalEntry, left.Number.Value, composition );
+
+		left.transform.position = worldPart.InteractionGroups[currentInteractionGroupIndex].PortalEntry.position;
+
+		left.gameObject.ScaleTo(originalScale).Time (2.0f).Execute();
+		
+		yield return new WaitForSeconds(2.0f);
+
+		worldPart.InteractionGroups[currentInteractionGroupIndex].ClosePortal(true);
+		//GameObject.Destroy( portal.gameObject );
+
+		// open the exit portal here, so the user can look ahead and see what the target solution is
+		worldPart.InteractionGroups[currentInteractionGroupIndex].OpenPortal( false, currentExercisePart.FinalOutcome, composition );
+
+		
+		yield return left.Animator.RotateTowards( right ).Coroutine;
+
+		cameraMoving = true;
+		FRCamera.use.MoveToInteractionGroup( currentInteractionGroupIndex + 1, 1, true );
+
+		left.Animator.RunTo ( worldPart.InteractionGroups[currentInteractionGroupIndex].Spawn1.position );
+
+		yield return new WaitForSeconds(2.0f);
+		cameraMoving = false;
+
+		yield return left.Animator.RotateTowardsCamera().Coroutine;
+	}
+
+	public IEnumerator PartStartSequenceRoutine()
+	{
+		Fraction right = FindFraction(false);
+		Fraction left = FindFraction(true);
+
+		// bit of complex logic here...
+		// FRCamera:MoveToInteractionGroup is for both numerator and denominator
+		// while the SubRoutine is for one of both...
+		// so: start subroutines independently, they will yield after initial setup
+		// then, move camera
+		// then start waiting for the rest of the subroutines. Bit funky, but works :)
+		LugusCoroutineWaiter waiter = new LugusCoroutineWaiter();
+		
+		if( left.HasNumerator() )
+		{
+			waiter.Add( gameObject.StartLugusRoutine( PartStartSequenceSubRoutine( FR.Target.NUMERATOR, left.Numerator.Renderer, right.Numerator.Renderer, currentWorld.numerator )));
+		}
+		
+		if( left.HasDenominator() )
+		{
+			waiter.Add( gameObject.StartLugusRoutine( PartStartSequenceSubRoutine( FR.Target.DENOMINATOR, left.Denominator.Renderer, right.Denominator.Renderer, currentWorld.denominator )));
+		}
+		
+		
 		// move camera to camera entry for the current interaction group
+		cameraMoving = true;
 		if( currentInteractionGroupIndex == 0 )
 		{
 			FRCamera.use.MoveToInteractionGroup( currentInteractionGroupIndex + 1, 0, false );
-
+			
 			yield return new WaitForSeconds(3.0f); // fade in : see StartRoutine()
 		}
 		else
@@ -241,31 +319,10 @@ public class GameManager : LugusSingletonExisting<GameManager>
 			FRCamera.use.MoveToInteractionGroup( currentInteractionGroupIndex + 1, 0, true );
 			yield return new WaitForSeconds(1.0f);
 		}
+		cameraMoving = false;
+
 		
-		// TODO: set actual starting values of the portal here!
-		Portal portal1 = RendererFactory.use.CreatePortal( currentWorld.numerator.InteractionGroups[currentInteractionGroupIndex].PortalEntry, 1, FR.Target.NUMERATOR );
-		Portal portal2 = RendererFactory.use.CreatePortal( currentWorld.denominator.InteractionGroups[currentInteractionGroupIndex].PortalEntry, 1, FR.Target.DENOMINATOR );
-
-		left.Numerator.Renderer.transform.position = currentWorld.numerator.InteractionGroups[currentInteractionGroupIndex].PortalEntry.position;
-		left.Denominator.Renderer.transform.position = currentWorld.denominator.InteractionGroups[currentInteractionGroupIndex].PortalEntry.position;
-
-		left.Numerator.Renderer.gameObject.ScaleTo(scale1).Time (2.0f).Execute();
-		left.Denominator.Renderer.gameObject.ScaleTo(scale2).Time (2.0f).Execute();
-
-		yield return new WaitForSeconds(2.0f);
-
-		GameObject.Destroy( portal1.gameObject );
-		GameObject.Destroy( portal2.gameObject );
-
-		yield return left.Renderer.Animator.RotateTowards( FR.Target.BOTH, right.Renderer ).Coroutine;
-
-		FRCamera.use.MoveToInteractionGroup( currentInteractionGroupIndex + 1, 1, true );
-		left.Numerator.Renderer.Animator.RunTo( currentWorld.numerator.InteractionGroups[currentInteractionGroupIndex].Spawn1.position );
-		left.Denominator.Renderer.Animator.RunTo( currentWorld.denominator.InteractionGroups[currentInteractionGroupIndex].Spawn1.position );
-
-		yield return new WaitForSeconds(2.0f);
-		
-		yield return left.Renderer.Animator.RotateTowardsCamera().Coroutine;
+		yield return waiter.Start().Coroutine;
 
 
 		// TODO: should be shown here, and hidden after input accepted
@@ -278,6 +335,23 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		yield break;
 	}
 
+	protected IEnumerator PartEndSequenceSubRoutine( FR.Target composition, NumberRenderer left, WorldPart worldPart )
+	{
+		left.Animator.RunTo( worldPart.InteractionGroups[currentInteractionGroupIndex].PortalExit.position );
+		
+		yield return new WaitForSeconds(2.0f);
+		
+		yield return left.Animator.RotateTowardsCamera().Coroutine;
+
+		left.gameObject.ScaleTo(Vector3.zero).Time (2.0f).Execute();
+		
+		yield return new WaitForSeconds(2.0f);
+
+		worldPart.InteractionGroups[currentInteractionGroupIndex].ClosePortal(false);
+
+		yield return null;
+	}
+
 	protected IEnumerator PartEndSequenceRoutine()
 	{
 		HUDManager.use.UpdateOperationIcons(0);
@@ -285,40 +359,46 @@ public class GameManager : LugusSingletonExisting<GameManager>
 
 		Fraction left = FindFraction(true);
 
-		Debug.Log (Time.frameCount + " before turn to exit ");
+		// TODO: FIXME: PartEndSequence now always has to be called with a delay of no less than 0.75f after add for example
+		// this because it seems the routine isn't done yet rotating to camera from the operationVisualizer
+		// and already proceeds to here. Then it get the new RotateTowards, and somehow they interfere with eachother
+		// this causes the waiter here to return too soon, and the MoveTo starts before we're properly rotated... bollocks
+		// test: change the call to PartEndSequence state in MathManager to have no delay
 
-		// TODO: set actual expected values of the portal here!
-		Portal portal1 = RendererFactory.use.CreatePortal( currentWorld.numerator.InteractionGroups[currentInteractionGroupIndex].PortalExit, 1, FR.Target.NUMERATOR );
-		Portal portal2 = RendererFactory.use.CreatePortal( currentWorld.denominator.InteractionGroups[currentInteractionGroupIndex].PortalExit, 1, FR.Target.DENOMINATOR );
-
-
-		yield return LugusCoroutineUtil.WaitForFinish(
-			left.Renderer.Numerator.Animator.RotateTowards( currentWorld.numerator.InteractionGroups[currentInteractionGroupIndex].PortalExit.position ),
-			left.Renderer.Denominator.Animator.RotateTowards( currentWorld.denominator.InteractionGroups[currentInteractionGroupIndex].PortalExit.position )
-			).Coroutine;
+		// bit more dirty logic here
+		// we need them to rotate towards the end points, but only start moving if both have turned
+		// this is quite complex to do in a subroutine... so we need some more dirty code here, sorry
+		LugusCoroutineWaiter waiter = new LugusCoroutineWaiter();
+		if( left.HasNumerator() )
+		{
+			waiter.Add( left.Renderer.Numerator.Animator.RotateTowards( currentWorld.numerator.InteractionGroups[currentInteractionGroupIndex].PortalExit.position ));
+		}
 		
-		Debug.Log (Time.frameCount + " after turn to exit ");
+		if( left.HasDenominator() )
+		{
+			waiter.Add( left.Renderer.Denominator.Animator.RotateTowards( currentWorld.denominator.InteractionGroups[currentInteractionGroupIndex].PortalExit.position ));
+		}
+		yield return waiter.Start().Coroutine;
 
-		//yield return new WaitForSeconds(1.0f);
-
+		
 		FRCamera.use.MoveToInteractionGroup( currentInteractionGroupIndex + 1, 2, true );
-		left.Numerator.Renderer.Animator.RunTo( currentWorld.numerator.InteractionGroups[currentInteractionGroupIndex].PortalExit.position );
-		left.Denominator.Renderer.Animator.RunTo( currentWorld.denominator.InteractionGroups[currentInteractionGroupIndex].PortalExit.position );
 
-		yield return new WaitForSeconds(2.0f);
 
-		yield return left.Renderer.Animator.RotateTowardsCamera().Coroutine;
 
+		waiter = new LugusCoroutineWaiter();
+		if( left.HasNumerator() )
+		{
+			waiter.Add( gameObject.StartLugusRoutine( PartEndSequenceSubRoutine( FR.Target.NUMERATOR, left.Numerator.Renderer, currentWorld.numerator )));
+		}
 		
-		left.Numerator.Renderer.gameObject.ScaleTo(Vector3.zero).Time (2.0f).Execute();
-		left.Denominator.Renderer.gameObject.ScaleTo(Vector3.zero).Time (2.0f).Execute();
-		
-		yield return new WaitForSeconds(2.0f);
-
-		GameObject.Destroy( portal1.gameObject );
-		GameObject.Destroy( portal2.gameObject );
+		if( left.HasDenominator() )
+		{
+			waiter.Add( gameObject.StartLugusRoutine( PartEndSequenceSubRoutine( FR.Target.DENOMINATOR, left.Denominator.Renderer, currentWorld.denominator )));
+		}
+		yield return waiter.Start().Coroutine;
 
 		left.Destroy();
+
 
 		ChangeState( FR.GameState.PartEnd );
 		yield break;
@@ -350,9 +430,9 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		
 		NumberRenderer[] numbers = GameObject.FindObjectsOfType<NumberRenderer>();
 
-		if( numbers.Length != 2 && numbers.Length != 4 )
+		if( numbers.Length != 1 && numbers.Length != 2 && numbers.Length != 4 )
 		{
-			Debug.LogError("FindFraction: expected # NumberRenderers is 2 or 4 (1 or 2 fractions), instead was " + numbers.Length);
+			Debug.LogError("FindFraction: expected # NumberRenderers is 1, 2 or 4 (1 or 2 fractions), instead was " + numbers.Length);
 		}
 		
 		Fraction leftFraction = null;

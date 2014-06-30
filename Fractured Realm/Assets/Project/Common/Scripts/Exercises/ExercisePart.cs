@@ -8,6 +8,17 @@ public class ExercisePart
 	public List<FR.OperationType> operations = new List<FR.OperationType>();
 	public List<Fraction> outcomes = new List<Fraction>();
 
+	public Fraction FinalOutcome
+	{
+		get
+		{
+			if( outcomes == null || outcomes.Count == 0 )
+				return null;
+
+			return outcomes[ outcomes.Count - 1 ];
+		}
+	}
+
 	// if none in file: take operations, provide 1 each
 	// if ALL defined: leave null
 	// if specified: take 1 of each in operations list + the ones specified as extras (duh) 

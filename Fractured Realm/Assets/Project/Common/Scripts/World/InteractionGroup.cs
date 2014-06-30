@@ -46,6 +46,56 @@ public class InteractionGroup : MonoBehaviour
 				return PortalEntry.position.y(Camera.position.y).z( Camera.position.z );
 		}
 	}
+
+	public Portal PortalEntryRenderer
+	{
+		get;
+		set;
+	}
+
+	public Portal OpenPortal(bool entry, Number value, FR.Target composition)
+	{
+		if( entry )
+		{
+			PortalEntryRenderer = RendererFactory.use.CreatePortal( PortalEntry, value.Value, composition );
+			return PortalEntryRenderer;
+		}
+		else
+		{
+			PortalExitRenderer = RendererFactory.use.CreatePortal( PortalExit, value.Value, composition ); 
+			return PortalExitRenderer;
+		}
+	}
+
+	public Portal OpenPortal(bool entry, Fraction value, FR.Target composition )
+	{
+		if( composition == FR.Target.NUMERATOR )
+		{
+			return OpenPortal( entry, value.Numerator, composition );
+		}
+		else if( composition == FR.Target.DENOMINATOR )
+		{
+			return OpenPortal( entry, value.Denominator, composition );
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	public void ClosePortal( bool entry )
+	{
+		if( entry )
+		{
+			if( PortalEntryRenderer != null )
+				GameObject.Destroy( PortalEntryRenderer.gameObject );
+		}
+		else
+		{
+			if( PortalExitRenderer != null )
+				GameObject.Destroy( PortalExitRenderer.gameObject );
+		}
+	}
 	
 	public Transform PortalExit
 	{
@@ -65,6 +115,12 @@ public class InteractionGroup : MonoBehaviour
 			else
 				return PortalExit.position.y(Camera.position.y).z( Camera.position.z );
 		}
+	}
+	
+	public Portal PortalExitRenderer
+	{
+		get;
+		set;
 	}
 	
 	void OnDrawGizmos()
