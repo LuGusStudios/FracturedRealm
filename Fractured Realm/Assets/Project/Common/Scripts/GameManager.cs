@@ -176,6 +176,11 @@ public class GameManager : LugusSingletonExisting<GameManager>
 			LugusCoroutines.use.StartRoutine( PartStartSequenceRoutine() );
 		} 
 
+		if( newState == FR.GameState.WaitingForInput )
+		{
+			HUDManager.use.UpdateOperationIcons( currentExercisePart.availableOperations );
+		}
+
 		if( newState == FR.GameState.ProcessingOperation )
 		{
 			HUDManager.use.UpdateOperationIcons(0);
@@ -327,8 +332,6 @@ public class GameManager : LugusSingletonExisting<GameManager>
 
 		// TODO: should be shown here, and hidden after input accepted
 		// MathInputManager.use.InitializeOperationIcons(1);
-
-		HUDManager.use.UpdateOperationIcons( currentExercisePart.availableOperations );
 
 		ChangeState( FR.GameState.WaitingForInput );
 

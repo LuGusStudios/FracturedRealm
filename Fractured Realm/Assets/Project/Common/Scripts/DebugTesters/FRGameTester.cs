@@ -212,7 +212,14 @@ public class FRGameTester : LugusSingletonRuntime<FRGameTester>
 			if( GUILayout.Button("manual\n") )
 			{
 				ExerciseManager.use.currentExerciseGroup = ExerciseManager.use.LoadExerciseGroup( group );
-				GameManager.use.StartGame( ExerciseManager.use.currentExerciseGroup );
+				if( skipStartSequence || immediateMode )
+				{
+					GameManager.use.StartGame( ExerciseManager.use.currentExerciseGroup, FR.GameState.WaitingForInput );
+				}
+				else
+				{
+					GameManager.use.StartGame( ExerciseManager.use.currentExerciseGroup, FR.GameState.ExerciseStart );
+				}
 			}
 			GUILayout.EndHorizontal();
 		}
