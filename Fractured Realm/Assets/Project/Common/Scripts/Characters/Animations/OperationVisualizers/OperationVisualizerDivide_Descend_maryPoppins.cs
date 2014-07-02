@@ -37,22 +37,48 @@ public class OperationVisualizerDivide_Descend_maryPoppins : OperationVisualizer
 		if( animationPartDelay > 0.0f )
 			yield return new WaitForSeconds( animationPartDelay );
 
-		// TODO: add umbrella + animation
-
 		// FIXME: current setup doesn't work if number > 6!! (floating 6 stays on screen and moves weirdly)
 		// suggestion: don't play animation on floater, but parent it to head of interactionCharacter (or custom animation moving down the hole)
 
-		Vector3 holeOffset = new Vector3(3.5f, 0, 0);
+		Vector3 holeOffset = new Vector3(3.5f, 0, 0); 
 
 		// spawn hole a bit to the right
 		BlackHole hole = this.blackHoleController.RequestBlackHole(original.interactionCharacter.transform.position + holeOffset );
 
 		//yield return original.Animator.RotateInDirection( Vector3.right ).Coroutine; // maryPoppins animation starts facing the hole
 		yield return original.Animator.RotateTowards( hole.renderer.transform.position ).Coroutine;
-		
-		//yield return new WaitForSeconds(0.1f);
-		
+	
 		original.Animator.CrossFade( this.AnimationType() );
+
+
+        yield return new WaitForSeconds(0.735f); 
+
+        Prop umbrella = PropFactory.use.CreateProp(FR.PropType.Umbrella);  
+        umbrella.transform.parent = original.interactionCharacter.LeftHand;
+        umbrella.transform.localPosition = new Vector3(-0.3172049f, -0.1107331f, 0.0134073f);
+        umbrella.transform.localEulerAngles = new Vector3(342.0453f, 166.0374f, 268.3725f);
+
+        
+        foreach (Transform child in umbrella.transform)
+        {
+            if (child.gameObject.name.Contains("rotator"))
+            {
+                child.localEulerAngles += new Vector3(0, 0, 40);
+            }
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        foreach (Transform child in umbrella.transform)
+        {
+            if (child.gameObject.name.Contains("rotator"))
+            {
+                child.gameObject.RotateTo(new Vector3(child.localEulerAngles.x, child.localEulerAngles.y, 0)).Time(.854f).EaseType(iTween.EaseType.easeOutElastic).Execute();
+            }
+        }
+
+
+
 		
 		yield return new WaitForSeconds( 7.467f ); //TimeToTransition() );
 		
@@ -64,7 +90,11 @@ public class OperationVisualizerDivide_Descend_maryPoppins : OperationVisualizer
 		hole.Free();
 		second.gameObject.transform.position += holeOffset;
 
+        // this will eventually be a random next animation -> public virtual FR.Animation GetRandomNextAnimation()
 		second.Animator.CrossFade( FR.Animation.ironManFall );
+
+
+
 		second.gameObject.MoveTo( animationPartTarget + holeOffset ).Time (0.45f).Execute();
 		
 		yield return new WaitForSeconds(1.6f);

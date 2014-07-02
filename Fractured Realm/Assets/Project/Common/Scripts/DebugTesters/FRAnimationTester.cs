@@ -79,6 +79,7 @@ public class FRAnimationTester : LugusSingletonRuntime<FRAnimationTester>
 				
 				if( GUILayout.Button("" + operationType) )
 				{
+                    scrollPosition = Vector2.zero;
 					currentOperation = operationType;
 				}
 
@@ -98,7 +99,7 @@ public class FRAnimationTester : LugusSingletonRuntime<FRAnimationTester>
 			}
 
 			GUILayout.Space(30);
-			GUILayout.BeginScrollView( scrollPosition );
+			scrollPosition = GUILayout.BeginScrollView( scrollPosition );
 
 			List<FR.Animation> animations = FRAnimations.use.OperationAnimations[ currentOperation ];
 

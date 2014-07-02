@@ -12,7 +12,7 @@ public class OperationVisualizerSimplify_starFishJump : OperationVisualizerSimpl
 
 	public override FR.VisualizerImplementationStatus GetImplementationStatus()
 	{
-		return FR.VisualizerImplementationStatus.NONE;
+		return FR.VisualizerImplementationStatus.TESTING;
 	}
 
 	public override float ApproximateDuration()
@@ -20,8 +20,8 @@ public class OperationVisualizerSimplify_starFishJump : OperationVisualizerSimpl
 		return -1.0f; // number < 0 means no length is known
 	}
 
-	public override IEnumerator VisualizeAnimationPart( FR.Target part, NumberRenderer Attacker, NumberRenderer Defender )
+	public override IEnumerator VisualizeAnimationPart( FR.Target part, NumberRenderer attacker, NumberRenderer defender )
 	{
-		return base.VisualizeAnimationPart( part, Attacker, Defender );
+        yield return new WaitForSeconds(1.5f);
 	}
 }

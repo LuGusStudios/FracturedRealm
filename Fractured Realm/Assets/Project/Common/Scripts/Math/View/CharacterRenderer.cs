@@ -119,6 +119,20 @@ public class CharacterRenderer : MonoBehaviour
 		}
 	}
 
+    protected Transform _rightToeEnd = null;
+    public Transform RightToeEnd
+    {
+        get
+        {
+            if (_rightToeEnd == null)
+            {
+                _rightToeEnd = transform.FindChildRecursively("RightToe_End");
+            }
+
+            return _rightToeEnd;
+        }
+    }
+
 
 	
 	public void ShowBody(bool show)

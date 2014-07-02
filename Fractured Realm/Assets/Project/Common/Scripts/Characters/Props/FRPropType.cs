@@ -10,9 +10,15 @@ namespace FR
 		NONE = -1,
 		
 		
-		BlackHole = 1,
-		Football = 2,
-		Magnet = 3,
+		Anvil = 1,
+		BaseBall = 2,
+		Basketball = 3,
+		BlackHole = 4,
+		Football = 5,
+		Grenade = 6,
+		Magnet = 7,
+		Soccerball = 8,
+		Umbrella = 9,
 
 	}
 }

@@ -73,23 +73,41 @@ public static class LugusCameraExtensions
 		NONE,
 		SMALL,
 		MEDIUM,
-		LARGE 
+		LARGE,
+        HUGE
 	}
 	
 	public static void Shake(this Camera camera, ShakeAmount amount)
 	{
 		Vector3 displacement = Vector3.zero;
-		if( amount == ShakeAmount.SMALL )
-			
-			displacement =  new Vector3(0.1f, 0.0f, 0.05f);
-		else if( amount == ShakeAmount.MEDIUM )
-			displacement =  new Vector3(0.2f, 0.0f, 0.2f);
-		else if( amount == ShakeAmount.LARGE )
-			displacement =  new Vector3(0.5f, 0.0f, 0.5f);
+        if (amount == ShakeAmount.SMALL)
+
+            displacement = new Vector3(0.1f, 0.0f, 0.05f);
+        else if (amount == ShakeAmount.MEDIUM)
+            displacement = new Vector3(0.2f, 0.0f, 0.2f);
+        else if (amount == ShakeAmount.LARGE)
+            displacement = new Vector3(0.5f, 0.0f, 0.5f);
+        else if (amount == ShakeAmount.HUGE)
+            displacement = new Vector3(1.5f, 1.5f, 1.5f);
 			
 		
 		iTween.ShakePosition(camera.transform.parent.gameObject, displacement, 0.3f );
-
-		//camera.transform.shake( 0.3f, displacement );
 	}
+
+    public static void Shake(this Camera camera, ShakeAmount amount, float time)
+    {
+        Vector3 displacement = Vector3.zero;
+        if (amount == ShakeAmount.SMALL)
+
+            displacement = new Vector3(0.1f, 0.0f, 0.05f);
+        else if (amount == ShakeAmount.MEDIUM)
+            displacement = new Vector3(0.2f, 0.0f, 0.2f);
+        else if (amount == ShakeAmount.LARGE)
+            displacement = new Vector3(0.5f, 0.0f, 0.5f);
+        else if (amount == ShakeAmount.HUGE)
+            displacement = new Vector3(1.5f, 1.5f, 1.5f);
+
+
+        iTween.ShakePosition(camera.transform.parent.gameObject, displacement, time);
+    }
 }

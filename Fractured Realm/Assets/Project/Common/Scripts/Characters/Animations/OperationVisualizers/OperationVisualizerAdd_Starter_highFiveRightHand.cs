@@ -25,7 +25,6 @@ public class OperationVisualizerAdd_Starter_highFiveRightHand : OperationVisuali
 		_nextAnimations = new List<FR.Animation>(); 
 		
 		_nextAnimations.Add(FR.Animation.highFiveLeftHand);
-
 	}
 
 	public override IEnumerator Visualize(OperationState current, OperationState target)
