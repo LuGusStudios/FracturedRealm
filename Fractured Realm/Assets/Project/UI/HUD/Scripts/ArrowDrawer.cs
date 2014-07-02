@@ -14,6 +14,20 @@ public class ArrowDrawer : MonoBehaviour
 	public Transform startTransform = null;
 	public Transform targetTransform = null;
 
+	// needed to make arrows stay on target even when moving the game cameras while the UI camera stays in place (ex. CameraDragger)
+	public bool underlyingPositionSet = false;
+	public Camera usedWorldCamera = null;
+	protected Vector3 _underlyingWorldPosition; // start and targetTransform are in "UI" space. This is in game-world space for mapping from game-object to UI. Needed in CameraDragger for ex.
+	public Vector3 underlyingWorldPosition
+	{
+		get{ return _underlyingWorldPosition; }
+		set
+		{
+			underlyingPositionSet = true;
+			_underlyingWorldPosition = value;
+		}
+	}
+
 	void Awake()
 	{
 		if( startTransform == null )
@@ -59,6 +73,22 @@ public class ArrowDrawer : MonoBehaviour
 		CreateArrow( startTransform.position, targetTransform.position, positive );
 	}
 
+	public void CreateArrowFromGameWorldPosition(bool positive = true)
+	{
+		if( !underlyingPositionSet )
+			return;
+
+		Vector3 screenPos = usedWorldCamera.WorldToScreenPoint( _underlyingWorldPosition );
+
+		//Debug.Log ("ArrowFromGameWorldPos : " + screenPos + " // " + underlyingWorldPosition );
+
+		Vector3 uiWorldPos = LugusInput.use.ScreenTo3DPoint( screenPos.z(0.0f), targetTransform.position, LugusCamera.ui );
+
+		this.targetTransform.position = uiWorldPos;//new Vector3( screenPos.x / 100.0f, screenPos.y / 100.0f, this.targetTransform.position.z );
+
+		CreateArrow( positive );
+	}
+
 	public void MoveTowards(Vector3 target, float time = 1.0f )
 	{
 		this.gameObject.StartLugusRoutine( MoveTowardsRoutine(target, time) );
@@ -79,6 +109,8 @@ public class ArrowDrawer : MonoBehaviour
 		targetTransform.gameObject.StopTweens();
 		targetTransform.position = target;
 		CreateArrow(true);
+
+		Debug.Log ("END of MOVE TOWARDS routine");
 	}
 	
 	public void CollapseTowards(Vector3 target, float time = 1.0f )

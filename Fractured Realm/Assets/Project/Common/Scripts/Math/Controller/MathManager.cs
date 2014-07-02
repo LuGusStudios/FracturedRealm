@@ -72,6 +72,13 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 			Debug.LogError("MathManager:ChangeState : Visualizing should go to idle, instead of " + newState);
 		}
 
+		if( newState == MathState.Idle )
+		{
+			currentOperation = null;
+			lastOperationMessage = FR.OperationMessage.None;
+			operationInfo = null;
+		}
+
 		Debug.Log("MathManager:ChangeState : changed from " + oldState + " to " + newState );
 	}
 
@@ -102,11 +109,13 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 
 		FRAnimationData animationData = null;
 
+		int iterations = 0;
 		do
 		{
 			animationData = FRAnimations.use.GetRandomStarterAnimation( type );
+			++iterations;
 		}
-		while( animationData.visualizer.GetImplementationStatus() == FR.VisualizerImplementationStatus.NONE );
+		while( (iterations < 50) && (animationData.visualizer.GetImplementationStatus() == FR.VisualizerImplementationStatus.NONE) );
 
 		Debug.Log("MathManager:GetVisualizer : chosen visualization is " + animationData.VisualizerClassName() );
 

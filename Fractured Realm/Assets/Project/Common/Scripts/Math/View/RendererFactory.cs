@@ -48,6 +48,11 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 			c.ShowBody(false);
 		}
 
+		foreach( Collider c in numberR.GetComponentsInChildren<Collider>() )
+		{
+			c.enabled = false;
+		}
+
 		numberR.enabled = false;
 		GameObject.Destroy( numberR ); // remove the renderer component, other scripts are searching for these and shouldn't find this one
 

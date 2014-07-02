@@ -63,6 +63,9 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		HUDManager.use.SetMode( exercise.composition );
 		//HUDManager.use.UpdateOperationIcons(1);
 		HUDManager.use.UpdateOperationIcons(0); // make sure there are no icons visible here
+
+		MathInputManager.use.ChangeState( MathInputManager.InputState.IDLE );
+		MathManager.use.ChangeState(MathManager.MathState.Idle);
 		
 		FRCamera.use.MoveToInteractionGroup( 1, 1, false );
 
@@ -178,6 +181,9 @@ public class GameManager : LugusSingletonExisting<GameManager>
 
 		if( newState == FR.GameState.WaitingForInput )
 		{
+			
+			
+			Debug.LogError("CAMERAS : " + LugusCamera.numerator + " // " + LugusCamera.denominator);
 			HUDManager.use.UpdateOperationIcons( currentExercisePart.availableOperations );
 		}
 

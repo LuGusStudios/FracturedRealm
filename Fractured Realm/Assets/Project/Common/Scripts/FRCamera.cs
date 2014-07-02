@@ -5,6 +5,17 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 {
 	public FR.Target mode = FR.Target.NONE;
 
+	public Rect SlideScreenArea
+	{
+		get
+		{			
+			float width = (Screen.width * 0.075f); // 5% from the right
+			float left = Screen.width - width;
+			return new Rect(left, 0, width, Screen.height);
+		}
+	}
+
+
 	public void Awake()
 	{
 		// this makes the class play nicely with editor scripts and different viewpoints / setups in editor mode vs play mode
@@ -337,6 +348,10 @@ public class FRCamera : LugusSingletonExisting<FRCamera>
 
 	public void OnGUI()
 	{
+		//GUILayout.BeginArea( SlideScreenArea, GUI.skin.box );
+		//GUILayout.Label("SlideArea");
+		//GUILayout.EndArea();
+
 		if( !LugusDebug.debug )
 			return;
 

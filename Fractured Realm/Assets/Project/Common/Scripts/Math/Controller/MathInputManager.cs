@@ -21,9 +21,9 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 	protected List<OperationIcon> operationIcons;
 
 	protected Transform currentOperationRendererLocation = null;
-	protected ArrowDrawer arrow1 = null;
-	protected ArrowDrawer arrow2 = null;
-	protected ArrowDrawer arrow3 = null;
+	public ArrowDrawer arrow1 = null;
+	public ArrowDrawer arrow2 = null;
+	public ArrowDrawer arrow3 = null;
 
 	protected Vector3 arrow1DefaultTarget;
 	protected Vector3 arrow2DefaultTarget;
@@ -63,8 +63,6 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 
 	public void Start()
 	{
-		HUDManager.use.UpdateOperationIcons(666);
-
 		ChangeState( InputState.IDLE );
 	}
 
@@ -75,30 +73,12 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 			yield return new WaitForSeconds( delay );
 		}
 
+		Debug.LogWarning("ToggleInput : " + inputEnabled + " // " + delay);
+
 		acceptInput = inputEnabled;
 
 		yield break;
 	}
-
-	/*
-	public void InitializeOperationIcons(int amount)
-	{
-		operationIcons = new List<OperationIcon>();
-		operationIcons.AddRange ( GameObject.FindObjectsOfType<OperationIcon>() );
-		
-		foreach( OperationIcon icon in operationIcons )
-		{
-			icon.Clear();
-
-			if( icon.type == FR.OperationType.SIMPLIFY || icon.type == FR.OperationType.DOUBLE )
-				icon.OperationAmount = -1;
-			else if( amount == 666 )
-				icon.OperationAmount = Random.Range(0, 3);
-			else
-				icon.OperationAmount = amount;
-		}
-	}
-	*/
 
 	public void SetMode( FR.Target mode )
 	{
@@ -139,14 +119,15 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 
 		if( newState == InputState.IDLE )
 		{
-			// TODO: hide arrows
+			currentOperationIcon = null;
+			targetSelectDragging = false;
+
 			arrow1.renderer.enabled = false;
 			arrow2.renderer.enabled = false;
 			arrow3.renderer.enabled = false;
 		}
 		else if( newState == InputState.TARGET1 )
 		{
-			// TODO: show arrows
 			arrow1.startTransform.localPosition = Vector3.zero;
 			arrow2.startTransform.localPosition = Vector3.zero;
 			arrow3.startTransform.localPosition = Vector3.zero;
@@ -190,56 +171,27 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 	
 	void Update () 
 	{
-		if( !acceptInput) 
+		if( !acceptInput ) 
 			return;
 
-		/*
-		if( LugusInput.use.KeyDown(KeyCode.S) ) // "spawn"
-		{
-			InitializeOperationIcons(666);
-		}
-		if( LugusInput.use.KeyDown(KeyCode.D) )
-		{
-			operationIcons[0].OperationAmount += 2;
-		}
-		if( LugusInput.use.KeyDown(KeyCode.F) )
-		{
-			operationIcons[0].GetTopRenderer().gameObject.MoveTo( new Vector3(LugusUtil.UIWidth, LugusUtil.UIHeight,0) ).Time(1.0f).Execute();
-			Destroy( operationIcons[0].GetTopRenderer().gameObject, 2.0f );
-			operationIcons[0].OperationAmount -= 1;
-			
-			operationIcons[0].GetTopRenderer().gameObject.MoveTo( new Vector3(LugusUtil.UIWidth, LugusUtil.UIHeight,0) ).Time(1.0f).Execute();
-			Destroy( operationIcons[0].GetTopRenderer().gameObject, 2.0f );
-			operationIcons[0].OperationAmount -= 1;
-		}
-		if( LugusInput.use.KeyDown(KeyCode.G) )
-		{
-			operationIcons[0].OperationAmount = -1;
-		}
-		*/
-		
-		// we need to have selected an operation to be able to continue
-		//if( MathManager.use.currentOperation == null )
-		//	return;
+		if( state == InputState.DISABLED )
+			return;
 		
 		if( LugusInput.use.down || LugusInput.use.dragging || LugusInput.use.up )
 		{
 			//Debug.LogWarning(Time.frameCount + " : One of the mouse inputs was true." + this.state);
 
-			if( state != InputState.DISABLED )
+			//if( state == InputState.IDLE ) // not only on idle: allow change of operation at all times
+			//{
+				ProcessOperationSelect();
+			//}
+			if( state == InputState.TARGET1 || state == InputState.TARGET2 )
 			{
-				//if( state == InputState.IDLE )
-				//{
-					ProcessOperationSelect();
-				//}
-				if( state == InputState.TARGET1 || state == InputState.TARGET2 )
-				{
-					ProcessTargetSelect();
-				}
-				else if( state == InputState.DISABLED )
-				{
-					// do nothing here
-				}
+				ProcessTargetSelect();
+			}
+			else if( state == InputState.DISABLED )
+			{
+				// do nothing here
 			}
 		}
 	}
@@ -257,10 +209,6 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 				//Debug.LogError("No operation hit ! " + LugusInput.use.lastPoint);
 				return;
 			}
-			//else
-			//{
-			//	Debug.LogError("DID operation hit ! " + LugusInput.use.lastPoint);
-			//}
 
 			OperationIcon clickedIcon = null;
 
@@ -284,8 +232,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 			// if no icon selected, nothing to do here
 			if( clickedIcon == null )
 			{
-				
-				Debug.LogError("No operation hit 222 ! " + LugusInput.use.lastPoint);
+				//Debug.LogError("No operation hit ! " + LugusInput.use.lastPoint);
 				return; 
 			}
 
@@ -299,7 +246,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 					iTween.PunchScale( currentOperationIcon.GetTopRenderer().gameObject, new Vector3(0.5f, 0.5f, 0.5f), 0.5f );
 
 					// TODO: auditive feedback
-					Debug.LogError("Selected same icon. Giving visual and auditive feedback");
+					Debug.LogWarning("Selected same icon. Giving visual and auditive feedback");
 				}
 				else
 				{
@@ -325,23 +272,20 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		}
 		else if( LugusInput.use.up && state == InputState.IDLE && currentOperationIcon != null )
 		{
-			//if( Vector2.Distance( LugusInput.use.lastPoint, mouseDownPosition ) < 10.0f )
-			//{
-				// user probably misclicked and wasn't really planning on selecting this item... ignore it
-			//	currentOperationIcon = null;
-			//	return;
-			//}
-
-			
-			//Debug.LogError("Selected operationIcon : " + currentOperationIcon.name);
-			//currentOperationIcon.OperationAmount -= 1;
-
 			gameObject.StartLugusRoutine( MoveTopRendererRoutine() );
 		}
 	}
 
 	protected IEnumerator MoveTopRendererRoutine()
 	{
+		if( currentOperationIcon == null )
+		{
+			Debug.LogError("MathInputManager:MoveTopRendererRoutine : currentOperationIcon was null! " + this.state );
+			yield break;
+		}
+
+		acceptInput = false;
+
 		// move with constant speed. Calculate time needed
 		float time = Vector3.Distance( currentOperationIcon.GetTopRenderer().transform.position, currentOperationRendererLocation.position ) / 15.0f; // 1500px / s
 
@@ -354,77 +298,82 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		ChangeState( InputState.TARGET1 );
 	}
 
+	protected bool targetSelectDragging = false;
+	protected float targetSelectDownTime = 0.0f;
 	public void ProcessTargetSelect()
 	{
 		ArrowDrawer arrow = null;
-		Vector3 arrowDefaultTarget;
+		//Vector3 arrowDefaultTarget;
 
 		if( state == InputState.TARGET1 )
 		{
 			if( MathManager.use.currentOperation.RequiresTwoFractions() )
 			{
 				arrow = arrow1;
-				arrowDefaultTarget = arrow1DefaultTarget;
+				//arrowDefaultTarget = arrow1DefaultTarget;
 			}
 			else
 			{
 				arrow = arrow3;
-				arrowDefaultTarget = arrow3DefaultTarget;
+				//arrowDefaultTarget = arrow3DefaultTarget;
 			}
 		}
 		else
 		{
 			arrow = arrow2;
-			arrowDefaultTarget = arrow2DefaultTarget;
+			//arrowDefaultTarget = arrow2DefaultTarget;
 		}
 
-		if( LugusInput.use.down )
+		bool outsideSlideArea = true;
+		outsideSlideArea = !FRCamera.use.SlideScreenArea.Contains( LugusInput.use.lastPoint );
+
+		bool tapDetected = (LugusInput.use.up && ((Time.time - targetSelectDownTime) < 0.5f)); // if within 0.3s of start release, we've tapped
+		// this tapDetected is necessary in the following case:
+		// SlideScreenArea (partly) overlaps one of the characters 
+		// if it's just a quick tap, we still want the user to select the character as a target, even though the coordinates are in the ScreenSlideArea
+		// so handle this as a special case
+		// note: if we just release in the SlideArea, this case is handle by the ok boolean (needs to start outside)
+
+		if(  LugusInput.use.down )
 		{
-			// TODO: test : if down is close enough to end of first arrow (and we're target 2)
-			// we will revert back to TARGET1 phase, because the user probably wants to re-align the arrow
-			arrow.MakePositive();
+			targetSelectDownTime = Time.time;
+
+			if( outsideSlideArea )
+			{
+				// TODO: test : if down is close enough to end of first arrow (and we're target 2)
+				// we will revert back to TARGET1 phase, because the user probably wants to re-align the arrow
+				arrow.MakePositive();
+				targetSelectDragging = true;
+			}
 		}
-		else if( LugusInput.use.dragging )
+
+		// NOTE: keep this if, not else if... for some reason, it sometimes skips the dragging then (down stays on until up if quick clicks... wtf)
+		if( (targetSelectDragging || tapDetected) && LugusInput.use.dragging  )
 		{
 			Vector3 worldPos = LugusInput.use.ScreenTo3DPoint( LugusInput.use.lastPoint, arrow.transform.position, LugusCamera.ui );//LugusCamera.ui.WorldToScreenPoint( currentOperationRendererLocation.position );
 			arrow.targetTransform.position = worldPos;
 
-			//arrow.CreateArrowScreen( screenPos, LugusInput.use.lastPoint, true );
 			arrow.CreateArrow(true);
-
+			arrow.underlyingPositionSet = false;
+			
 			arrow.renderer.enabled = true;
 		}
-		else if( LugusInput.use.up )
+
+		if( (targetSelectDragging || tapDetected) && LugusInput.use.up )
 		{
-			/*
-			Transform hit = LugusInput.use.RayCastFromMouse( LugusCamera.numerator );
-			
-			if( hit == null )
-				hit = LugusInput.use.RayCastFromMouse( LugusCamera.denominator );
+			targetSelectDragging = false;
 
-			Debug.LogWarning("HITTING : " + hit.name);
+			Camera arrowCamera = null;
 
 
-			Character character = hit.GetComponent<Character>();
-			
-			if( character == null )
-			{
-				hit = LugusInput.use.RayCastFromMouse( LugusCamera.denominator );
-				if( hit != null )
-					character = hit.GetComponent<Character>();
-				else
-					return;
-
-			}
-			*/
-
-			
+			// raycast from both camera's (numerator and denominator) separately
 			Transform hit = LugusInput.use.RayCastFromMouse( LugusCamera.numerator );
 			CharacterRenderer character = null;
 
 			if( hit != null )
 			{
 				character = hit.GetComponent<CharacterRenderer>();
+				arrowCamera = LugusCamera.numerator;
 			}
 
 			if( character == null )
@@ -435,6 +384,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 				if( hit != null )
 				{
 					character = hit.GetComponent<CharacterRenderer>();
+					arrowCamera = LugusCamera.denominator;
 				}
 			}
 
@@ -446,12 +396,12 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 
 				arrow.MoveTowards( arrow.startTransform.position + (arrowDirection * 1.4f), 0.2f );
 
-				Debug.LogWarning("NO CHARACTER COMPONENT ON HIT " + ((hit != null) ? hit.name : "") );
+				Debug.LogWarning("MathInputManager:ProcessTargetSelect : NO CHARACTER COMPONENT ON HIT " + ((hit != null) ? hit.name : "") );
 				return;
 			}
 
 
-			Debug.LogWarning("Character hit for operation : " + character.name);
+			Debug.Log("MathInputManager:ProcessTargetSelect : Character hit for operation : " + character.name);
 
 			FR.OperationMessage operationResult = FR.OperationMessage.None;
 			if( state == InputState.TARGET1 )
@@ -459,22 +409,29 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 			else if( state == InputState.TARGET2 )
 				operationResult = MathManager.use.OnTarget2Selected( character.Number.Fraction );
 
-			if( operationResult == FR.OperationMessage.None )
+
+			if( operationResult == FR.OperationMessage.None ) // no errors, selection success
 			{
 				// TODO: hide arrows
 				// TODO: hide operationIconRenderer
 				// TODO: Decrement OperationAmount
 
+				// if final target, collapse arrows towards their targets
 				if( state == InputState.TARGET2 )
 				{
+					arrow1.MakePositive();
+					arrow2.MakePositive();
+
 					arrow1.CollapseTowards( arrow1.targetTransform.position, 0.5f );
 					arrow2.CollapseTowards( arrow2.targetTransform.position, 0.5f );
 				}
 				else
 				{
+					arrow3.MakePositive(); 
 					arrow3.CollapseTowards( arrow3.targetTransform.position, 0.5f );
 				}
-				
+
+
 				Transform iconRenderer = currentOperationIcon.GetTopRenderer();
 				if( currentOperationIcon.OperationAmount > -1 )
 				{
@@ -498,25 +455,30 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 
 				MathManager.use.ProcessCurrentOperation();
 			}
-			else if( operationResult == FR.OperationMessage.Error_Requires2Fractions )
+			else if( operationResult == FR.OperationMessage.Error_Requires2Fractions ) // not really an "error" here!
 			{
+				Debug.LogError("Setting underlying position : " + character.transform.position + " // "+ character.transform.Path() );
+				//arrow.underlyingWorldPosition = character.transform.position;//LugusInput.use.ScreenTo3DPoint( LugusInput.use.lastPoint, character.transform.position, LugusCamera.game );
+				arrow.underlyingWorldPosition = LugusInput.use.ScreenTo3DPoint( LugusInput.use.lastPoint, character.transform.position, arrowCamera );
+				arrow.usedWorldCamera = arrowCamera;
+
 				ChangeState( InputState.TARGET2 );
 			}
 			else
 			{
+				// note: dirty, because same code as in the else if right above
+				// however... no direct nice way to do this in 1 go, since it should be done before the changeState! 
+				arrow.underlyingWorldPosition = LugusInput.use.ScreenTo3DPoint( LugusInput.use.lastPoint, character.transform.position, arrowCamera );
+				arrow.usedWorldCamera = arrowCamera;
+				
 				// there was an error.
 				// stay with target1, make arrow red
-				Debug.LogWarning("THERE WAS ERROR. NEGATIVE ARROW BABY");
+				Debug.LogWarning("MathInputManager:ProcessTargetSelect : error selecting, negative arrow. " + operationResult);
 				arrow.MakeNegative();
 
 				errorShowStartTime = Time.time; 
 				errorMessage = operationResult;
 			}
-		}
-		else
-		{
-			// hide arrow
-			arrow.renderer.enabled = false;
 		}
 	}
 

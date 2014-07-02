@@ -44,6 +44,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acceptInput: 1
   state: -1
+  arrow1: {fileID: 0}
+  arrow2: {fileID: 0}
+  arrow3: {fileID: 0}
   errorShowStartTime: -10
   errorMessage: 0
 --- !u!114 &11400002
