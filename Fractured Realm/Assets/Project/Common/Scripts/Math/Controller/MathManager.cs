@@ -27,6 +27,7 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 	public FR.OperationMessage lastOperationMessage = FR.OperationMessage.None;
 
 	public OperationState operationInfo = null;
+	public bool hasProcessedMainOperation = false; // if we've already done add, subtract, multiply or divide in this run. This is NOT changed back to false inside this class, should be set from the outside (GameManager)
 
 	public delegate void OnOperationCompleted(IOperation operation);
 	public OnOperationCompleted onOperationCompleted;
@@ -139,7 +140,11 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 
 	public void Reset()
 	{
+		hasProcessedMainOperation = false;
+		currentOperation = null;
+		lastOperationMessage = FR.OperationMessage.None;
 		operationInfo = null;
+
 		ChangeState( MathState.Idle );
 	}
 
@@ -261,16 +266,110 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 		{
 			yield return gameObject.StartLugusRoutine( visualizer.Visualize(operationInfo, outcome) ).Coroutine;
 		}
+
+
+		if( operationInfo.Type == FR.OperationType.ADD ||
+		   operationInfo.Type == FR.OperationType.SUBTRACT ||
+		   operationInfo.Type == FR.OperationType.MULTIPLY ||
+		   operationInfo.Type == FR.OperationType.DIVIDE )
+		{
+			hasProcessedMainOperation = true;
+		}
+
 		
 		if( onOperationCompleted != null )
 			onOperationCompleted( currentOperation );
 
-		
-		GameManager.use.ChangeState( FR.GameState.PartEndSequence, 0.75f ); // extra delay to make sure the visualizer is 100% complete (all tweeners etc.)
-
-		Reset();
+		if( ContinueCalculations() )
+		{
+			//MathInputManager.use.ChangeState( MathInputManager.InputState.IDLE );
+			ChangeState( MathState.Idle );
+			GameManager.use.ChangeState( FR.GameState.WaitingForInput );
+		}
+		else
+		{
+			GameManager.use.ChangeState( FR.GameState.PartEndSequence, 0.75f ); // extra delay to make sure the visualizer is 100% complete (all tweeners etc.)
+			Reset();
+		}
 
 		yield break;
+	}
+
+	protected bool ContinueCalculations()
+	{
+		ExercisePart part = GameManager.use.currentExercisePart;
+
+		Fraction outcome = part.FinalOutcome;
+
+		// 2 possible options after operation performed:
+		// 1. correct solution 
+		// 	   1.1 : main operation done : correct finish, proceed
+		//	   1.2 : no main operation done yet : cannot finish, need to wait for operation
+		// 			(this can happen when only doing denominator stuff: ex. 6 + 3 = 3, but first need to simplify the 3. This already gives "correct" answer, but still need to perform the +
+		// 2. wrong solution : 	
+		//     2.1 : no main operation done yet (just simplify or double done) : continue with input
+		//	   2.2 : main operation done, simplify and double available : continue with input
+		// 	   2.3 : main operation done, no simplify / double available : show wrong by running to portal (control back to GameManager)
+
+		// TODO: note: when working with more than 2 fractions, this logic has to be updated!
+
+		// 1
+		if( operationInfo.StartFraction.Numerator.Value == outcome.Numerator.Value 
+		    &&
+		    operationInfo.StartFraction.Denominator.Value == outcome.Denominator.Value )
+		{
+			if( hasProcessedMainOperation ) // 1.1
+			{
+				Debug.Log ("MathManager:ContinueCalculations : outcome was correct!");
+				GameManager.use.outcomeWasCorrect = true;
+				return false;
+			}
+			else // 1.2
+			{
+				Debug.Log ("MathManager:ContinueCalculations : outcome was correct already, but no main operation done yet. Should only happen in denominator-only levels!!!");
+				return true;
+			}
+		}
+		else // 2
+		{
+			if( !hasProcessedMainOperation ) // 2.1
+			{
+				Debug.Log ("MathManager:ContinueCalculations : outcome not correct yet, but also no main operation done yet. continue");
+				return true;
+			}
+			else 
+			{
+				// TODO: probably do calculations (limited depth) with simplify + double to see if we can ever reach the intended result...
+				List<OperationIcon> operationIcons = new List<OperationIcon>();
+				operationIcons.AddRange ( GameObject.FindObjectsOfType<OperationIcon>() );
+
+				bool hasOptions = false;
+				foreach( OperationIcon icon in operationIcons )
+				{
+					if( icon.type == FR.OperationType.SIMPLIFY ||
+					    icon.type == FR.OperationType.DOUBLE )
+					{
+						if( icon.OperationAmount != 0 ) // amount < 0 is infinite amount
+						{
+							hasOptions = true;
+							break;
+						}
+					}
+				}
+
+				if( hasOptions ) // 2.2
+				{
+					Debug.Log ("MathManager:ContinueCalculations : outcome not correct yet, but has simplify/double leftover. continue");
+					return true;
+				}
+				else // 2.3
+				{
+					Debug.Log ("MathManager:ContinueCalculations : outcome not correct but no more options... force replay");
+					GameManager.use.outcomeWasCorrect = false;
+					return false;
+				}
+			}
+		}
 	}
 
 

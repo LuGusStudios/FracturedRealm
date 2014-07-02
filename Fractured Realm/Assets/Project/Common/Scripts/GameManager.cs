@@ -29,6 +29,9 @@ public class GameManager : LugusSingletonExisting<GameManager>
 
 	public World currentWorld = null;
 
+	public bool outcomeWasCorrect = false;
+
+
 	public void StartGame( ExerciseGroup exercises, FR.GameState startFromState = FR.GameState.ExerciseStart )
 	{
 		this.gameObject.StartLugusRoutine( StartGameGroupRoutine(exercises, startFromState) );
@@ -109,6 +112,11 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		List<FractionRenderer> rends = RendererFactory.use.CreateRenderers( currentWorld, part.fractions, currentInteractionGroupIndex );
 
 		currentExercisePart = part;
+
+		MathInputManager.use.ChangeState( MathInputManager.InputState.IDLE );
+		MathManager.use.ChangeState(MathManager.MathState.Idle);
+
+		MathManager.use.hasProcessedMainOperation = false;
 	}
 
 	public void StartGameDebug( FR.WorldType type, Fraction[] fractions, FR.Target composition = FR.Target.BOTH, FR.GameState startFromState = FR.GameState.ExerciseStart )
@@ -181,20 +189,23 @@ public class GameManager : LugusSingletonExisting<GameManager>
 
 		if( newState == FR.GameState.WaitingForInput )
 		{
-			
-			
-			Debug.LogError("CAMERAS : " + LugusCamera.numerator + " // " + LugusCamera.denominator);
-			HUDManager.use.UpdateOperationIcons( currentExercisePart.availableOperations );
+			if( oldState != FR.GameState.ProcessingOperation )
+			{
+				// only do this at the beginning (first time WaitingForInput)
+				// otherwhise we would overwrite the available icons in between successive operations
+				HUDManager.use.UpdateOperationIcons( currentExercisePart.availableOperations );
+			}
 		}
 
 		if( newState == FR.GameState.ProcessingOperation )
 		{
-			HUDManager.use.UpdateOperationIcons(0);
 		}
 
 
 		if( newState == FR.GameState.PartEndSequence )
 		{			
+			HUDManager.use.UpdateOperationIcons(0);
+
 			if( oldState != FR.GameState.ProcessingOperation )
 			{
 				Debug.LogError("GameManager:ChangeState : changed to EndSequence from " + oldState + ". Not allowed! Oldstate should be ProcessingOperation");
@@ -346,19 +357,27 @@ public class GameManager : LugusSingletonExisting<GameManager>
 
 	protected IEnumerator PartEndSequenceSubRoutine( FR.Target composition, NumberRenderer left, WorldPart worldPart )
 	{
-		left.Animator.RunTo( worldPart.InteractionGroups[currentInteractionGroupIndex].PortalExit.position );
-		
-		yield return new WaitForSeconds(2.0f);
-		
-		yield return left.Animator.RotateTowardsCamera().Coroutine;
+		if( outcomeWasCorrect )
+		{
+			left.Animator.RunTo( worldPart.InteractionGroups[currentInteractionGroupIndex].PortalExit.position );
+			
+			yield return new WaitForSeconds(2.0f);
+			
+			yield return left.Animator.RotateTowardsCamera().Coroutine;
 
-		left.gameObject.ScaleTo(Vector3.zero).Time (2.0f).Execute();
-		
-		yield return new WaitForSeconds(2.0f);
+			left.gameObject.ScaleTo(Vector3.zero).Time (2.0f).Execute();
+			
+			yield return new WaitForSeconds(2.0f);
 
-		worldPart.InteractionGroups[currentInteractionGroupIndex].ClosePortal(false);
+			worldPart.InteractionGroups[currentInteractionGroupIndex].ClosePortal(false);
 
-		yield return null;
+			yield return null;
+		}
+		else
+		{
+			// FIXME: fill this in properly!
+			Debug.LogError("OUTCOME was incorrect : please try again!");
+		}
 	}
 
 	protected IEnumerator PartEndSequenceRoutine()
@@ -408,8 +427,15 @@ public class GameManager : LugusSingletonExisting<GameManager>
 
 		left.Destroy();
 
-
-		ChangeState( FR.GameState.PartEnd );
+		if( outcomeWasCorrect )
+		{
+			ChangeState( FR.GameState.PartEnd );
+		}
+		else
+		{
+			// FIXME: fill this in properly with extra state?
+			Debug.LogError("OUTCOME was incorrect : no PartEnd for you!");
+		}
 		yield break;
 	}
 

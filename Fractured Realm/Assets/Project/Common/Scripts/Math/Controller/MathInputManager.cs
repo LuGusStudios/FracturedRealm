@@ -189,10 +189,6 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 			{
 				ProcessTargetSelect();
 			}
-			else if( state == InputState.DISABLED )
-			{
-				// do nothing here
-			}
 		}
 	}
 
