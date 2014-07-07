@@ -10,7 +10,7 @@ z = plaats binnen reeks
 1. Story element: introductie
 2. Gewone wereld, +, getallen t.e.m. 6
 3. Gewone wereld, –, getallen t.e.m. 6
-4. Gewone wereld + en -, getallen t.e.m 6 (kort)
+4. Gewone wereld + en -, getallen t.e.m 6 (kort) : beide icons tegelijk beschikbaar -> pick right one
 5. Story element: vorige eindigt op 6, in story komt er nog 1tje bij met plus -> duidelijk maken dat de 6 dan gaat zweven
 4. Gewone wereld, + en –, getallen t.e.m. 12
 

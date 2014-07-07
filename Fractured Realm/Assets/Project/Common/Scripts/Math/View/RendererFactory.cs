@@ -41,7 +41,12 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 		NumberRenderer numberR = CreateRenderer( number );
 
 		numberR.transform.parent = output.transform;
-		numberR.transform.localPosition = new Vector3(0.0f, 3.0f, 0.0f);
+		if( value <= 6 )
+			numberR.transform.localPosition = new Vector3(3.0f, 1.2f, 0.0f);
+		else
+			numberR.transform.localPosition = new Vector3(3.0f, 0.2f, 0.0f);
+
+		numberR.Animator.RotateInDirection( Vector3.back );
 
 		foreach( CharacterRenderer c in numberR.Characters )
 		{

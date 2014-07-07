@@ -453,7 +453,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 			}
 			else if( operationResult == FR.OperationMessage.Error_Requires2Fractions ) // not really an "error" here!
 			{
-				Debug.LogError("Setting underlying position : " + character.transform.position + " // "+ character.transform.Path() );
+				//Debug.LogError("Setting underlying position : " + character.transform.position + " // "+ character.transform.Path() );
 				//arrow.underlyingWorldPosition = character.transform.position;//LugusInput.use.ScreenTo3DPoint( LugusInput.use.lastPoint, character.transform.position, LugusCamera.game );
 				arrow.underlyingWorldPosition = LugusInput.use.ScreenTo3DPoint( LugusInput.use.lastPoint, character.transform.position, arrowCamera );
 				arrow.usedWorldCamera = arrowCamera;

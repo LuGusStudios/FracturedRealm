@@ -117,4 +117,15 @@ public static class LugusCoroutineExtensions
 	{
 		return LugusCoroutines.use.StartRoutine( routine, go );
 	}
+
+	public static void StopAllLugusRoutines( this GameObject go )
+	{
+		LugusCoroutineHandleDefault[] handles = go.GetComponentsInChildren<LugusCoroutineHandleDefault>(true);
+		foreach( LugusCoroutineHandleDefault handle in handles )
+		{
+			//Debug.Log("Coroutines stopping : " + go.name + " // " + go.transform.Path() );
+			handle.StopRoutine();
+			GameObject.Destroy( handle );
+		}
+	}
 }

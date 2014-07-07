@@ -179,12 +179,12 @@ public class Fraction
 	{
 		if( this.HasNumerator() )
 		{
-			GameObject.Destroy( this.Numerator.Renderer );
+			GameObject.Destroy( this.Numerator.Renderer.gameObject );
 		}
 
 		if( this.HasDenominator() )
 		{
-			GameObject.Destroy( this.Denominator.Renderer );
+			GameObject.Destroy( this.Denominator.Renderer.gameObject );
 		}
 	}
 	

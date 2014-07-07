@@ -15,6 +15,7 @@ namespace FR
 		ProcessingOperation = 5,
 		PartEndSequence = 6,
 		PartEnd = 7,
+		PartEndIncorrectOutcome = 9, // waiting state, user can press replay button
 		ExerciseEnd = 8
 	}
 }
@@ -31,10 +32,17 @@ public class GameManager : LugusSingletonExisting<GameManager>
 
 	public bool outcomeWasCorrect = false;
 
+	protected GameObject routineRunner = null; // the routines per part, used to restart the current part
+	protected GameObject mainRoutineRunner = null; // main routines that cycle through the various exercises and exerciseparts in a group // only really needed for restart during debugging 
+
 
 	public void StartGame( ExerciseGroup exercises, FR.GameState startFromState = FR.GameState.ExerciseStart )
 	{
-		this.gameObject.StartLugusRoutine( StartGameGroupRoutine(exercises, startFromState) );
+		currentState = FR.GameState.NONE;
+		mainRoutineRunner.StopAllLugusRoutines();
+		routineRunner.StopAllLugusRoutines();
+
+		mainRoutineRunner.StartLugusRoutine( StartGameGroupRoutine(exercises, startFromState) );
 	}
 
 	protected IEnumerator StartGameGroupRoutine(  ExerciseGroup exercises, FR.GameState startFromState = FR.GameState.ExerciseStart )
@@ -75,7 +83,7 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		// TODO: Change this!!!
 		//StartGameDebug( exercise.worldType, exercise.parts[0].fractions.ToArray(), exercise.composition, startFromState );
 		
-		LugusCoroutines.use.StartRoutine ( ExerciseRunRoutine(exercise) );
+		mainRoutineRunner.StartLugusRoutine( ExerciseRunRoutine(exercise) );
 
 		ChangeState( startFromState );
 	}
@@ -133,7 +141,7 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		//Debug.Log (Time.frameCount + " GameManager:ChangeState : from " + currentState + " to " + newState );
 
 		// use separate routine here, to make sure there's at least 1 frame between states
-		LugusCoroutines.use.StartRoutine( ChangeStateRoutine(newState, delay) );
+		routineRunner.StartLugusRoutine( ChangeStateRoutine(newState, delay) );
 	}
 
 	protected IEnumerator ChangeStateRoutine(FR.GameState newState, float delay = -1.0f)
@@ -160,17 +168,15 @@ public class GameManager : LugusSingletonExisting<GameManager>
 			{
 				Debug.LogError("GameManager:ChangeState : changed to Start from " + oldState + ". Not allowed! Oldstate should be NONE or ExerciseEnd");
 			}
-			else
-			{
-				LugusCoroutines.use.StartRoutine( ExerciseStartRoutine() );
-			}
+
+			routineRunner.StartLugusRoutine( ExerciseStartRoutine() );
 		}
 
 		if( newState == FR.GameState.PartStart )
-		{
+		{ 
 			if( !exerciseEnd )
 			{
-				LugusCoroutines.use.StartRoutine( PartStartRoutine() );
+				routineRunner.StartLugusRoutine( PartStartRoutine() );
 			}
 			else
 			{
@@ -184,7 +190,7 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		
 		if( newState == FR.GameState.PartStartSequence )
 		{
-			LugusCoroutines.use.StartRoutine( PartStartSequenceRoutine() );
+			routineRunner.StartLugusRoutine( PartStartSequenceRoutine() );
 		} 
 
 		if( newState == FR.GameState.WaitingForInput )
@@ -194,6 +200,24 @@ public class GameManager : LugusSingletonExisting<GameManager>
 				// only do this at the beginning (first time WaitingForInput)
 				// otherwhise we would overwrite the available icons in between successive operations
 				HUDManager.use.UpdateOperationIcons( currentExercisePart.availableOperations );
+			}
+
+			if( currentWorld.numerator != null )
+			{
+				InteractionGroup group = currentWorld.numerator.InteractionGroups[ currentInteractionGroupIndex ];
+				if( group.IsPortalOpen(true) )
+					group.ClosePortal(true);
+				if( !group.IsPortalOpen(false) )
+					group.OpenPortal( false, currentExercisePart.FinalOutcome, FR.Target.NUMERATOR );
+			}
+			
+			if( currentWorld.denominator != null )
+			{
+				InteractionGroup group = currentWorld.denominator.InteractionGroups[ currentInteractionGroupIndex ];
+				if( group.IsPortalOpen(true) )
+					group.ClosePortal(true);
+				if( !group.IsPortalOpen(false) )
+					group.OpenPortal( false, currentExercisePart.FinalOutcome, FR.Target.DENOMINATOR );
 			}
 		}
 
@@ -212,22 +236,83 @@ public class GameManager : LugusSingletonExisting<GameManager>
 			}
 			else
 			{
-				LugusCoroutines.use.StartRoutine( PartEndSequenceRoutine() );
+				routineRunner.StartLugusRoutine( PartEndSequenceRoutine() );
 			}
 		}
 		
 		if( newState == FR.GameState.PartEnd )
 		{
-			LugusCoroutines.use.StartRoutine( PartEndRoutine() );
+			routineRunner.StartLugusRoutine( PartEndRoutine() );
 		}
 		
 		if( newState == FR.GameState.ExerciseEnd )
 		{
-			LugusCoroutines.use.StartRoutine( ExerciseEndRoutine() );
+			routineRunner.StartLugusRoutine( ExerciseEndRoutine() );
 		}
 		
 		if( onStateChanged != null ) 
 			onStateChanged( oldState, newState );
+	}
+
+	public bool CanRestartCurrentExercisePart()
+	{
+		if( currentState == FR.GameState.WaitingForInput || 
+		    currentState == FR.GameState.PartEndIncorrectOutcome )
+		{
+			return true; 
+		}
+		else
+			return false;
+		    
+	}
+
+	public void RestartCurrentExercisePart()
+	{
+		if( !CanRestartCurrentExercisePart() )
+		{
+			// TODO: FIXME: show HUD notice of this!?!
+			Debug.LogError("GameManager:RestartCurrentExercisePart : cannot restart at this time! not in correct state! " + currentState);
+			return;
+		}
+
+		LugusCoroutines.use.StartRoutine( RestartExercisePartRoutine() );
+	}
+
+	protected IEnumerator RestartExercisePartRoutine()
+	{
+		// - destroy remaining fractions
+		// - stop running coroutines
+		// - reset all to normal states (waitingForInput mathmanager, mathinputmanager) (done in PreparePart)
+		// - make sure portals are correctly spawned (done in WaitingForInput state transition)
+
+		List<FractionRenderer> fractions = new List<FractionRenderer>();
+		
+		NumberRenderer[] numbers = GameObject.FindObjectsOfType<NumberRenderer>();
+		foreach( NumberRenderer number in numbers )
+		{
+			if( !fractions.Contains( number.FractionRenderer ) )
+				fractions.Add( number.FractionRenderer );
+		}
+
+		foreach( FractionRenderer renderer in fractions )
+		{
+			renderer.Fraction.Destroy();
+		}
+
+		yield return null; // allow destroy to complete
+		yield return null;
+
+		routineRunner.StopAllLugusRoutines();
+
+		currentState = FR.GameState.NONE; // dirty, but works
+
+
+		PreparePart( currentExercisePart );
+
+		
+		FRCamera.use.MoveToInteractionGroup( currentInteractionGroupIndex + 1, 1, false );
+
+		ChangeState( FR.GameState.WaitingForInput );
 	}
 
 	public IEnumerator ExerciseStartRoutine()
@@ -319,12 +404,12 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		
 		if( left.HasNumerator() )
 		{
-			waiter.Add( gameObject.StartLugusRoutine( PartStartSequenceSubRoutine( FR.Target.NUMERATOR, left.Numerator.Renderer, right.Numerator.Renderer, currentWorld.numerator )));
+			waiter.Add( routineRunner.StartLugusRoutine( PartStartSequenceSubRoutine( FR.Target.NUMERATOR, left.Numerator.Renderer, right.Numerator.Renderer, currentWorld.numerator )));
 		}
 		
 		if( left.HasDenominator() )
 		{
-			waiter.Add( gameObject.StartLugusRoutine( PartStartSequenceSubRoutine( FR.Target.DENOMINATOR, left.Denominator.Renderer, right.Denominator.Renderer, currentWorld.denominator )));
+			waiter.Add( routineRunner.StartLugusRoutine( PartStartSequenceSubRoutine( FR.Target.DENOMINATOR, left.Denominator.Renderer, right.Denominator.Renderer, currentWorld.denominator )));
 		}
 		
 		
@@ -375,8 +460,26 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		}
 		else
 		{
-			// FIXME: fill this in properly!
-			Debug.LogError("OUTCOME was incorrect : please try again!");
+			//Debug.LogError("OUTCOME was incorrect : please try again!");
+
+			Vector3 targetPos = worldPart.InteractionGroups[currentInteractionGroupIndex].PortalExit.position;
+			Vector3 leftPos = left.transform.position;
+			
+			Vector3 direction = targetPos - leftPos;
+			direction.Normalize();
+			
+			targetPos -= (direction * 5.0f);
+			
+			yield return left.Animator.RunTo( targetPos ).Coroutine;
+
+			
+			yield return left.Animator.RotateTowardsCamera().Coroutine;
+
+			left.Animator.CrossFade( FR.Animation.shakeNoAndPlantSign );
+
+			yield return new WaitForSeconds(2.0f);
+			
+			yield return null;
 		}
 	}
 
@@ -416,25 +519,29 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		waiter = new LugusCoroutineWaiter();
 		if( left.HasNumerator() )
 		{
-			waiter.Add( gameObject.StartLugusRoutine( PartEndSequenceSubRoutine( FR.Target.NUMERATOR, left.Numerator.Renderer, currentWorld.numerator )));
+			waiter.Add( routineRunner.StartLugusRoutine( PartEndSequenceSubRoutine( FR.Target.NUMERATOR, left.Numerator.Renderer, currentWorld.numerator )));
 		}
 		
 		if( left.HasDenominator() )
 		{
-			waiter.Add( gameObject.StartLugusRoutine( PartEndSequenceSubRoutine( FR.Target.DENOMINATOR, left.Denominator.Renderer, currentWorld.denominator )));
+			waiter.Add( routineRunner.StartLugusRoutine( PartEndSequenceSubRoutine( FR.Target.DENOMINATOR, left.Denominator.Renderer, currentWorld.denominator )));
 		}
 		yield return waiter.Start().Coroutine;
 
-		left.Destroy();
+
 
 		if( outcomeWasCorrect )
 		{
+			left.Destroy();
 			ChangeState( FR.GameState.PartEnd );
 		}
 		else
 		{
 			// FIXME: fill this in properly with extra state?
 			Debug.LogError("OUTCOME was incorrect : no PartEnd for you!");
+			
+			ChangeState( FR.GameState.PartEndIncorrectOutcome );
+			HUDManager.use.ShowReplayButton();
 		}
 		yield break;
 	}
@@ -506,6 +613,18 @@ public class GameManager : LugusSingletonExisting<GameManager>
 	{
 		MathInputManager mim = MathInputManager.use; // make sure it's initialized
 		ExerciseManager em = ExerciseManager.use;
+
+		if( routineRunner == null )
+		{
+			routineRunner = new GameObject("GameManager_RoutineRunner");
+			routineRunner.transform.parent = this.transform;
+		}
+
+		if( mainRoutineRunner == null )
+		{
+			mainRoutineRunner = new GameObject("GameManager_MainRoutineRunner");
+			mainRoutineRunner.transform.parent = this.transform;
+		}
 	}
 	
 	// Update is called once per frame

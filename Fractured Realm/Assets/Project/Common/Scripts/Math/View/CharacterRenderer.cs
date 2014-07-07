@@ -132,6 +132,9 @@ public class CharacterRenderer : MonoBehaviour
 			transform.FindChild("kilt2").renderer.enabled = show;
 		else if( transform.FindChild("kilt") )
 			transform.FindChild("kilt").renderer.enabled = show;
+
+		if( transform.FindChild("Hips/kilt") != null )
+			transform.FindChild("Hips/kilt").renderer.enabled = false; 
 			
 	}
 	

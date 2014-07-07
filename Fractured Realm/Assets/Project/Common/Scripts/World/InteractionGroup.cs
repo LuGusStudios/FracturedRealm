@@ -53,6 +53,19 @@ public class InteractionGroup : MonoBehaviour
 		set;
 	}
 
+	public bool IsPortalOpen(bool entry)
+	{
+		if( entry )
+		{
+			return (PortalEntryRenderer != null);
+		}
+		else
+		{
+			return (PortalExitRenderer != null);
+		}
+	}
+
+
 	public Portal OpenPortal(bool entry, Number value, FR.Target composition)
 	{
 		if( entry )
@@ -89,11 +102,15 @@ public class InteractionGroup : MonoBehaviour
 		{
 			if( PortalEntryRenderer != null )
 				GameObject.Destroy( PortalEntryRenderer.gameObject );
+
+			PortalEntryRenderer = null;
 		}
 		else
 		{
 			if( PortalExitRenderer != null )
 				GameObject.Destroy( PortalExitRenderer.gameObject );
+
+			PortalExitRenderer = null;
 		}
 	}
 	

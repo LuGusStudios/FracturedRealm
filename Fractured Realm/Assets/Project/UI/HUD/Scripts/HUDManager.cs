@@ -4,9 +4,17 @@ using System.Collections.Generic;
 
 public class HUDManager : LugusSingletonExisting<HUDManager> 
 {
+	public Transform ReplayButton = null;
+
 	public void SetupLocal()
 	{
 		// assign variables that have to do with this class only
+		if( ReplayButton == null )
+		{
+			ReplayButton = transform.FindChild("ReplayButton");
+		}
+
+		ReplayButton.transform.localScale = Vector3.zero;
 	}
 	
 	public void SetupGlobal()
@@ -22,6 +30,25 @@ public class HUDManager : LugusSingletonExisting<HUDManager>
 	protected void Start () 
 	{
 		SetupGlobal();
+	}
+
+	protected bool replayButtonActive = false;
+	public void ShowReplayButton()
+	{
+		replayButtonActive = true;
+		
+		ReplayButton.collider.enabled = true;
+		ReplayButton.gameObject.StopTweens();
+		ReplayButton.gameObject.ScaleTo( Vector3.one ).Time (1.0f).EaseType( iTween.EaseType.easeOutBounce ).Execute();
+	}
+
+	public void HideReplayButton()
+	{
+		replayButtonActive = false;
+
+		ReplayButton.collider.enabled = false;
+		ReplayButton.gameObject.StopTweens();
+		ReplayButton.gameObject.ScaleTo( Vector3.zero ).Time (1.0f).EaseType(iTween.EaseType.easeInBack).Execute();
 	}
 
 	public void SetMode( FR.Target mode )
@@ -86,6 +113,24 @@ public class HUDManager : LugusSingletonExisting<HUDManager>
 		else if( LugusInput.use.KeyDownDebug(KeyCode.Alpha3) )
 		{
 			SetMode( FR.Target.BOTH );
+		}
+
+		
+		if( LugusInput.use.KeyDownDebug(KeyCode.R) )
+		{
+			ShowReplayButton();
+		}
+
+		if( replayButtonActive && LugusInput.use.up )
+		{
+			Transform hit = LugusInput.use.RaycastFromScreenPoint2D( LugusCamera.ui, LugusInput.use.lastPoint );
+			if( hit == ReplayButton )
+			{
+				Debug.Log("HIDING REPLAY BUTTON");
+				HideReplayButton();
+
+				GameManager.use.RestartCurrentExercisePart();
+			}
 		}
 	}
 	
