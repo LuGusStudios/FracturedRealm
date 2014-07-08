@@ -37,7 +37,7 @@ public class HUDManager : LugusSingletonExisting<HUDManager>
 	{
 		replayButtonActive = true;
 		
-		ReplayButton.collider.enabled = true;
+		ReplayButton.GetComponent<BoxCollider2D>().enabled = true;
 		ReplayButton.gameObject.StopTweens();
 		ReplayButton.gameObject.ScaleTo( Vector3.one ).Time (1.0f).EaseType( iTween.EaseType.easeOutBounce ).Execute();
 	}
@@ -46,7 +46,7 @@ public class HUDManager : LugusSingletonExisting<HUDManager>
 	{
 		replayButtonActive = false;
 
-		ReplayButton.collider.enabled = false;
+		ReplayButton.GetComponent<BoxCollider2D>().enabled = false;
 		ReplayButton.gameObject.StopTweens();
 		ReplayButton.gameObject.ScaleTo( Vector3.zero ).Time (1.0f).EaseType(iTween.EaseType.easeInBack).Execute();
 	}

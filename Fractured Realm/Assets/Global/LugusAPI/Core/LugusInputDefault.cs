@@ -86,6 +86,14 @@ public class LugusInputDefault : MonoBehaviour
 			return RaycastFromScreenPoint( camera, inputPoints[ inputPoints.Count - 1 ] );
 	}
 	
+	public Transform RayCastFromMouse2D(Camera camera)
+	{
+		if( inputPoints.Count == 0 )
+			return RaycastFromScreenPoint2D( camera, lastPoint );
+		else
+			return RaycastFromScreenPoint2D( camera, inputPoints[ inputPoints.Count - 1 ] );
+	}
+
 	public Transform RaycastFromScreenPoint(Vector3 screenPoint)
 	{
 		return RaycastFromScreenPoint(LugusCamera.ui, screenPoint);
@@ -140,6 +148,11 @@ public class LugusInputDefault : MonoBehaviour
 	public Transform RayCastFromMouse()
 	{
 		return RayCastFromMouse(LugusCamera.ui);
+	}
+
+	public Transform RayCastFromMouse2D()
+	{
+		return RayCastFromMouse2D(LugusCamera.ui);
 	}
 	
 	public Vector3 ScreenTo3DPoint( Transform referenceObject )
@@ -228,6 +241,15 @@ public class LugusInputDefault : MonoBehaviour
 	{
 		if( up )
 			return RayCastFromMouse();
+		else
+			return null;
+	}
+	
+	
+	public Transform RayCastFromMouseUp2D()
+	{
+		if( up )
+			return RayCastFromMouse2D();
 		else
 			return null;
 	}
