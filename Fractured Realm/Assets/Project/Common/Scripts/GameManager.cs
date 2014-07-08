@@ -537,9 +537,6 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		}
 		else
 		{
-			// FIXME: fill this in properly with extra state?
-			Debug.LogError("OUTCOME was incorrect : no PartEnd for you!");
-			
 			ChangeState( FR.GameState.PartEndIncorrectOutcome );
 			HUDManager.use.ShowReplayButton();
 		}
@@ -586,7 +583,10 @@ public class GameManager : LugusSingletonExisting<GameManager>
 				fractions.Add( number.Number.Fraction );
 			
 			if( number.transform.position.x < smallestX )
+			{
 				leftFraction = number.Number.Fraction;
+				smallestX = number.transform.position.x;
+			}
 		}
 		
 		if( left )

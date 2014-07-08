@@ -58,7 +58,11 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 				fractions.Add( number.Number.Fraction );
 
 			if( number.transform.position.x < smallestX )
+			{
+				//Debug.LogError("FindFraction : " + number.transform.Path() + " -> " + number.transform.position.x + " < " + smallestX);
 				leftFraction = number.Number.Fraction;
+				smallestX = number.transform.position.x;
+			}
 		}
 
 		if( left )
@@ -328,8 +332,9 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 
 		//GameManager.use.ChangeState(FR.GameState.PartEndSequence);
 
-		while( GameManager.use.currentState != FR.GameState.PartEnd )
-		{
+		while( GameManager.use.currentState != FR.GameState.PartEnd &&
+		       GameManager.use.currentState != FR.GameState.WaitingForInput ) // goes back to WaitingForInput in case of multiple operations, so we need to allow control to flow back
+ 		{
 			yield return null;
 		}
 		

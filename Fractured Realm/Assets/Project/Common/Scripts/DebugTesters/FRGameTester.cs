@@ -74,15 +74,17 @@ public class FRGameTester : LugusSingletonRuntime<FRGameTester>
 				fractions[1].Numerator.Value = 0;
 			}
 			*/
-			
-			
-			if( immediateMode )
+
+			foreach( FR.OperationType operation in part.operations )
 			{
-				yield return gameObject.StartLugusRoutine( FROperationTester.use.ImmediateModeTestRoutine(part.operations[0]) ).Coroutine;
-			}
-			else
-			{
-				yield return gameObject.StartLugusRoutine( FROperationTester.use.DefaultTestRoutine(part.operations[0]) ).Coroutine;
+				if( immediateMode )
+				{
+					yield return gameObject.StartLugusRoutine( FROperationTester.use.ImmediateModeTestRoutine(operation) ).Coroutine;
+				}
+				else
+				{
+					yield return gameObject.StartLugusRoutine( FROperationTester.use.DefaultTestRoutine(operation) ).Coroutine;
+				}
 			}
 			
 			yield return new WaitForSeconds(1.5f);
