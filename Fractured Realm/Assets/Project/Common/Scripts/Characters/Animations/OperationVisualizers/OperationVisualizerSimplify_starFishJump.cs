@@ -22,6 +22,7 @@ public class OperationVisualizerSimplify_starFishJump : OperationVisualizerSimpl
 
 	public override IEnumerator VisualizeAnimationPart( FR.Target part, NumberRenderer attacker, NumberRenderer defender )
 	{
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(30f);
+
 	}
 }

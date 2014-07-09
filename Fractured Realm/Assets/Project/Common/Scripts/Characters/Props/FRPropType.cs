@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace FR
+namespace FR 
 {
 	public enum PropType
 	{
@@ -14,11 +14,14 @@ namespace FR
 		BaseBall = 2,
 		Basketball = 3,
 		BlackHole = 4,
-		Football = 5,
-		Grenade = 6,
-		Magnet = 7,
-		Soccerball = 8,
-		Umbrella = 9,
+		Detonator01 = 5,
+		Dynamite01 = 6,
+		Football = 7,
+		Grenade = 8,
+		Magnet = 9,
+		MeteorProp = 10,
+		Soccerball = 11,
+		Umbrella = 12,
 
 	}
 }

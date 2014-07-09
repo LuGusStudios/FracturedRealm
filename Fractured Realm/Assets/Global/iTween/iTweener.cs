@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iTweener : MonoBehaviour
+public class iTweener : MonoBehaviour 
 {
     public enum TweenType
     {
@@ -342,6 +342,17 @@ public static class iTweenExtensions
         output.TargetPosition(targetPosition);
 
         return output;
+    }
+
+    public static iTweener LobTo(this GameObject go, Vector3 begin, Vector3 end, float yOffset = 2.0f )
+    {
+        Vector3[] path = new Vector3[3];
+
+        path[0] = begin;
+        path[2] = end;
+        path[1] = Vector3.Lerp(path[0], path[2], .5f).yAdd(yOffset);
+
+        return go.MoveTo(path);
     }
 
     public static iTweener MoveTo(this GameObject go, Vector3[] path)
