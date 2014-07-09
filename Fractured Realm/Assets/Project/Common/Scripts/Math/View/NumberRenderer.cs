@@ -75,6 +75,26 @@ public class NumberRenderer : MonoBehaviour
 			*/
 		}
 	}
+
+	protected bool _waitingForEqualBrother = false;
+	public bool WaitingForEqualBrother
+	{
+		get{ return _waitingForEqualBrother; }
+		set
+		{
+			_waitingForEqualBrother = value; 
+			//Debug.LogError("WaitingForEqualBrother " + transform.Path() + " -> " + _waitingForEqualBrother);
+
+			if( _waitingForEqualBrother )
+			{
+				Animator.CrossFade(FR.Animation.floating);
+			}
+			else
+			{
+				Animator.CrossFade(FR.Animation.idle);
+			}
+		}
+	}
 	
 	/*
 	public void UpdateRenderers()

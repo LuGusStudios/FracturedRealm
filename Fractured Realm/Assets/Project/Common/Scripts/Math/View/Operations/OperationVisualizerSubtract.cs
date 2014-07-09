@@ -109,9 +109,12 @@ public class OperationVisualizerSubtract : IOperationVisualizer
 
 			if( Smallest.Numerator.Number.Value < 1 )
 			{ 
-				Smallest.Denominator.Animator.SpawnEffect( FR.EffectType.FIRE_HIT );
-				yield return new WaitForSeconds(0.2f);
-				RendererFactory.use.FreeRenderer( Smallest.Denominator );
+				if( Smallest.Fraction.HasDenominator() )
+				{
+					Smallest.Denominator.Animator.SpawnEffect( FR.EffectType.FIRE_HIT );
+					yield return new WaitForSeconds(0.2f);
+					RendererFactory.use.FreeRenderer( Smallest.Denominator );
+				}
 			}
 			else
 				yield return new WaitForSeconds(0.2f);

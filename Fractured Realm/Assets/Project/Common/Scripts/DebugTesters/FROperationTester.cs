@@ -211,17 +211,39 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 			}
 		}
 
+
+		ExerciseGroup group = new ExerciseGroup();
+		group.name = "Test";
+		Exercise exercise = new Exercise();
+		group.exercises.Add( exercise );
+		exercise.composition = cameraMode;
+		exercise.worldType =  WorldFactory.use.defaultWorldType;
+
+		ExercisePart part = new ExercisePart();
+		part.fractions.Add( fractions[0] );
+		part.fractions.Add( fractions[1] );
+		part.outcomes.Add( new Fraction(1,1) );
+		part.operations.Add( operationType );
+
+		exercise.parts.Add( part );
+
+		ExerciseManager.use.currentExerciseGroup = group;
+		ExerciseManager.use.currentExerciseGroupIndex = 0;
+
 		if( skipStartSequence || immediateMode )
 		{
-			GameManager.use.StartGameDebug(  WorldFactory.use.defaultWorldType, fractions, cameraMode, FR.GameState.WaitingForInput );
+			GameManager.use.currentState = FR.GameState.NONE;
+			GameManager.use.StartGame( ExerciseManager.use.currentExerciseGroup, FR.GameState.WaitingForInput );
+			//GameManager.use.StartGameDebug(  WorldFactory.use.defaultWorldType, fractions, cameraMode, FR.GameState.WaitingForInput );
 		}
 		else
 		{
 			GameManager.use.currentState = FR.GameState.NONE;
-			GameManager.use.StartGameDebug(  WorldFactory.use.defaultWorldType, fractions, cameraMode, FR.GameState.ExerciseStart );
+			GameManager.use.StartGame( ExerciseManager.use.currentExerciseGroup, FR.GameState.ExerciseStart );
+			//GameManager.use.StartGameDebug(  WorldFactory.use.defaultWorldType, fractions, cameraMode, FR.GameState.ExerciseStart );
 		}
 
-		HUDManager.use.UpdateOperationIcons(1);
+		//HUDManager.use.UpdateOperationIcons(1); 
 			
 		if( immediateMode )
 		{

@@ -73,7 +73,7 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 			yield return new WaitForSeconds( delay );
 		}
 
-		Debug.LogWarning("ToggleInput : " + inputEnabled + " // " + delay);
+		//Debug.LogWarning("ToggleInput : " + inputEnabled + " // " + delay);
 
 		acceptInput = inputEnabled;
 

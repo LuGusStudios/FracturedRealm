@@ -32,15 +32,19 @@ public class GameManager : LugusSingletonExisting<GameManager>
 
 	public bool outcomeWasCorrect = false;
 
-	protected GameObject routineRunner = null; // the routines per part, used to restart the current part
-	protected GameObject mainRoutineRunner = null; // main routines that cycle through the various exercises and exerciseparts in a group // only really needed for restart during debugging 
+	// these are public purely for debug purposes
+	public GameObject routineRunner = null; // the routines per part, used to restart the current part
+	public GameObject mainRoutineRunner = null; // main routines that cycle through the various exercises and exerciseparts in a group // only really needed for restart during debugging 
 
 
 	public void StartGame( ExerciseGroup exercises, FR.GameState startFromState = FR.GameState.ExerciseStart )
 	{
+		Debug.LogError("START GAME : ExerciseGroup");
+
 		currentState = FR.GameState.NONE;
 		mainRoutineRunner.StopAllLugusRoutines();
 		routineRunner.StopAllLugusRoutines();
+
 
 		mainRoutineRunner.StartLugusRoutine( StartGameGroupRoutine(exercises, startFromState) );
 	}
@@ -63,10 +67,25 @@ public class GameManager : LugusSingletonExisting<GameManager>
 
 	public void StartGame( Exercise exercise, FR.GameState startFromState = FR.GameState.ExerciseStart )
 	{
-		//Debug.LogError("Starting the exercise !");
+		Debug.LogError("START GAME : exercise");
 
 		currentInteractionGroupIndex = 0;
 		exerciseEnd = false;
+
+
+		// clear any leftover renderers in the scene (primarily for debug)
+		List<FractionRenderer> fractions = new List<FractionRenderer>();
+		NumberRenderer[] numbers = GameObject.FindObjectsOfType<NumberRenderer>();
+		foreach( NumberRenderer number in numbers )
+		{
+			if( !fractions.Contains( number.FractionRenderer ) )
+				fractions.Add( number.FractionRenderer );
+		}
+		foreach( FractionRenderer renderer in fractions )
+		{
+			renderer.Fraction.Destroy();
+		}
+
 
 		currentWorld = WorldFactory.use.CreateWorld(exercise.worldType, exercise.composition);
 		

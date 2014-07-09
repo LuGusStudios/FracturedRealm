@@ -37376,11 +37376,7 @@ Transition:
   m_DstState: {fileID: 110200000}
   m_TransitionDuration: .0625
   m_TransitionOffset: 0
-  m_Conditions:
-  - m_ConditionMode: 5
-    m_ConditionEvent: running
-    m_EventTreshold: 0
-    m_ExitTime: .860000014
+  m_Conditions: []
   m_Atomic: 1
   m_Solo: 0
   m_Mute: 0
@@ -50591,7 +50587,7 @@ State:
   - {fileID: 7400000, guid: 411103df0926d964e990229126cbcb5b, type: 3}
   - {fileID: 0}
   m_ParentStateMachine: {fileID: 110789436}
-  m_Position: {x: 202, y: 0, z: 0}
+  m_Position: {x: 348, y: -12, z: 0}
   m_IKOnFeet: 0
   m_Mirror: 0
   m_Tag: 
@@ -51663,7 +51659,7 @@ State:
   - {fileID: 7400000, guid: e46a951e0e4325e43bf8dc5aca7ce7aa, type: 3}
   - {fileID: 0}
   m_ParentStateMachine: {fileID: 110789436}
-  m_Position: {x: 334.771912, y: 77.2542496, z: 0}
+  m_Position: {x: 408, y: 60, z: 0}
   m_IKOnFeet: 0
   m_Mirror: 0
   m_Tag: 

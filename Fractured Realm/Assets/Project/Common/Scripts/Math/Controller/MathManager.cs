@@ -267,6 +267,7 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 			yield return gameObject.StartLugusRoutine( visualizer.Visualize(operationInfo, outcome) ).Coroutine;
 		}
 
+		UpdateDenominatorLinks();
 
 		if( operationInfo.Type == FR.OperationType.ADD ||
 		   operationInfo.Type == FR.OperationType.SUBTRACT ||
@@ -295,8 +296,56 @@ public class MathManager : LugusSingletonRuntime<MathManager>
 		yield break;
 	}
 
+	protected void UpdateDenominatorLinks()
+	{
+		// denominators have to be equal when using spirit world for Add / Subtract
+		// we also have visual indicators for this.
+		// Thus, when a denominator has changed value (after an operation), we need to check if the visual indicator needs to change as well
+
+		List<NumberRenderer> denominators = new List<NumberRenderer>();
+		NumberRenderer[] allNumbers = GameObject.FindObjectsOfType<NumberRenderer>();
+
+		foreach( NumberRenderer number in allNumbers )
+		{
+			if( number.Number.IsDenominator )
+				denominators.Add( number );
+		}
+
+		// for now, assume just 2 fractions
+		// but if more it also works: if AT LEAST 1 fraction has the same value, a brother has been found
+		foreach( NumberRenderer number in denominators )
+		{
+			if( !number.WaitingForEqualBrother ) 
+				continue;
+
+			foreach( NumberRenderer brother in denominators )
+			{
+				if( brother == number )
+					continue;
+
+				if( brother.Number.Value == number.Number.Value )
+				{
+					Debug.LogWarning("FOUND BROTHER! " + number.transform.Path() + " == " + brother.transform.Path() );
+					number.WaitingForEqualBrother = false;
+
+					// if the denominator is waiting, the corresponding numerator was also waiting, so also let him know it has changed
+					if( number.FractionRenderer.Fraction.HasNumerator() )
+					{
+						number.FractionRenderer.Numerator.WaitingForEqualBrother = false;
+					}
+				}
+			}
+		}
+	}
+
 	protected bool ContinueCalculations()
 	{
+		// TODO: FIXME: just for debugging!
+		if( Application.loadedLevelName == "AnimationTest" )
+		{
+			return false;
+		}
+
 		ExercisePart part = GameManager.use.currentExercisePart;
 
 		Fraction outcome = part.FinalOutcome;

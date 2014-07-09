@@ -279,6 +279,18 @@ public class AnimationTemplateGeneratorHelper
 
 		// we need a record somewhere of the animations that belong to a certain Operation ("starters" if they are staged)
 		// each STARTER animation keeps track of possible RECEIVERS, so something individual for those isn't needed
+
+		// re-use SIMPLIFY animations for the DOUBLE animations as well
+		foreach( string animationName in starterAnimations[FR.OperationType.SIMPLIFY] )
+		{
+			if( !starterAnimations.ContainsKey(FR.OperationType.DOUBLE) )
+			{
+				starterAnimations[FR.OperationType.DOUBLE] = new List<string>();
+			}
+			
+			starterAnimations[FR.OperationType.DOUBLE].Add( animationName );
+		}
+
 		string ctorString = "\n";
 		foreach( FR.OperationType operation in starterAnimations.Keys )
 		{

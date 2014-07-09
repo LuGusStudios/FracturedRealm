@@ -165,6 +165,7 @@ public class NumberAnimator : MonoBehaviour
 	
 	public void CrossFade( FR.Animation animation, float fadeDuration = 0.05f )
 	{
+		//Debug.Log ("CROSSFADE : " + this.transform.Path () + " -> " + animation);
 		foreach( CharacterRenderer c in Renderer.Characters )
 		{
 			c.Animator.CrossFade( animation, fadeDuration );

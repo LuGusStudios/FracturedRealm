@@ -6,4 +6,5 @@
 	<ExerciseGroup>ExerciseGroup_Test_Series1</ExerciseGroup>
 	<ExerciseGroup>ExerciseGroup_Test_Series2</ExerciseGroup>
 	<ExerciseGroup>ExerciseGroup_Test_Series3</ExerciseGroup>
+	<ExerciseGroup>ExerciseGroup_Test_Series4</ExerciseGroup>
 </ExerciseGroups>

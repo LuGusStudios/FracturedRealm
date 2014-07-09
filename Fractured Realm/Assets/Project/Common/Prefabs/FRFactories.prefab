@@ -320,10 +320,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   props:
+  - {fileID: 11400000, guid: da2bc6fc44678f44596c562b6b68cb0e, type: 2}
+  - {fileID: 11400000, guid: 48e617960757bc747bc2769b05efef73, type: 2}
+  - {fileID: 11400000, guid: 0dbaf01f73ca19043b8f60edbbe56a76, type: 2}
   - {fileID: 11400000, guid: 700e5e7a84a584385be08f23b9fa3fe2, type: 2}
+  - {fileID: 11400000, guid: 3a785c47771e40440841b000602f410b, type: 2}
+  - {fileID: 11400000, guid: 561109223819da84a8aa3af54057625d, type: 2}
   - {fileID: 11400000, guid: 91e940fe7763d478b83147a8ac008124, type: 2}
   - {fileID: 11400000, guid: ddaa0315d157fb24c80a61269b8c3255, type: 2}
   - {fileID: 11400000, guid: f2ecb32a17b694c70b3f645ce73c13dc, type: 2}
+  - {fileID: 11400000, guid: 99890059e131db74aa99155315605627, type: 2}
+  - {fileID: 11400000, guid: be624979a0f93b14192e2f9cebdc33c0, type: 2}
+  - {fileID: 11400000, guid: 1fdf4d592d3a5e74fbfe9d2410ea9d0e, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

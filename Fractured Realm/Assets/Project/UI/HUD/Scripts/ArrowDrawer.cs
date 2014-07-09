@@ -110,7 +110,7 @@ public class ArrowDrawer : MonoBehaviour
 		targetTransform.position = target;
 		CreateArrow(true);
 
-		Debug.Log ("END of MOVE TOWARDS routine");
+		//Debug.Log ("END of MOVE TOWARDS routine");
 	}
 	
 	public void CollapseTowards(Vector3 target, float time = 1.0f )

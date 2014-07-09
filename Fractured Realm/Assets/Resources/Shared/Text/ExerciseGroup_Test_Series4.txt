@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ExerciseGroup>
+	<Description>Test series 2</Description>
+	<Exercise>
+		<Difficulty>Medium</Difficulty>
+		<Composition>BOTH</Composition>
+		<WorldType>FOREST</WorldType>
+		<ExerciseParts>
+			<ExercisePart>
+				<Fraction>4/6</Fraction>
+				<Fraction>1/3</Fraction> 
+				<Outcome>3/3</Outcome>
+				<Operation>SIMPLIFY</Operation>
+				<Operation>ADD</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>1/3</Fraction>
+				<Fraction>4/6</Fraction> 
+				<Outcome>6/6</Outcome>
+				<Operation>DOUBLE</Operation>
+				<Operation>ADD</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<!-- this one is only available in manual mode for now, because you need to double the right fraction --> 
+				<Fraction>4/6</Fraction> 
+				<Fraction>1/3</Fraction>
+				<Outcome>6/6</Outcome>
+				<Operation>DOUBLE</Operation>
+				<Operation>ADD</Operation>
+			</ExercisePart>
+		</ExerciseParts>
+	</Exercise>
+</ExerciseGroup>

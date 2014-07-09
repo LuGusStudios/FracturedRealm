@@ -16,7 +16,7 @@ public class OperationIcon : MonoBehaviour
 	public int OperationAmount
 	{
 		get{ return _operationAmount; }
-		set{ int prevAmount = _operationAmount; _operationAmount = value; UpdateRenderers(prevAmount); Debug.LogWarning("OPAmount " + this.type + " // " + value); }
+		set{ int prevAmount = _operationAmount; _operationAmount = value; UpdateRenderers(prevAmount); /*Debug.LogWarning("OPAmount " + this.type + " // " + value);*/ }
 	}
 
 	public void Clear()

@@ -71,6 +71,11 @@ public partial class FRAnimations : LugusSingletonRuntime<FRAnimations>
 		_operationAnimations[ FR.OperationType.SIMPLIFY ].Add( FR.Animation.backFlip );
 		_operationAnimations[ FR.OperationType.SIMPLIFY ].Add( FR.Animation.starFishJump );
 		_operationAnimations[ FR.OperationType.SIMPLIFY ].Add( FR.Animation.twoHandsBoom );
+		
+		_operationAnimations[ FR.OperationType.DOUBLE ] = new List<FR.Animation>();
+		_operationAnimations[ FR.OperationType.DOUBLE ].Add( FR.Animation.backFlip );
+		_operationAnimations[ FR.OperationType.DOUBLE ].Add( FR.Animation.starFishJump );
+		_operationAnimations[ FR.OperationType.DOUBLE ].Add( FR.Animation.twoHandsBoom );
 
 		_operationAnimations[ FR.OperationType.SUBTRACT ] = new List<FR.Animation>();
 		_operationAnimations[ FR.OperationType.SUBTRACT ].Add( FR.Animation.blowpipe );

@@ -18,6 +18,10 @@ public class FRGameTester : LugusSingletonRuntime<FRGameTester>
 	
 	public void TestExerciseGroup( ExerciseGroup exercises )
 	{
+		GameManager.use.mainRoutineRunner.StopAllLugusRoutines();
+		GameManager.use.routineRunner.StopAllLugusRoutines();
+		GameManager.use.currentState = FR.GameState.NONE;
+
 		this.gameObject.StartLugusRoutine( TestExerciseGroupRoutine(exercises) );
 	}
 
@@ -58,23 +62,6 @@ public class FRGameTester : LugusSingletonRuntime<FRGameTester>
 
 		foreach( ExercisePart part in exercise.parts )
 		{
-			/*
-			Fraction[] fractions = new Fraction[2];
-			fractions[0] = part.First.CopyData();
-			fractions[1] = part.Last.CopyData();
-
-			if( exercise.composition == FR.Target.NUMERATOR )
-			{
-				fractions[0].Denominator.Value = 0;
-				fractions[1].Denominator.Value = 0;
-			}
-			if( exercise.composition == FR.Target.DENOMINATOR )
-			{
-				fractions[0].Numerator.Value = 0;
-				fractions[1].Numerator.Value = 0;
-			}
-			*/
-
 			foreach( FR.OperationType operation in part.operations )
 			{
 				if( immediateMode )

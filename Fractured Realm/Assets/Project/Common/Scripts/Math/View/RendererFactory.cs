@@ -114,6 +114,8 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 	// use interactionGroupIndex = -1 to fill all interaction groups (debug purposes)
 	public List<FractionRenderer> CreateRenderers(World world, List<Fraction> fractions, int interactionGroupIndex = 0)
 	{
+		//Debug.LogError("CreateRenderers " + fractions.Count + " // " + 0);
+
 		List<FractionRenderer> output = new List<FractionRenderer>();
 
 		// Spawn the LEFT fraction (fraction 0)
@@ -130,7 +132,9 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 		}
 		
 		//Debug.LogError("Creating world renderers " + groupStart + " -> " + groupEnd );
-		
+
+		List<FractionRenderer> lefties = new List<FractionRenderer>(); // just needed for the WaitingForEqualBrother checks later on
+
 		for( int i = groupStart; i < groupEnd; ++i )
 		{
 			//Debug.LogError("Creating left renderers for interactionGroupIndex " + i );
@@ -159,7 +163,8 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 				frr.Denominator.transform.parent = world.denominator.transform;
 				frr.Denominator.SpawnPosition = world.denominator.InteractionGroups[i].Spawn1.position;
 				frr.Denominator.transform.position = world.denominator.InteractionGroups[i].Spawn1.position;
-				
+
+				lefties.Add ( frr );
 				
 				if( interactionGroupIndex == -1 ) // debug
 				{
@@ -183,9 +188,11 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 			Fraction fr2 = new Fraction(fractions[1].Numerator.Value, fractions[1].Denominator.Value); 
 			
 			FractionRenderer frr2 = RendererFactory.use.CreateRenderer( fr2 );
-			
+
+			bool hasNumerator = false;
 			if( fr2.Numerator.Value != 0 && (world.numerator != null) )
 			{
+				hasNumerator = true;
 				frr2.Numerator.transform.parent = world.numerator.transform;
 				frr2.Numerator.SpawnPosition = world.numerator.InteractionGroups[i].Spawn2.position;
 				frr2.Numerator.transform.position = world.numerator.InteractionGroups[i].Spawn2.position;
@@ -205,6 +212,27 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 				frr2.Denominator.transform.parent = world.denominator.transform; 
 				frr2.Denominator.SpawnPosition = world.denominator.InteractionGroups[i].Spawn2.position;
 				frr2.Denominator.transform.position = world.denominator.InteractionGroups[i].Spawn2.position;
+
+				// if the fractions in this ExercisePart don't have the same denominator, we need to visually indicate this as well
+				// note: if denominator is waiting, so is the numerator, duh
+				FractionRenderer brother = lefties[i - groupStart];
+				if( brother.Denominator.Number.Value != frr2.Denominator.Number.Value )
+				{
+					frr2.Denominator.WaitingForEqualBrother = true;
+					if( hasNumerator )
+					{
+						frr2.Numerator.WaitingForEqualBrother = true;
+					}
+				}
+				else
+				{
+					frr2.Denominator.WaitingForEqualBrother = false;
+					if( hasNumerator )
+					{
+						frr2.Numerator.WaitingForEqualBrother = false;
+					}
+				}
+
 				
 				
 				// TODO: calculate expected end-value for the portal
@@ -229,6 +257,9 @@ public class RendererFactory : LugusSingletonExisting<RendererFactory>
 	
 	public FractionRenderer CreateRenderer(Fraction fraction)
 	{
+		
+		//Debug.LogError("Create Fraction Renderer " + fraction);
+
 		FractionRenderer rend = new FractionRenderer();
 		FractionAnimator anim = new FractionAnimator();
 
