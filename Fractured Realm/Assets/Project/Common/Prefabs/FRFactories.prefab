@@ -286,7 +286,7 @@ MonoBehaviour:
       _isNumerator: 0
       _renderer: {fileID: 0}
   test: 5
-  defaultWorldType: 2
+  defaultWorldType: 5
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -322,6 +322,7 @@ MonoBehaviour:
   props:
   - {fileID: 11400000, guid: 700e5e7a84a584385be08f23b9fa3fe2, type: 2}
   - {fileID: 11400000, guid: 91e940fe7763d478b83147a8ac008124, type: 2}
+  - {fileID: 11400000, guid: ddaa0315d157fb24c80a61269b8c3255, type: 2}
   - {fileID: 11400000, guid: f2ecb32a17b694c70b3f645ce73c13dc, type: 2}
 --- !u!1001 &100100000
 Prefab:

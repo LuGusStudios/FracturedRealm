@@ -217,7 +217,7 @@ ModelImporter:
     400208: RightToeBase
     400210: RightUpLeg
     400212: Spine
-    7400000: Take 001
+    7400000: kickSoccerball
     9500000: //RootNode
   materials:
     importMaterials: 0
@@ -233,7 +233,253 @@ ModelImporter:
     animationScaleError: .5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: kickSoccerball
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 106
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Hips
+        weight: 1
+      - path: Hips/LeftUpLeg
+        weight: 1
+      - path: Hips/LeftUpLeg/LeftLeg
+        weight: 1
+      - path: Hips/LeftUpLeg/LeftLeg/LeftFoot
+        weight: 1
+      - path: Hips/LeftUpLeg/LeftLeg/LeftFoot/LeftToeBase
+        weight: 1
+      - path: Hips/LeftUpLeg/LeftLeg/LeftFoot/LeftToeBase/LeftToe_End
+        weight: 1
+      - path: Hips/RightUpLeg
+        weight: 1
+      - path: Hips/RightUpLeg/RightLeg
+        weight: 1
+      - path: Hips/RightUpLeg/RightLeg/RightFoot
+        weight: 1
+      - path: Hips/RightUpLeg/RightLeg/RightFoot/RightToeBase
+        weight: 1
+      - path: Hips/RightUpLeg/RightLeg/RightFoot/RightToeBase/RightToe_End
+        weight: 1
+      - path: Hips/Spine
+        weight: 1
+      - path: Hips/Spine/Head
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_broken_mask_joint
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_broken_mask_joint/facial_rig_broken_mask_feather_0
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_broken_mask_joint/facial_rig_broken_mask_feather_0/facial_rig_broken_mask_feather_1
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_broken_mask_joint/facial_rig_broken_mask_feather_0/facial_rig_broken_mask_feather_1/facial_rig_broken_mask_feather_2
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_broken_mask_joint/facial_rig_broken_mask_feather_0/facial_rig_broken_mask_feather_1/facial_rig_broken_mask_feather_2/facial_rig_broken_mask_feather_3
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_broken_mask_joint/facial_rig_broken_mask_feather_0/facial_rig_follicle9
+          1
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_broken_mask_joint/facial_rig_broken_mask_feather_0/facial_rig_follicle9
+          1/facial_rig_baseCurve18 1
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_broken_mask_joint/facial_rig_broken_mask_feather_0/facial_rig_follicle11
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_broken_mask_joint/facial_rig_broken_mask_feather_0/facial_rig_follicle11/facial_rig_baseCurve22
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_broken_mask_joint/facial_rig_broken_mask_middle_joint
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_broken_mask_joint/facial_rig_broken_mask_middle_joint/facial_rig_broken_mask_end_joint
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_1_0
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_1_0/facial_rig_feather_1_2
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_1_0/facial_rig_feather_1_2/facial_rig_feather_1_2
+          1
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_1_0/facial_rig_feather_1_2/facial_rig_feather_1_2
+          1/facial_rig_feather_1_3
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_1_0/facial_rig_follicle9
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_1_0/facial_rig_follicle9/facial_rig_baseCurve18
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_2_0
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_2_0/facial_rig_feather_2_1
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_2_0/facial_rig_feather_2_1/facial_rig_feather_2_2
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_2_0/facial_rig_feather_2_1/facial_rig_feather_2_2/facial_rig_feather_2_3
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_2_0/facial_rig_follicle8
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_2_0/facial_rig_follicle8/facial_rig_baseCurve16
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_3_0
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_3_0/facial_rig_feather_3_1
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_3_0/facial_rig_feather_3_1/facial_rig_feather_3_2
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_3_0/facial_rig_feather_3_1/facial_rig_feather_3_2/facial_rig_feather_3_3
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_3_0/facial_rig_follicle7
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_3_0/facial_rig_follicle7/facial_rig_baseCurve14
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_4_0
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_4_0/facial_rig_feather_4_1
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_4_0/facial_rig_feather_4_1/facial_rig_feather_4_2
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_4_0/facial_rig_feather_4_1/facial_rig_feather_4_2/facial_rig_feather_4_3
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_4_0/facial_rig_follicle7
+          1
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_4_0/facial_rig_follicle7
+          1/facial_rig_baseCurve14 1
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_4_0/facial_rig_follicle10
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_4_0/facial_rig_follicle10/facial_rig_baseCurve20
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_5_0
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_5_0/facial_rig_feather_5_1
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_5_0/facial_rig_feather_5_1/facial_rig_feather_5_2
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_5_0/facial_rig_feather_5_1/facial_rig_feather_5_2/facial_rig_feather_5_3
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_5_0/facial_rig_follicle5
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_5_0/facial_rig_follicle5/facial_rig_baseCurve10
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_6_0
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_6_0/facial_rig_feather_6_1
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_6_0/facial_rig_feather_6_1/facial_rig_feather_6_2
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_6_0/facial_rig_feather_6_1/facial_rig_feather_6_2/facial_rig_feather_6_3
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_6_0/facial_rig_follicle4
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_feather_6_0/facial_rig_follicle4/facial_rig_baseCurve8
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_follicle1
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_follicle1/facial_rig_baseCurve2
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_follicle2
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_follicle2/facial_rig_baseCurve4
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_follicle3
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_follicle3/facial_rig_baseCurve6
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_follicle6
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_follicle6/facial_rig_baseCurve12
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_follicle12
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_follicle12/facial_rig_baseCurve24
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_hair_middle_1
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_hair_middle_1/facial_rig_hair_middle_2
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_hair_middle_1/facial_rig_hair_middle_2/facial_rig_hair_middle_3
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_hair_middle_1/facial_rig_hair_middle_2/facial_rig_hair_middle_3/facial_rig_hair_middle_4
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_left_eyebrow_joint
+        weight: 1
+      - path: Hips/Spine/Head/HeadTop_End/facial_rig_face_root_joint/facial_rig_right_eyebrow_joint
+        weight: 1
+      - path: Hips/Spine/LeftShoulder
+        weight: 1
+      - path: Hips/Spine/LeftShoulder/LeftForeArm
+        weight: 1
+      - path: Hips/Spine/LeftShoulder/LeftForeArm/LeftHand
+        weight: 1
+      - path: Hips/Spine/LeftShoulder/LeftForeArm/LeftHand/LeftHandIndex1
+        weight: 1
+      - path: Hips/Spine/LeftShoulder/LeftForeArm/LeftHand/LeftHandIndex1/LeftHandIndex2
+        weight: 1
+      - path: Hips/Spine/LeftShoulder/LeftForeArm/LeftHand/LeftHandIndex1/LeftHandIndex2/LeftHandIndex3
+        weight: 1
+      - path: Hips/Spine/LeftShoulder/LeftForeArm/LeftHand/LeftHandMiddle1
+        weight: 1
+      - path: Hips/Spine/LeftShoulder/LeftForeArm/LeftHand/LeftHandMiddle1/LeftHandMiddle2
+        weight: 1
+      - path: Hips/Spine/LeftShoulder/LeftForeArm/LeftHand/LeftHandMiddle1/LeftHandMiddle2/LeftHandMiddle3
+        weight: 1
+      - path: Hips/Spine/LeftShoulder/LeftForeArm/LeftHand/LeftHandMiddle1/LeftHandMiddle2/LeftHandMiddle3/LeftHandIndex4
+        weight: 1
+      - path: Hips/Spine/LeftShoulder/LeftForeArm/LeftHand/LeftHandThumb1
+        weight: 1
+      - path: Hips/Spine/LeftShoulder/LeftForeArm/LeftHand/LeftHandThumb1/LeftHandThumb2
+        weight: 1
+      - path: Hips/Spine/LeftShoulder/LeftForeArm/LeftHand/LeftHandThumb1/LeftHandThumb2/LeftHandThumb3
+        weight: 1
+      - path: Hips/Spine/RightShoulder
+        weight: 1
+      - path: Hips/Spine/RightShoulder/RightForeArm
+        weight: 1
+      - path: Hips/Spine/RightShoulder/RightForeArm/RightHand
+        weight: 1
+      - path: Hips/Spine/RightShoulder/RightForeArm/RightHand/RightHandIndex1
+        weight: 1
+      - path: Hips/Spine/RightShoulder/RightForeArm/RightHand/RightHandIndex1/RightHandIndex2
+        weight: 1
+      - path: Hips/Spine/RightShoulder/RightForeArm/RightHand/RightHandIndex1/RightHandIndex2/RightHandIndex3
+        weight: 1
+      - path: Hips/Spine/RightShoulder/RightForeArm/RightHand/RightHandMiddle1
+        weight: 1
+      - path: Hips/Spine/RightShoulder/RightForeArm/RightHand/RightHandMiddle1/RightHandMiddle2
+        weight: 1
+      - path: Hips/Spine/RightShoulder/RightForeArm/RightHand/RightHandMiddle1/RightHandMiddle2/RightHandMiddle3
+        weight: 1
+      - path: Hips/Spine/RightShoulder/RightForeArm/RightHand/RightHandMiddle1/RightHandMiddle2/RightHandMiddle3/RightHandIndex4
+        weight: 1
+      - path: Hips/Spine/RightShoulder/RightForeArm/RightHand/RightHandThumb1
+        weight: 1
+      - path: Hips/Spine/RightShoulder/RightForeArm/RightHand/RightHandThumb1/RightHandThumb2
+        weight: 1
+      - path: Hips/Spine/RightShoulder/RightForeArm/RightHand/RightHandThumb1/RightHandThumb2/RightHandThumb3
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
     isReadable: 1
   meshes:
     lODScreenPercentages: []
