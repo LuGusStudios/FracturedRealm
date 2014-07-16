@@ -223,6 +223,8 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 					}
 				}
 			}
+
+			SpiritWorldShaderManager.MakeGrayScale( world.denominator.transform );
 		}
 		else
 			world.denominator = null;

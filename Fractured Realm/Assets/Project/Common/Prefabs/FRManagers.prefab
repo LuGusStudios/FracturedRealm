@@ -13,6 +13,7 @@ GameObject:
   - 114: {fileID: 11400004}
   - 114: {fileID: 11400006}
   - 114: {fileID: 11400008}
+  - 114: {fileID: 11400010}
   m_Layer: 0
   m_Name: FRManagers
   m_TagString: Untagged
@@ -107,7 +108,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: -1
   currentWorld: {fileID: 0}
+  outcomeWasCorrect: 0
+  routineRunner: {fileID: 0}
+  mainRoutineRunner: {fileID: 0}
   currentInteractionGroupIndex: 0
+--- !u!114 &11400010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c7a3779694214bf8bd2235d36eb4196, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preloadedShaders:
+  - {fileID: 4800000, guid: 9a25b05dbf728458da3639e2bb1cde55, type: 3}
+  - {fileID: 4800000, guid: eb9b4dfd8250645788e7ec622c1d0c29, type: 3}
+  - {fileID: 4800000, guid: ae82a014097404479a491725cf14cb14, type: 3}
+  - {fileID: 4800000, guid: 5940762a1fbb549f689bbd105934978f, type: 3}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
