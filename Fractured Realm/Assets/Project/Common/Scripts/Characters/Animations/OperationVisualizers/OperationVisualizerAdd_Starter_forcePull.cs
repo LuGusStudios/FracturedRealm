@@ -27,36 +27,34 @@ public class OperationVisualizerAdd_Starter_forcePull : OperationVisualizerAdd_S
         _nextAnimations.Add(FR.Animation.magnetAttractedSideRight);
     }
 
-	public override IEnumerator VisualizeAnimationPart( FR.Target part, NumberRenderer Starter, NumberRenderer Receiver )
+	public override IEnumerator VisualizeAnimationPart( FR.Target part, NumberRenderer starter, NumberRenderer receiver )
 	{
         // TODO: apparently I never made a receiver animation for this
 
-        yield return Starter.Animator.RotateTowards(Receiver).Coroutine;
+        yield return starter.Animator.RotateTowards(receiver).Coroutine;
 
 
+        starter.Animator.CrossFade(this.AnimationType());
 
-        Starter.Animator.CrossFade(this.AnimationType());
+        // TODO: uncomment this line when the animation tree is rebuilt. 
+        //starter.Animator.CrossFade(FR.Animation.forcePullReceive);   
 
         yield return new WaitForSeconds(.578f);
 
-        //if (Starter.transform.position.x < Receiver.transform.position.x)
-        //    // play right side animation
-        //else
-        //    // play left side animation
 
-        Receiver.gameObject.MoveTo(Receiver.transform.position + new Vector3(0, 2,0)).Time(1f).EaseType(iTween.EaseType.easeOutBounce).Execute();
+        receiver.gameObject.MoveTo(receiver.transform.position + new Vector3(0, 2,0)).Time(1f).EaseType(iTween.EaseType.easeOutBounce).Execute();
 
         yield return new WaitForSeconds(1.6f);
 
-        foreach (CharacterRenderer characterRenderer in Receiver.Characters)
+        foreach (CharacterRenderer characterRenderer in receiver.Characters)
         {
-            characterRenderer.gameObject.MoveTo(Starter.interactionCharacter.Body).Time(0.3f).Execute();
+            characterRenderer.gameObject.MoveTo(starter.interactionCharacter.Body).Time(0.3f).Execute();
         }
 
         yield return new WaitForSeconds(.33f);
 
 
-        Starter.Animator.SpawnEffect(FR.EffectType.JOIN_HIT);
+        starter.Animator.SpawnEffect(FR.EffectType.JOIN_HIT);
 
 
 	}
