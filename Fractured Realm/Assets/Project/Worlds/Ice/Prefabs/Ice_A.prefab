@@ -2472,9 +2472,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100052}
-  m_LocalRotation: {x: -.02696402, y: -.252301216, z: -.0214305483, w: .967035592}
+  m_LocalRotation: {x: .0269641206, y: .252301246, z: .0214307848, w: -.967035592}
   m_LocalPosition: {x: 98.1072617, y: -27.2627354, z: 31.3983574}
-  m_LocalScale: {x: 5.21454144, y: 4.38758945, z: 8.82492828}
+  m_LocalScale: {x: 5.21454144, y: 5.21454096, z: 5.21454096}
   m_Children:
   - {fileID: 400062}
   - {fileID: 400088}
@@ -2530,9 +2530,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100062}
-  m_LocalRotation: {x: -.085336253, y: .248115078, z: .050537914, w: .963640332}
+  m_LocalRotation: {x: .085336417, y: -.248115093, z: -.0505379625, w: -.963640273}
   m_LocalPosition: {x: -2.78405762, y: 5.98726606, z: 1.12768376}
-  m_LocalScale: {x: 1.0041883, y: 1.30375755, z: .780756176}
+  m_LocalScale: {x: 1.0041883, y: 1.00418794, z: 1.00418794}
   m_Children: []
   m_Father: {fileID: 400052}
 --- !u!4 &400064
@@ -2585,9 +2585,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100072}
-  m_LocalRotation: {x: -4.61745397e-09, y: -.991428792, z: -1.53293556e-09, w: .130648255}
+  m_LocalRotation: {x: 0, y: .991428792, z: 0, w: -.130648181}
   m_LocalPosition: {x: -.606381059, y: 5.93534231, z: 1.06301165}
-  m_LocalScale: {x: 1.63669848, y: 2.00008965, z: 1.04061258}
+  m_LocalScale: {x: 2.00008988, y: 2.00008965, z: 2.00008988}
   m_Children: []
   m_Father: {fileID: 400052}
 --- !u!4 &400074
@@ -2678,9 +2678,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100088}
-  m_LocalRotation: {x: .00988218188, y: .142772794, z: -.0838369951, w: .986148953}
+  m_LocalRotation: {x: -.0098821437, y: -.142772809, z: .0838372707, w: -.986148894}
   m_LocalPosition: {x: 2.51687336, y: 5.70851707, z: .363984972}
-  m_LocalScale: {x: .287635475, y: .3500579, z: .184647128}
+  m_LocalScale: {x: .3500579, y: .3500579, z: .3500579}
   m_Children: []
   m_Father: {fileID: 400052}
 --- !u!4 &400090
