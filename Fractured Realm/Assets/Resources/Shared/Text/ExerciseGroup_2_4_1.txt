@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ExerciseGroup>
+	<Description>DOUBLE and SIMPLIFY spirit</Description>
+	<Exercise>
+		<Difficulty>Easy</Difficulty>
+		<Composition>DENOMINATOR</Composition>
+		<WorldType>JUNGLE</WorldType>
+		<ExerciseParts>
+			<ExercisePart>
+				<Fraction>5</Fraction>
+				<Fraction>10</Fraction> 
+				<Outcome>10</Outcome> 
+				<Operation>DOUBLE</Operation>
+				<Operation>ADD</Operation>
+				<OperationAvailable>SIMPLIFY</OperationAvailable>
+				<OperationAvailable>SUBTRACT</OperationAvailable>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>8</Fraction>
+				<Fraction>4</Fraction> 
+				<Outcome>4</Outcome> 
+				<Operation>SIMPLIFY</Operation>
+				<Operation>SUBTRACT</Operation>
+				<OperationAvailable>DOUBLE</OperationAvailable>
+				<OperationAvailable>ADD</OperationAvailable>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>2</Fraction>
+				<Fraction>4</Fraction> 
+				<Outcome>4</Outcome> 
+				<Operation>DOUBLE</Operation>
+				<Operation>SUBTRACT</Operation>
+				<OperationAvailable>SIMPLIFY</OperationAvailable>
+				<OperationAvailable>ADD</OperationAvailable>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>6</Fraction>
+				<Fraction>3</Fraction> 
+				<Outcome>3</Outcome> 
+				<Operation>SIMPLIFY</Operation>
+				<Operation>ADD</Operation>
+				<OperationAvailable>DOUBLE</OperationAvailable>
+				<OperationAvailable>SUBTRACT</OperationAvailable>
+			</ExercisePart>
+		</ExerciseParts>
+	</Exercise>
+</ExerciseGroup>

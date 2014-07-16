@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ExerciseGroup>
+	<PreScene>Story_1_2_attack</PreScene>
+	<Description>SUBTRACT to 6</Description>
+	<Exercise>
+		<Difficulty>Easiest</Difficulty>
+		<Composition>NUMERATOR</Composition>
+		<WorldType>JUNGLE</WorldType>
+		<ExerciseParts>
+			<ExercisePart>
+				<Fraction>5</Fraction> 
+				<Fraction>3</Fraction> 
+				<Outcome>2</Outcome>
+				<Operation>SUBTRACT</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>2</Fraction>
+				<Fraction>1</Fraction> 
+				<Outcome>1</Outcome>
+				<Operation>SUBTRACT</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>1</Fraction>
+				<Fraction>5</Fraction> 
+				<Outcome>6</Outcome>
+				<Operation>ADD</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>6</Fraction>
+				<Fraction>4</Fraction> 
+				<Outcome>2</Outcome>
+				<Operation>SUBTRACT</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>2</Fraction>
+				<Fraction>2</Fraction> 
+				<Outcome>4</Outcome>
+				<Operation>ADD</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>4</Fraction>
+				<Fraction>3</Fraction> 
+				<Outcome>1</Outcome>
+				<Operation>SUBTRACT</Operation>
+			</ExercisePart>
+		</ExerciseParts>
+	</Exercise>
+</ExerciseGroup>

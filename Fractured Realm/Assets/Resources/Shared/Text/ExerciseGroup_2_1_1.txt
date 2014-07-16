@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ExerciseGroup>
+	<PreScene>Story_2_1_spiritworld</PreScene>
+	<Description>ADD and SUBTRACT spirit 1</Description>
+	<Exercise>
+		<Difficulty>Easy</Difficulty>
+		<Composition>DENOMINATOR</Composition>
+		<WorldType>JUNGLE</WorldType>
+		<ExerciseParts>
+			<ExercisePart>
+				<Fraction>3</Fraction>
+				<Fraction>3</Fraction> 
+				<Outcome>3</Outcome> 
+				<Operation>ADD</Operation>
+			</ExercisePart>
+		</ExerciseParts>
+	</Exercise>
+</ExerciseGroup>

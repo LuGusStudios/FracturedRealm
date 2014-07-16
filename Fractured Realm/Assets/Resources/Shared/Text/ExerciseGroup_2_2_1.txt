@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ExerciseGroup>
-	<PreScene>Story_2_3_double</PreScene>
-	<Description>DOUBLE spirit</Description>
+	<PreScene>Story_2_2_simplify</PreScene>
+	<Description>SIMPLIFY spirit</Description>
 	<Exercise>
 		<Difficulty>Easy</Difficulty>
 		<Composition>DENOMINATOR</Composition>
 		<WorldType>JUNGLE</WorldType>
 		<ExerciseParts>
 			<ExercisePart>
-				<Fraction>4</Fraction>
-				<Fraction>8</Fraction> 
-				<Outcome>8</Outcome> 
-				<Operation>DOUBLE</Operation>
+				<Fraction>10</Fraction>
+				<Fraction>5</Fraction> 
+				<Outcome>5</Outcome> 
+				<Operation>SIMPLIFY</Operation>
 				<Operation>ADD</Operation>
 			</ExercisePart>
 			<ExercisePart>
 				<Fraction>6</Fraction>
-				<Fraction>12</Fraction> 
-				<Outcome>12</Outcome> 
-				<Operation>DOUBLE</Operation>
+				<Fraction>3</Fraction> 
+				<Outcome>3</Outcome> 
+				<Operation>SIMPLIFY</Operation>
 				<Operation>SUBTRACT</Operation>
 			</ExercisePart>
 			<ExercisePart>
-				<Fraction>1</Fraction>
-				<Fraction>2</Fraction> 
-				<Outcome>2</Outcome> 
-				<Operation>DOUBLE</Operation>
+				<Fraction>12</Fraction>
+				<Fraction>6</Fraction> 
+				<Outcome>6</Outcome> 
+				<Operation>SIMPLIFY</Operation>
 				<Operation>ADD</Operation>
 				<OperationAvailable>SUBTRACT</OperationAvailable>
 			</ExercisePart>

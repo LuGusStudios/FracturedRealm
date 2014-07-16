@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ExerciseGroup>
+	<Description>Simplify intro</Description>
+	<Exercise>
+		<Difficulty>Easy</Difficulty>
+		<Composition>DENOMINATOR</Composition>
+		<WorldType>FOREST</WorldType>
+		<ExerciseParts>
+			<ExercisePart>
+				<Fraction>6</Fraction>
+				<Fraction>3</Fraction> 
+				<Outcome>3</Outcome>
+				<Operation>SIMPLIFY</Operation>
+				<Operation>ADD</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>8</Fraction>
+				<Fraction>4</Fraction> 
+				<Outcome>4</Outcome>
+				<Operation>SIMPLIFY</Operation>
+				<Operation>SUBTRACT</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>10</Fraction>
+				<Fraction>5</Fraction> 
+				<Outcome>5</Outcome>
+				<Operation>SIMPLIFY</Operation>
+				<Operation>ADD</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>12</Fraction>
+				<Fraction>3</Fraction> 
+				<Outcome>3</Outcome>
+				<Operation>SIMPLIFY</Operation>
+				<Operation>SIMPLIFY</Operation>
+				<Operation>SUBTRACT</Operation>
+			</ExercisePart>
+		</ExerciseParts>
+	</Exercise>
+</ExerciseGroup>

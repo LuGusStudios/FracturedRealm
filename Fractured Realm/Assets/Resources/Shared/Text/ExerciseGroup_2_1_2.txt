@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ExerciseGroup>
+	<Description>ADD and SUBTRACT spirit 2</Description>
+	<Exercise>
+		<Difficulty>Easy</Difficulty>
+		<Composition>DENOMINATOR</Composition>
+		<WorldType>JUNGLE</WorldType>
+		<ExerciseParts>
+			<ExercisePart>
+				<Fraction>8</Fraction>
+				<Fraction>8</Fraction> 
+				<Outcome>8</Outcome> 
+				<Operation>SUBTRACT</Operation>
+			</ExercisePart>
+			<ExercisePart>
+				<Fraction>10</Fraction>
+				<Fraction>10</Fraction> 
+				<Outcome>10</Outcome> 
+				<Operation>ADD</Operation>
+			</ExercisePart>
+		</ExerciseParts>
+	</Exercise>
+</ExerciseGroup>

@@ -5,7 +5,7 @@
 	<Exercise>
 		<Difficulty>Easiest</Difficulty>
 		<Composition>NUMERATOR</Composition>
-		<WorldType>DESERT</WorldType>
+		<WorldType>JUNGLE</WorldType>
 		<ExerciseParts>
 			<ExercisePart>
 				<Fraction>1</Fraction>

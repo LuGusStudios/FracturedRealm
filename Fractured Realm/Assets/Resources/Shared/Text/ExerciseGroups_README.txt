@@ -7,24 +7,25 @@ y = reeks binnen wereld
 z = plaats binnen reeks
 
 1
-1. Story element: introductie
-2. Gewone wereld, +, getallen t.e.m. 6
-3. Gewone wereld, –, getallen t.e.m. 6
-4. Gewone wereld + en -, getallen t.e.m 6 (kort) : beide icons tegelijk beschikbaar -> pick right one
-5. Story element: vorige eindigt op 6, in story komt er nog 1tje bij met plus -> duidelijk maken dat de 6 dan gaat zweven
-4. Gewone wereld, + en –, getallen t.e.m. 12
+1.story_1_1 Story element: introductie
+2.1_1_1 Gewone wereld, +, getallen t.e.m. 6
+3.story_1_2 story element: vijand wilt u niet doorlaten : bevechten : 6 - 1 = 5
+4.1_2_1 Gewone wereld, –, getallen t.e.m. 6
+5.1_3_1 Gewone wereld + en -, getallen t.e.m 6 (kort) : beide icons tegelijk beschikbaar -> pick right one
+6.story_1_4 Story element: vorige eindigt op 6, in story komt er nog 1tje bij met plus -> duidelijk maken dat de 6 dan gaat zweven
+7.1_4_1 Gewone wereld, + en –, getallen t.e.m. 12 
 
 2
-1. Story element: grote gebeurtenis verandert alles naar geestenwereld
-x. Story element: + en - doen niks
-2. Geestenwereld, + en -, getallen t.e.m. 12 (2 oefs maar) : + en - doen niks, blijft gewoon hetzelfde
-x. Story element: introductie vereenvoudigen (ongelijke komen elkaar tegen grote vs kleine, force field kan niet door, vereenvoudigen)
-3. Geestenwereld, + en - en vereenvoudigen, 12
-x. Story element: introductie vergroten (ongelijke komen elkaar tegen kleine vs grote, force field kan niet door, vergroten)
-4. Geestenwereld, + en - en vergroten (x2), 12
-8. Geestenwereld, + en -, vereenvoudigen en vergroten (x2), 12
-x. Story element: introductie x kracht met voorbeeld (x kracht breekt forcefield ookal zijn ze niet gelijk) 
-9. Geestenwereld, x, getallen t.e.m. 12
+1. story_2_1 Story element: grote gebeurtenis verandert alles naar geestenwereld
+x.2_1_1 ~Story element: + en - doen niks
+2.2_1_2 Geestenwereld, + en -, getallen t.e.m. 12 (2 oefs maar) : + en - doen niks, blijft gewoon hetzelfde
+x. story_2_2 Story element: introductie vereenvoudigen (ongelijke komen elkaar tegen grote vs kleine, force field kan niet door, vereenvoudigen)
+3. 2_2_1 Geestenwereld, + en - en vereenvoudigen, 12
+x. story_2_3 Story element: introductie vergroten (ongelijke komen elkaar tegen kleine vs grote, force field kan niet door, vergroten)
+4. 2_3_1 Geestenwereld, + en - en vergroten (x2), 12
+8. 2_4_1 Geestenwereld, + en -, vereenvoudigen en vergroten (x2), 12
+x. story_2_5 Story element: introductie x kracht met voorbeeld (x kracht breekt forcefield ookal zijn ze niet gelijk) 
+9. 2_5_1 Geestenwereld, x, getallen t.e.m. 12
 10. Story element: actie van speler zorgt voor tweedeling: half gewone, half
 geestenwereld
 11. Combinatie, x, 12
