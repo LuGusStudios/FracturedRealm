@@ -69,6 +69,19 @@ public class MenuManager : LugusSingletonExisting<MenuManager>
 		allMenus.Add( levelMenu );
 	}
 
+	public void ChangeStateDelayed(MenuState newState, float delay) 
+	{
+		gameObject.StartLugusRoutine( ChangeStateDelayedRoutine(newState, delay) );
+	}
+
+	protected IEnumerator ChangeStateDelayedRoutine(MenuState newState, float delay)
+	{
+		if( delay > 0.0f )
+			yield return new WaitForSeconds(delay);
+
+		ChangeState( newState );
+	}
+
 	public void ChangeState(MenuState newState)
 	{
 		MenuState oldState = currentState;
@@ -103,6 +116,12 @@ public class MenuManager : LugusSingletonExisting<MenuManager>
 
 		if( onMenuStateChanged != null )
 			onMenuStateChanged(oldState, newState);
+	}
+
+	public static void ButtonPressEffect( Transform button, float time = 1.0f )
+	{
+		float amount = Mathf.Max(time, 0.7f) / 2.0f;
+		iTween.PunchScale( button.gameObject, new Vector3( amount, amount, amount ), time); //new Vector3( 0.75f, 0.75f, 0.75f ), time);
 	}
 
 	public void SetupGlobal()

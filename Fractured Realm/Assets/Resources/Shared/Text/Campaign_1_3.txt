@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CampaignPart>
+	<Name>campaign.1.part.3.name</Name>
+	<Description>campaign.1.part.3.description</Description>
+	<WorldType>FIRE</WorldType>
+	<ExerciseGroups>
+		<ExerciseGroup>ExerciseGroup_3_2_1</ExerciseGroup>
+	</ExerciseGroups>
+</CampaignPart>

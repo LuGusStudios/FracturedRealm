@@ -627,6 +627,14 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		}
 	}
 
+	void Awake()
+	{
+		if( !string.IsNullOrEmpty( CrossSceneInfo.use.currentExerciseGroup ) ) 
+		{
+			ScreenFader.use.FadeOut(0.000001f);
+		}
+	}
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -644,6 +652,27 @@ public class GameManager : LugusSingletonExisting<GameManager>
 			mainRoutineRunner = new GameObject("GameManager_MainRoutineRunner");
 			mainRoutineRunner.transform.parent = this.transform;
 		}
+
+		if( !string.IsNullOrEmpty( CrossSceneInfo.use.currentExerciseGroup ) ) 
+		{
+			//ScreenFader.use.FadeOut(0.01f);
+
+			// TODO: gracious exit when the currentExerciseGroup is not found!
+			gameObject.StartLugusRoutine( LoadRoutine() );
+		}
+	}
+
+	protected IEnumerator LoadRoutine()
+	{
+		// TODO: should not be necessary if the main gameplay scene is empty of residual debug assets
+		GameObject world = GameObject.Find("WORLD");
+		if( world != null )
+			GameObject.Destroy(world);
+
+		yield return new WaitForSeconds(0.1f);
+		
+		StartGame( ExerciseLoader.LoadExerciseGroup(CrossSceneInfo.use.currentExerciseGroup), FR.GameState.ExerciseStart );
+
 	}
 	
 	// Update is called once per frame

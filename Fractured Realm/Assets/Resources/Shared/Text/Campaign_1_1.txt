@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CampaignPart>
+	<Name>campaign.1.part.1.name</Name>
+	<Description>campaign.1.part.1.description</Description>
+	<WorldType>JUNGLE</WorldType>
+	<ExerciseGroups>
+		<ExerciseGroup>ExerciseGroup_1_1_1</ExerciseGroup>
+		<ExerciseGroup>ExerciseGroup_1_2_1</ExerciseGroup>
+		<ExerciseGroup>ExerciseGroup_1_3_1</ExerciseGroup>
+		<ExerciseGroup>ExerciseGroup_1_4_1</ExerciseGroup>
+		<ExerciseGroup>ExerciseGroup_1_4_2</ExerciseGroup>
+	</ExerciseGroups>
+</CampaignPart>

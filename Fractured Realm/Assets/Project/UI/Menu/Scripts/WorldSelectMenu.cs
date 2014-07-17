@@ -13,6 +13,8 @@ public class WorldSelectMenu : IMenu
 		
 		this.transform.position = Vector3.zero;
 
+		CampaignManager.use.LoadCampaign(1);
+
 		activated = true;
 		
 		return true;
@@ -61,7 +63,35 @@ public class WorldSelectMenu : IMenu
 		
 		if( hit == BackButton )
 		{
-			MenuManager.use.ChangeState( MenuManager.MenuState.Start );
+			Debug.LogError("hit back button level select");
+
+			MenuManager.use.ChangeStateDelayed(MenuManager.MenuState.Start, 0.35f);
+			MenuManager.ButtonPressEffect( BackButton, 0.35f );
 		}
+	}
+
+	public void OnGUI()
+	{
+		if( !activated )
+			return;
+
+		if( CampaignManager.use.currentCampaign == null )
+			return;
+
+		GUILayout.BeginArea( new Rect(0,200, Screen.width, Screen.height) );
+		GUILayout.BeginHorizontal();
+
+		foreach( CampaignPart part in CampaignManager.use.currentCampaign.parts )
+		{
+			if( GUILayout.Button( "\n\n" + part.nr + "\n" + part.name.LugusLocalized() + "\n" + part.description.LugusLocalized() + "\n\n" ) )
+			{
+				CampaignManager.use.currentCampaign.currentCampaignPart = part;
+
+				MenuManager.use.ChangeState( MenuManager.MenuState.LevelSelect );
+			}
+		}
+
+		GUILayout.EndHorizontal();
+		GUILayout.EndArea();
 	}
 }

@@ -99,6 +99,45 @@ public class StateStorage : MonoBehaviour
 	}
 }
 
+public class StateStorageLocal : MonoBehaviour 
+{
+	public Vector3 localPosition;
+	public Quaternion localRotation;
+	public Vector3 localScale;
+	
+	public bool visible = true; 
+	
+	public void Restore(Transform target)
+	{
+		target.localPosition = localPosition;
+		target.localRotation = localRotation;
+		target.localScale = localScale;
+
+		if( target.renderer != null )
+			target.renderer.enabled = visible;
+	}
+	
+	public void Store(Transform origin)
+	{
+		localPosition = origin.localPosition;
+		localRotation = origin.localRotation;
+		localScale = origin.localScale;
+		
+		if( origin.renderer != null )
+			visible = origin.renderer.enabled;
+	}
+	
+	public void Restore()
+	{
+		Restore(this.transform);
+	}
+	
+	public void Store()
+	{
+		Store(this.transform);
+	}
+}
+
 public static class StorageExtensions
 {
 	public static void Store(this Transform t)
@@ -107,7 +146,7 @@ public static class StorageExtensions
 		if( storer == null )
 			storer = t.gameObject.AddComponent<StateStorage>();
 		
-		storer.Store();
+		storer.Store(); 
 	}
 	
 	public static StateStorage Revert(this Transform t)
@@ -119,9 +158,37 @@ public static class StorageExtensions
 			storer = t.gameObject.AddComponent<StateStorage>();
 			storer.Store(); 
 		}
-		
+		else
+		{
+			storer.Restore();
+		}
 		
 		return storer;
 	}
 	
+	public static void StoreLocal(this Transform t)
+	{
+		StateStorageLocal storer = t.GetComponent<StateStorageLocal>();
+		if( storer == null )
+			storer = t.gameObject.AddComponent<StateStorageLocal>();
+		
+		storer.Store(); 
+	}
+	
+	public static StateStorageLocal RevertLocal(this Transform t)
+	{
+		StateStorageLocal storer = t.GetComponent<StateStorageLocal>();
+		
+		if( storer == null )
+		{
+			storer = t.gameObject.AddComponent<StateStorageLocal>();
+			storer.Store(); 
+		}
+		else
+		{
+			storer.Restore();
+		}
+		
+		return storer;
+	}
 }

@@ -107,6 +107,14 @@ public static class MonoBehaviourExtensions
 
 }
 
+public static class StringExtensions
+{
+	public static string LugusLocalized(this string s)
+	{
+		return LugusResources.use.Localized.GetText(s);
+	}
+}
+
 public static class VectorExtensions
 {
 	// ex. vec = vec.y( value );

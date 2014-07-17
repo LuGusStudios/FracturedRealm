@@ -56,6 +56,9 @@ public class ScreenFader : LugusSingletonExisting<ScreenFader>
 
 	public void FadeOut(float time)
 	{
+		if( fadeRenderer == null )
+			SetupGlobal();
+
 		//Debug.Log("ScreenFader: Fading out.");
 
 		fadeRenderer.color = fadeRenderer.color.a(0.0f);
@@ -70,6 +73,9 @@ public class ScreenFader : LugusSingletonExisting<ScreenFader>
 
 	public void FadeIn(float time)
 	{
+		if( fadeRenderer == null )
+			SetupGlobal();
+
 		//Debug.Log("ScreenFader: Fading in.");
 
 		fadeRenderer.color = fadeRenderer.color.a(1.0f);

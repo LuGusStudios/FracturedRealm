@@ -7,6 +7,9 @@ public class FoldoutMenu : MonoBehaviour
 	public bool open = false;
 	public List<Transform> children = new List<Transform>();
 
+	public Transform icon = null;
+	public Vector3 iconDefaultRotation;
+
 	public void SetupLocal()
 	{
 		// assign variables that have to do with this class only
@@ -15,6 +18,9 @@ public class FoldoutMenu : MonoBehaviour
 		{
 			children.Add( child );
 		}
+
+		icon = transform.FindChild("Icon");
+		iconDefaultRotation = icon.rotation.eulerAngles;
 	}
 	
 	public void SetupGlobal()
@@ -40,6 +46,16 @@ public class FoldoutMenu : MonoBehaviour
 		float yPadding = 1.0f;
 		float currentY = -0.5f;
 
+		float delayPerItem = 0.35f;
+		float durationPerItem = 0.65f; 
+
+		if( animate )
+		{
+			icon.gameObject.StopTweens();
+			//icon.gameObject.RotateTo( iconDefaultRotation.zAdd(180.0f) ).Time( ((children.Count - 1) * delayPerItem) + durationPerItem - 0.3f).Execute(); // -0.3f eyeball
+			icon.gameObject.RotateBy( new Vector3(0,0, 180.0f) ).Time( ((children.Count - 1) * delayPerItem) + durationPerItem - 0.3f).Execute(); // -0.3f eyeball
+		}
+
 		int count = 0;
 		foreach( Transform child in children )
 		{
@@ -51,7 +67,7 @@ public class FoldoutMenu : MonoBehaviour
 			Vector3 target = child.transform.localPosition.yAdd( currentY );
 
 			if( animate )
-				child.gameObject.MoveTo( target ).IsLocal(true).Delay(count * 0.35f).Time (0.65f).EaseType(iTween.EaseType.easeOutBack).Execute();
+				child.gameObject.MoveTo( target ).IsLocal(true).Delay(count * delayPerItem).Time (durationPerItem).EaseType(iTween.EaseType.easeOutBack).Execute();
 			else
 				child.transform.localPosition = target;
 
@@ -62,6 +78,16 @@ public class FoldoutMenu : MonoBehaviour
 	public void Close(bool animate = true)
 	{
 		open = false;
+
+		if( animate )
+		{
+			icon.gameObject.StopTweens();
+			//icon.gameObject.RotateTo( iconDefaultRotation ).Time(0.5f).Execute();
+
+			//iTween.RotateBy( icon.gameObject, new Vector3(0, 0, -0.5f), 4.5f );
+
+			icon.gameObject.RotateBy( new Vector3(0,0, -180.0f) ).Time(0.5f).Execute();
+		}
 
 		int count = 0;
 		foreach( Transform child in children )

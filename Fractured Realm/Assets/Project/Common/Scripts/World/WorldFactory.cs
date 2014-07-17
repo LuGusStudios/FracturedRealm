@@ -34,7 +34,8 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 			debug_initialFractions[1] = new Fraction(7,4);
 		}
 
-		CreateDebugWorld( defaultWorldType, debug_initialFractions, FR.Target.BOTH, true );
+		if( string.IsNullOrEmpty( CrossSceneInfo.use.currentExerciseGroup ) )
+			CreateDebugWorld( defaultWorldType, debug_initialFractions, FR.Target.BOTH, true );
 	}
 	
 	// Dictionary<FR.WorldType, List<WorldPart>> is NOT SERIALIZABLE by unity!

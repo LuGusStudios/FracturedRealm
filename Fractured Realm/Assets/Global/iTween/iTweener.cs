@@ -9,7 +9,8 @@ public class iTweener : MonoBehaviour
         NONE,
         MoveTo,
         ScaleTo,
-        RotateTo
+        RotateTo,
+		RotateBy
     }
 
     protected static Vector3 NOTHING = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
@@ -230,7 +231,12 @@ public class iTweener : MonoBehaviour
         }
 
         output.Add("scale", _targetScale);
-        output.Add("rotation", _targetRotation);
+
+		if( type != TweenType.RotateBy )
+       		output.Add("rotation", _targetRotation);
+		else
+			output.Add("amount", _targetRotation); 
+
 
         if (_local)
         {
@@ -276,7 +282,9 @@ public class iTweener : MonoBehaviour
         else if (type == TweenType.ScaleTo)
             iTween.ScaleTo(_subject, arguments);
         else if (type == TweenType.RotateTo)
-            iTween.RotateTo(_subject, arguments);
+			iTween.RotateTo(_subject, arguments);
+		else if (type == TweenType.RotateBy)
+			iTween.RotateBy(_subject, arguments);
 
         GameObject.Destroy(this);
 
@@ -317,6 +325,25 @@ public class iTweenerList
 
 public static class iTweenExtensions
 {
+	// Note: difference from iTween : rotationAmount here is NOT normalized, so values between [0,360] are expected
+	public static iTweener RotateBy(this GameObject go, Vector3 rotationAmount)
+	{
+		iTweener output = go.AddComponent<iTweener>();
+
+		// iTween itself expects normalized values for RotateBy
+		if( rotationAmount.x > 1.0f || rotationAmount.y > 1.0f || rotationAmount.z > 1.0f ||
+		    rotationAmount.x < -1.0f || rotationAmount.y < -1.0f || rotationAmount.z < -1.0f)
+		{
+			rotationAmount /= 360.0f;
+		}
+		
+		output.Subject(go);
+		output.type = iTweener.TweenType.RotateBy;
+		output.TargetRotation(rotationAmount);
+		
+		return output;
+	}
+
     public static iTweener RotateTo(this GameObject go, Vector3 targetRotation)
     {
         iTweener output = go.AddComponent<iTweener>();

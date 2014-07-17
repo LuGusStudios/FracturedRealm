@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Entries>
+
+	<campaign.1.part.1.name>Eerste wereld Strand Normaal</campaign.1.part.1.name>
+	<campaign.1.part.1.description>Het eiland van Nodda Nomba wordt bedreigd!</campaign.1.part.1.description>
+
+	<campaign.1.part.2.name>Tweede wereld Strand Spirit</campaign.1.part.2.name>
+	<campaign.1.part.2.description>De geestenwereld is best eng...</campaign.1.part.2.description>
+	
+	<campaign.1.part.3.name>Derde wereld Vuur Beide</campaign.1.part.3.name>
+	<campaign.1.part.3.description>Save the cheerleader, save the world</campaign.1.part.3.description>
+	
+</Entries>
