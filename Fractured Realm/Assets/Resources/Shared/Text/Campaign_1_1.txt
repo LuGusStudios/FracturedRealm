@@ -4,6 +4,7 @@
 	<Description>campaign.1.part.1.description</Description>
 	<WorldType>JUNGLE</WorldType>
 	<ExerciseGroups>
+		<ExerciseGroup>ExerciseGroup_1_1_0TEST</ExerciseGroup>
 		<ExerciseGroup>ExerciseGroup_1_1_1</ExerciseGroup>
 		<ExerciseGroup>ExerciseGroup_1_2_1</ExerciseGroup>
 		<ExerciseGroup>ExerciseGroup_1_3_1</ExerciseGroup>

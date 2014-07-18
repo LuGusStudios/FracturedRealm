@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400000}
   - 114: {fileID: 11400006}
+  - 114: {fileID: 11400012}
   m_Layer: 8
   m_Name: UI_Menu
   m_TagString: Untagged
@@ -174,7 +175,7 @@ GameObject:
   - 4: {fileID: 400020}
   - 23: {fileID: 2300000}
   - 102: {fileID: 10200000}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -876,7 +877,7 @@ GameObject:
   - 4: {fileID: 400106}
   - 23: {fileID: 2300002}
   - 102: {fileID: 10200002}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -893,7 +894,7 @@ GameObject:
   - 4: {fileID: 400108}
   - 23: {fileID: 2300004}
   - 102: {fileID: 10200004}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -910,7 +911,7 @@ GameObject:
   - 4: {fileID: 400110}
   - 23: {fileID: 2300006}
   - 102: {fileID: 10200006}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -927,7 +928,7 @@ GameObject:
   - 4: {fileID: 400112}
   - 23: {fileID: 2300008}
   - 102: {fileID: 10200008}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -944,7 +945,7 @@ GameObject:
   - 4: {fileID: 400114}
   - 23: {fileID: 2300010}
   - 102: {fileID: 10200010}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -961,7 +962,7 @@ GameObject:
   - 4: {fileID: 400116}
   - 23: {fileID: 2300012}
   - 102: {fileID: 10200012}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -978,7 +979,7 @@ GameObject:
   - 4: {fileID: 400118}
   - 23: {fileID: 2300014}
   - 102: {fileID: 10200014}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1634,7 +1635,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100106}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.318199158, y: .0928487778, z: -1}
+  m_LocalPosition: {x: -.178928375, y: .0928487778, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400058}
@@ -2090,7 +2091,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 0b49839968acf426ab87b747b72572ae, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4289651188
 --- !u!102 &10200002
 TextMesh:
   serializedVersion: 3
@@ -2111,7 +2112,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 0b49839968acf426ab87b747b72572ae, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4289651188
 --- !u!102 &10200004
 TextMesh:
   serializedVersion: 3
@@ -2132,7 +2133,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 0b49839968acf426ab87b747b72572ae, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4289651188
 --- !u!102 &10200006
 TextMesh:
   serializedVersion: 3
@@ -2153,7 +2154,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 0b49839968acf426ab87b747b72572ae, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4289651188
 --- !u!102 &10200008
 TextMesh:
   serializedVersion: 3
@@ -2174,7 +2175,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 0b49839968acf426ab87b747b72572ae, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4289651188
 --- !u!102 &10200010
 TextMesh:
   serializedVersion: 3
@@ -2195,7 +2196,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 0b49839968acf426ab87b747b72572ae, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4289651188
 --- !u!102 &10200012
 TextMesh:
   serializedVersion: 3
@@ -2216,7 +2217,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 0b49839968acf426ab87b747b72572ae, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4289651188
 --- !u!102 &10200014
 TextMesh:
   serializedVersion: 3
@@ -2237,7 +2238,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 0b49839968acf426ab87b747b72572ae, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4289651188
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2330,6 +2331,18 @@ MonoBehaviour:
   children: []
   icon: {fileID: 0}
   iconDefaultRotation: {x: 0, y: 0, z: 0}
+--- !u!114 &11400012
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bf1a583b6867482aa9136c81f57f023, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeImage: {fileID: 21300000, guid: e79744dccc0414407989eb07e07cda3a, type: 3}
 --- !u!198 &19800000
 ParticleSystem:
   m_ObjectHideFlags: 1

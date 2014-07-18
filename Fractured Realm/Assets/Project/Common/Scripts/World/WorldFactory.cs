@@ -34,7 +34,7 @@ public class WorldFactory : LugusSingletonExisting<WorldFactory>
 			debug_initialFractions[1] = new Fraction(7,4);
 		}
 
-		if( string.IsNullOrEmpty( CrossSceneInfo.use.currentExerciseGroup ) )
+		if( CrossSceneInfo.use.currentCampaign == null )
 			CreateDebugWorld( defaultWorldType, debug_initialFractions, FR.Target.BOTH, true );
 	}
 	

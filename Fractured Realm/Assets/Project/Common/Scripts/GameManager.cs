@@ -574,10 +574,25 @@ public class GameManager : LugusSingletonExisting<GameManager>
 	{
 		// black overlay (if not yet present)
 		// fade from black
-		
-		ScreenFader.use.FadeOut(3.0f);
 
-		yield return new WaitForSeconds( 3.0f );
+		// set level completed
+		if( CrossSceneInfo.use.currentCampaign != null )
+		{
+			CrossSceneInfo.use.currentCampaign.currentCampaignPart.CompleteGroup( CrossSceneInfo.use.currentCampaign.currentCampaignPart.currentExerciseGroupIndex, 3 );
+			// TODO: set level score! (now always 3)
+		}
+
+		//CrossSceneInfo.use.Reset(); // NOTE: not if we choose next
+		//CrossSceneInfo.use.nextScene = CrossSceneInfo.MainMenuSceneName;
+		CrossSceneInfo.use.completedExerciseGroupIndex = CrossSceneInfo.use.currentCampaign.currentCampaignPart.currentExerciseGroupIndex;
+
+		HUDManager.use.endMenu.Activate();
+
+		//ScreenFader.use.FadeOut(3.0f);
+
+		//yield return new WaitForSeconds( 3.0f );
+
+		//CrossSceneInfo.use.LoadNextScene();
 		
 		yield break;
 	}
@@ -629,7 +644,7 @@ public class GameManager : LugusSingletonExisting<GameManager>
 
 	void Awake()
 	{
-		if( !string.IsNullOrEmpty( CrossSceneInfo.use.currentExerciseGroup ) ) 
+		if( CrossSceneInfo.use.currentCampaign != null ) 
 		{
 			ScreenFader.use.FadeOut(0.000001f);
 		}
@@ -653,16 +668,16 @@ public class GameManager : LugusSingletonExisting<GameManager>
 			mainRoutineRunner.transform.parent = this.transform;
 		}
 
-		if( !string.IsNullOrEmpty( CrossSceneInfo.use.currentExerciseGroup ) ) 
+		if( CrossSceneInfo.use.currentCampaign != null ) 
 		{
 			//ScreenFader.use.FadeOut(0.01f);
 
 			// TODO: gracious exit when the currentExerciseGroup is not found!
-			gameObject.StartLugusRoutine( LoadRoutine() );
+			gameObject.StartLugusRoutine( LoadCampaignExerciseRoutine() );
 		}
 	}
 
-	protected IEnumerator LoadRoutine()
+	protected IEnumerator LoadCampaignExerciseRoutine()
 	{
 		// TODO: should not be necessary if the main gameplay scene is empty of residual debug assets
 		GameObject world = GameObject.Find("WORLD");
@@ -671,7 +686,10 @@ public class GameManager : LugusSingletonExisting<GameManager>
 
 		yield return new WaitForSeconds(0.1f);
 		
-		StartGame( ExerciseLoader.LoadExerciseGroup(CrossSceneInfo.use.currentExerciseGroup), FR.GameState.ExerciseStart );
+		CrossSceneInfo.use.completedExerciseGroupIndex = -2; // from now on, we need to actually complete the level for this field to have effect
+		CampaignManager.use.currentCampaign = CrossSceneInfo.use.currentCampaign;
+		
+		StartGame( ExerciseLoader.LoadExerciseGroup(CrossSceneInfo.use.currentCampaign.currentCampaignPart.currentExerciseGroup), FR.GameState.ExerciseStart );
 
 	}
 	

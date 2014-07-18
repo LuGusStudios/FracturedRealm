@@ -10,4 +10,10 @@
 	<campaign.1.part.3.name>Derde wereld Vuur Beide</campaign.1.part.3.name>
 	<campaign.1.part.3.description>Save the cheerleader, save the world</campaign.1.part.3.description>
 	
-</Entries>
+	
+	<score.title.0>Kan beter...</score.title.0>
+	<score.title.1>Blijf oefenen!</score.title.1>
+	<score.title.2>Super!</score.title.2>
+	<score.title.3>Fantastisch!</score.title.3>
+	
+</Entries> 

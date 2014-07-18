@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f1e903b635fa845939c6665aa16d13f8
+TrueTypeFontImporter:
+  serializedVersion: 2
+  fontSize: 200
+  forceTextureCase: -2
+  characterSpacing: 1
+  characterPadding: 0
+  includeFontData: 1
+  use2xBehaviour: 0
+  fontNames:
+  - BadaBoomNormal
+  customCharacters: 
+  fontRenderingMode: 0
+  userData: 

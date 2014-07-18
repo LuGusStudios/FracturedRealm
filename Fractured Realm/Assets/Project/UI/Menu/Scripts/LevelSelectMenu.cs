@@ -225,7 +225,7 @@ public class LevelSelectMenu : IMenu
 				{
 					MenuManager.ButtonPressEffect( levelButton, 0.75f );
 
-					LugusCoroutines.use.StartRoutine( LoadLevelRoutine(CampaignManager.use.currentCampaign.currentCampaignPart.exerciseGroups[index]) );
+					LugusCoroutines.use.StartRoutine( LoadLevelRoutine(index) );
 				}
 
 				++index;
@@ -234,8 +234,10 @@ public class LevelSelectMenu : IMenu
 
 	}
 
-	protected IEnumerator LoadLevelRoutine( string exerciseGroupName )
+	protected IEnumerator LoadLevelRoutine( int exerciseGroupIndex )
 	{
+		CampaignManager.use.currentCampaign.currentCampaignPart.currentExerciseGroupIndex = exerciseGroupIndex;
+
 		activated = false; // make sure no further input happens from this point on
 		
 		ScreenFader.use.FadeOut(1.0f);
@@ -243,12 +245,13 @@ public class LevelSelectMenu : IMenu
 		yield return new WaitForSeconds(1.1f);
 
 		CrossSceneInfo.use.Reset();
-		CrossSceneInfo.use.nextScene = "GamePlaySetup";
-		CrossSceneInfo.use.currentExerciseGroup = exerciseGroupName;
+		CrossSceneInfo.use.nextScene = CrossSceneInfo.GameplaySceneName;
+		//CrossSceneInfo.use.currentExerciseGroup = exerciseGroupName;
+		
+		Debug.Log("LevelSelectMenu : loading level " + CampaignManager.use.currentCampaign.currentCampaignPart.currentExerciseGroup );
 
 		CrossSceneInfo.use.LoadNextScene();
 
-		Debug.LogError("LevelSelectMenu : loading level " + exerciseGroupName );
 	}
 
 	/*

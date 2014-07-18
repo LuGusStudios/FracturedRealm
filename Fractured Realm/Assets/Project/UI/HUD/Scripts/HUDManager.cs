@@ -6,12 +6,36 @@ public class HUDManager : LugusSingletonExisting<HUDManager>
 {
 	public Transform ReplayButton = null;
 
+	public ExerciseGroupEndMenu endMenu = null;
+
 	public void SetupLocal()
 	{
 		// assign variables that have to do with this class only
 		if( ReplayButton == null )
 		{
 			ReplayButton = transform.FindChild("ReplayButton");
+		}
+
+		if( endMenu == null )
+		{
+			Transform endMenuRoot = transform.FindChild("ExerciseGroupEndMenu");
+			if( endMenuRoot != null )
+			{
+				endMenu = endMenuRoot.GetComponent<ExerciseGroupEndMenu>();
+			}
+			else
+			{
+				Debug.LogError("HUDManager:SetupLocal : no root transform found for ExerciseGroupEndMenu found!");
+			}
+		}
+
+		if( endMenu != null )
+		{
+			endMenu.gameObject.SetActive(true); // starts as de-activated
+		}
+		else
+		{
+			Debug.LogError("HUDManager:SetupLocal : no ExerciseGroupEndMenu found!");
 		}
 
 		ReplayButton.transform.localScale = Vector3.zero;

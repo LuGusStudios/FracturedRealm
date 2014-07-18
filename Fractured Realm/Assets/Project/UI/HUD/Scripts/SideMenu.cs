@@ -179,7 +179,7 @@ public class SideMenu : LugusSingletonExisting<SideMenu>
 			{
 				// TODO: add user feedback (or maybe make the button greyed-out if not available?
 				Debug.LogError("SideMenu:Update : RetryButton clicked : cannot while in this game state " + GameManager.use.currentState );
-				iTween.PunchScale( RetryButton.gameObject, new Vector3( 1.0f, 1.0f, 1.0f ), 1.0f );
+				MenuManager.ButtonPressEffect( RetryButton, 1.0f );
 			}
 		}
 
@@ -187,14 +187,19 @@ public class SideMenu : LugusSingletonExisting<SideMenu>
 		{ 
 			// TODO: show help overlay
 			Debug.Log ("SideMenu:Update : help button clicked");
-			iTween.PunchScale( HelpButton.gameObject, new Vector3( 0.5f, 0.5f, 0.5f ), 1.0f );
+			MenuManager.ButtonPressEffect( HelpButton, 1.0f );
 		}
 
 		if( hit == MenuButton )
 		{
 			// TODO: back to menu scene
+
+			CrossSceneInfo.use.nextScene = CrossSceneInfo.MainMenuSceneName;
+
 			Debug.Log ("SideMenu:Update : menu button clicked");
-			iTween.PunchScale( MenuButton.gameObject, new Vector3( 0.5f, 0.5f, 0.5f ), 1.0f );
+			MenuManager.ButtonPressEffect( MenuButton, 1.0f );
+
+			CrossSceneInfo.use.LoadNextScene(1.0f);
 		}
 
 		if( hit == SoundButton )

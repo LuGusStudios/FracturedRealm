@@ -26,6 +26,8 @@ public class StartMenu : IMenu
 		SoundButton = transform.FindChildRecursively("SoundButton");
 		InfoButton = transform.FindChildRecursively("InfoButton"); 
 		FacebookButton = transform.FindChildRecursively("FacebookButton");
+
+		activated = true; // this is the default one, is activated at start
 	}
 
 	protected ILugusCoroutineHandle animationRoutine = null;

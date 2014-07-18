@@ -126,8 +126,23 @@ public class MenuManager : LugusSingletonExisting<MenuManager>
 
 	public void SetupGlobal()
 	{
-		// lookup references to objects / scripts outside of this script
-		ChangeState( MenuState.Start );
+		if( CrossSceneInfo.use.currentCampaign == null )
+		{
+			ChangeState( MenuState.Start );
+		}
+		else
+		{
+			CampaignManager.use.currentCampaign = CrossSceneInfo.use.currentCampaign;
+
+			if( CrossSceneInfo.use.currentCampaign.currentCampaignPart != null )
+			{
+				ChangeState( MenuState.LevelSelect );
+			}
+			else
+			{
+				ChangeState( MenuState.WorldSelect ); // NOTE: at the time of writing, this should basically never happen
+			}
+		}
 	}
 	
 	protected void Awake()
