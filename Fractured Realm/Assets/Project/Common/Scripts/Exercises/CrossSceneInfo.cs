@@ -14,6 +14,8 @@ public class CrossSceneInfo : LugusSingletonRuntime<CrossSceneInfo>
 
 	public Campaign currentCampaign = null;
 
+	public bool autoPlay = false;
+
 	//public string currentExerciseGroup = "";
 
 	public void Reset()
@@ -25,6 +27,8 @@ public class CrossSceneInfo : LugusSingletonRuntime<CrossSceneInfo>
 		completedExerciseGroupIndex = -2;
 		currentCampaign = null;
 		//currentExerciseGroup = "";
+
+		autoPlay = false;
 	}
 
 	public void SetupLocal()

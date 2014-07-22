@@ -154,6 +154,12 @@ public class LugusConfigDefault : MonoBehaviour
 			profile.Store();
 	}
 
+	public void ClearProfiles()
+	{		
+		foreach (ILugusConfigProfile profile in _profiles)
+			profile.Clear();
+	}
+
 	public ILugusConfigProfile FindProfile(string name)
 	{
 		return _profiles.Find(profile => profile.Name == name);

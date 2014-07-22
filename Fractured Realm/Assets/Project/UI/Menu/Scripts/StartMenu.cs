@@ -14,6 +14,8 @@ public class StartMenu : IMenu
 	public Transform InfoButton = null;
 	public Transform FacebookButton = null;
 
+	public Transform FFButton = null;
+
 	public void SetupLocal()
 	{
 		// assign variables that have to do with this class only
@@ -26,6 +28,13 @@ public class StartMenu : IMenu
 		SoundButton = transform.FindChildRecursively("SoundButton");
 		InfoButton = transform.FindChildRecursively("InfoButton"); 
 		FacebookButton = transform.FindChildRecursively("FacebookButton");
+
+		FFButton = transform.FindChildRecursively("FFButtonDEBUG");
+
+		if( !LugusDebug.allowDebugging )
+		{
+			FFButton.gameObject.SetActive(false);
+		}
 
 		activated = true; // this is the default one, is activated at start
 	}
@@ -105,8 +114,21 @@ public class StartMenu : IMenu
 		if( hit == null )
 			return;
 
+		if( LugusDebug.allowDebugging )
+		{
+			if( hit == FFButton )
+			{
+				CrossSceneInfo.use.autoPlay = true;
+				
+				MenuManager.use.ChangeStateDelayed(MenuManager.MenuState.WorldSelect, 0.75f);
+				MenuManager.ButtonPressEffect( FFButton, 0.75f );
+			}
+		}
+
 		if( hit == PlayButton )
 		{
+			CrossSceneInfo.use.autoPlay = false;
+
 			MenuManager.use.ChangeStateDelayed(MenuManager.MenuState.WorldSelect, 0.75f);
 			MenuManager.ButtonPressEffect( PlayButton, 0.75f );
 		}

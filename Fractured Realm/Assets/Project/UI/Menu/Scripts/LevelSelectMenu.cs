@@ -99,12 +99,14 @@ public class LevelSelectMenu : IMenu
 
 			//button.collider2D.enabled = true;
 
+			float scoreDelay = 0.0f; 
 			if( count < 5 )
 			{
 				// top 4 buttons slide in from the top
 				Vector3 target = button.transform.localPosition;
 				button.transform.localPosition = button.transform.localPosition.y( LugusUtil.UIHeight + button.renderer.bounds.extents.y );
 
+				scoreDelay = (count % 5) * delayPerItem + timePerItem;
 				button.gameObject.MoveTo( target ).Delay( (count % 5) * delayPerItem ).Time ( timePerItem ).EaseType( iTween.EaseType.easeOutBounce ).Execute();
 			}
 			else
@@ -112,9 +114,23 @@ public class LevelSelectMenu : IMenu
 				// bottom 4 buttons slide in from the bottom
 				Vector3 target = button.transform.localPosition;
 				button.transform.localPosition = button.transform.localPosition.y( - button.renderer.bounds.extents.y );
-
+				
+				scoreDelay = (count % 5) * delayPerItem + (3*delayPerItem) + timePerItem;
 				// eyeball for extra delay per item
 				button.gameObject.MoveTo( target ).Delay( (count % 5) * delayPerItem + (3*delayPerItem) ).Time ( timePerItem ).EaseType( iTween.EaseType.easeOutBounce ).Execute();
+			}
+
+			int score = CampaignManager.use.currentCampaign.currentCampaignPart.GetGroupScore( count - 1 );
+			for( int i = 1; i <= 3; ++i )
+			{
+				Transform feather = button.transform.FindChild("Feather" + i);
+				feather.RevertLocal();
+
+				if( i <= score )
+				{
+					Vector3 target = feather.localPosition + (feather.up * 1.2f);
+					feather.gameObject.MoveTo( target ).IsLocal( true ).Delay( scoreDelay + ((i-1) * 0.3f) ).Time(0.5f).EaseType(iTween.EaseType.easeOutBack).Execute();
+				}
 			}
 
 			++count;
@@ -143,6 +159,17 @@ public class LevelSelectMenu : IMenu
 				Vector3 target = button.transform.localPosition.yAdd( -0.2f );
 				
 				button.gameObject.MoveTo( target ).IsLocal(true).Delay( Random.Range(0.0f, 0.6f) ).Looptype(iTween.LoopType.pingPong).EaseType(iTween.EaseType.easeInOutSine).Time(Random.Range(1.5f, 2.0f)).Execute();
+			}
+
+			
+			
+			if( ( count - 1 ) == CrossSceneInfo.use.completedExerciseGroupIndex )
+			{
+				// the previous one was just completed last playsession
+				// that means the current one is only just unlocked!
+				
+				iTween.PunchScale( button.gameObject, new Vector3( 1.0f, 1.0f, 1.0f ), 2.0f);
+				// TODO: play sound? 
 			}
 
 			
@@ -182,6 +209,12 @@ public class LevelSelectMenu : IMenu
 		{
 			Transform button = levelButtonsRoot.FindChild("LevelNumberBoard0" + i);
 			button.StoreLocal();
+
+			for( int j = 1; j < 4; ++j )
+			{
+				Transform feather = button.transform.FindChild("Feather" + j);
+				feather.StoreLocal();
+			}
 
 			this.levelButtons.Add( button );
 		}
@@ -244,8 +277,21 @@ public class LevelSelectMenu : IMenu
 
 		yield return new WaitForSeconds(1.1f);
 
+		bool autoPlay = CrossSceneInfo.use.autoPlay;
+
 		CrossSceneInfo.use.Reset();
-		CrossSceneInfo.use.nextScene = CrossSceneInfo.GameplaySceneName;
+		CrossSceneInfo.use.autoPlay = autoPlay;
+
+		ExerciseGroup groupLoaded = ExerciseLoader.LoadExerciseGroup( CampaignManager.use.currentCampaign.currentCampaignPart.currentExerciseGroup );
+		if( !string.IsNullOrEmpty( groupLoaded.preSceneName ) )
+		{
+			CrossSceneInfo.use.nextScene = groupLoaded.preSceneName;//CrossSceneInfo.GameplaySceneName;
+		}
+		else
+		{
+			CrossSceneInfo.use.nextScene = CrossSceneInfo.GameplaySceneName;
+		}
+
 		//CrossSceneInfo.use.currentExerciseGroup = exerciseGroupName;
 		
 		Debug.Log("LevelSelectMenu : loading level " + CampaignManager.use.currentCampaign.currentCampaignPart.currentExerciseGroup );

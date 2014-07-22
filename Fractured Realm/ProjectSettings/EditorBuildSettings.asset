@@ -11,3 +11,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Builders/LevelSelect/LevelSelect.unity
   - enabled: 1
     path: Assets/Scenes/Builders/GameplaySetup/GameplaySetup.unity
+  - enabled: 1
+    path: Assets/Scenes/Production/Story/Story_1_1_intro.unity
+  - enabled: 1
+    path: Assets/Scenes/Production/Story/Story_1_2_attack.unity

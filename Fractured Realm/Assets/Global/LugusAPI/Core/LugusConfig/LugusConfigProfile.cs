@@ -13,6 +13,7 @@ public interface ILugusConfigProfile
 	void Load();
 
 	void Store();
+	void Clear();
 
 	bool Exists(string key);
 
@@ -175,6 +176,12 @@ public class LugusConfigProfileDefault : ILugusConfigProfile
 			provider.Store(Data, Name);
 
 		_changed = false;
+	}
+
+	public void Clear()
+	{
+		this.Data = new Dictionary<string, string>();
+		_changed = true;
 	}
 
 	public bool Exists(string key)

@@ -578,13 +578,22 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		// set level completed
 		if( CrossSceneInfo.use.currentCampaign != null )
 		{
-			CrossSceneInfo.use.currentCampaign.currentCampaignPart.CompleteGroup( CrossSceneInfo.use.currentCampaign.currentCampaignPart.currentExerciseGroupIndex, 3 );
-			// TODO: set level score! (now always 3)
+			int score = 3; // TODO: set level score! (now always 3)
+
+			int currentGroupIndex = CrossSceneInfo.use.currentCampaign.currentCampaignPart.currentExerciseGroupIndex;
+			bool isReplay = CrossSceneInfo.use.currentCampaign.currentCampaignPart.IsGroupCompleted( currentGroupIndex );
+
+			int registeredScore = CrossSceneInfo.use.currentCampaign.currentCampaignPart.GetGroupScore( currentGroupIndex );
+
+			if( registeredScore < score )
+				CrossSceneInfo.use.currentCampaign.currentCampaignPart.CompleteGroup( currentGroupIndex, score );
+
+			if( !isReplay ) // if we're replaying, no need to let the main menu know we've completed this one just now, already did that before
+				CrossSceneInfo.use.completedExerciseGroupIndex = currentGroupIndex;
 		}
 
 		//CrossSceneInfo.use.Reset(); // NOTE: not if we choose next
 		//CrossSceneInfo.use.nextScene = CrossSceneInfo.MainMenuSceneName;
-		CrossSceneInfo.use.completedExerciseGroupIndex = CrossSceneInfo.use.currentCampaign.currentCampaignPart.currentExerciseGroupIndex;
 
 		HUDManager.use.endMenu.Activate();
 
@@ -688,8 +697,17 @@ public class GameManager : LugusSingletonExisting<GameManager>
 		
 		CrossSceneInfo.use.completedExerciseGroupIndex = -2; // from now on, we need to actually complete the level for this field to have effect
 		CampaignManager.use.currentCampaign = CrossSceneInfo.use.currentCampaign;
-		
-		StartGame( ExerciseLoader.LoadExerciseGroup(CrossSceneInfo.use.currentCampaign.currentCampaignPart.currentExerciseGroup), FR.GameState.ExerciseStart );
+
+		if( !CrossSceneInfo.use.autoPlay )
+		{
+			StartGame( ExerciseLoader.LoadExerciseGroup(CrossSceneInfo.use.currentCampaign.currentCampaignPart.currentExerciseGroup), FR.GameState.ExerciseStart );
+		}
+		else
+		{
+			
+			ExerciseManager.use.currentExerciseGroup = ExerciseManager.use.LoadExerciseGroup( CrossSceneInfo.use.currentCampaign.currentCampaignPart.currentExerciseGroup );
+			FRGameTester.use.TestExerciseGroup( ExerciseManager.use.currentExerciseGroup );
+		}
 
 	}
 	

@@ -2,4 +2,8 @@
 <Config>
 	<Campaign_1_1_0.completed>True</Campaign_1_1_0.completed>
 	<Campaign_1_1_0.score>3</Campaign_1_1_0.score>
+	<Campaign_1_1_1.completed>True</Campaign_1_1_1.completed>
+	<Campaign_1_1_1.score>3</Campaign_1_1_1.score>
+	<Campaign_1_1_2.completed>True</Campaign_1_1_2.completed>
+	<Campaign_1_1_2.score>3</Campaign_1_1_2.score>
 </Config>

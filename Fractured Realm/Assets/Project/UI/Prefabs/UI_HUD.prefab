@@ -1064,7 +1064,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100052}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -5}
+  m_LocalPosition: {x: 0, y: 0, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400064}
@@ -1584,8 +1584,8 @@ BoxCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Size: {x: 13.5656853, y: 3.40312505}
-  m_Center: {x: -.196157455, y: 0}
+  m_Size: {x: 12.5850811, y: 3.40312505}
+  m_Center: {x: -.163551331, y: 0}
 --- !u!102 &10200000
 TextMesh:
   serializedVersion: 3
@@ -1916,6 +1916,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dce87e617b6f407289add80883cdbeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Background: {fileID: 0}
   MenuButton: {fileID: 0}
   RetryButton: {fileID: 0}
   NextButton: {fileID: 0}
@@ -1939,7 +1940,7 @@ MonoBehaviour:
   width: -1
   autoUpdate: 0
   allowSmallerCharacterSize: 1
-  allowSplit: 1
+  allowSplit: 0
   textMesh: {fileID: 0}
 --- !u!212 &21200000
 SpriteRenderer:

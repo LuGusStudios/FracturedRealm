@@ -624,6 +624,13 @@ public class MathInputManager : LugusSingletonExisting<MathInputManager>
 		{
 			GUILayout.Box("\nCurrent message : " + MathManager.use.lastOperationMessage + "\n");
 		}
+
+		GUILayout.Space(10);
+
+		if( GUILayout.Button("\nComplete level\n") )
+		{
+			GameManager.use.ChangeState( FR.GameState.ExerciseEnd );
+		}
 		
 		GUILayout.EndVertical();
 		GUILayout.EndArea();
