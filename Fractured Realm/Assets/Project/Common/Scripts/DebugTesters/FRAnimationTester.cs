@@ -58,6 +58,7 @@ public class FRAnimationTester : LugusSingletonRuntime<FRAnimationTester>
 	protected FR.OperationType currentOperation = FR.OperationType.ADD;
 
 	protected Vector2 scrollPosition = Vector2.zero;
+	protected FR.Target composition = FR.Target.BOTH;
 
 	public void DrawGUI(Fraction fr1, Fraction fr2)
 	{
@@ -98,7 +99,31 @@ public class FRAnimationTester : LugusSingletonRuntime<FRAnimationTester>
 				return;
 			}
 
-			GUILayout.Space(30);
+			GUILayout.BeginHorizontal();
+
+			List<FR.Target> compositions = new List<FR.Target>();
+			compositions.Add( FR.Target.NUMERATOR );
+			compositions.Add( FR.Target.DENOMINATOR );
+			compositions.Add( FR.Target.BOTH );
+
+			foreach( FR.Target target in compositions )
+			{
+				if( target == composition )
+				{
+					GUILayout.Label("" + target);
+				}
+				else
+				{
+					if( GUILayout.Button("" + target ) )
+					{
+						composition = target;
+					}
+				}
+			}
+
+			GUILayout.EndHorizontal();
+
+			GUILayout.Space(10);
 			scrollPosition = GUILayout.BeginScrollView( scrollPosition );
 
 			List<FR.Animation> animations = FRAnimations.use.OperationAnimations[ currentOperation ];
@@ -196,7 +221,7 @@ public class FRAnimationTester : LugusSingletonRuntime<FRAnimationTester>
 
 
 
-		yield return this.gameObject.StartLugusRoutine( FROperationTester.use.TestOperationRoutine( animation.operation, null, null, FR.Target.BOTH ) ).Coroutine;
+		yield return this.gameObject.StartLugusRoutine( FROperationTester.use.TestOperationRoutine( animation.operation, null, null, /*FR.Target.BOTH*/ composition ) ).Coroutine;
 
 		FRAnimations.use.OperationAnimations[ animation.operation ] = starterAnimations;
 		

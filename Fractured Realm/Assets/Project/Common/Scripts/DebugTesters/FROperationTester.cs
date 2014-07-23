@@ -230,6 +230,13 @@ public class FROperationTester : LugusSingletonRuntime<FROperationTester>
 		ExerciseManager.use.currentExerciseGroup = group;
 		ExerciseManager.use.currentExerciseGroupIndex = 0;
 
+		// TODO: should not be necessary if the main gameplay scene is empty of residual debug assets
+		GameObject world = GameObject.Find("WORLD");
+		if( world != null )
+			GameObject.Destroy(world);
+
+		yield return new WaitForSeconds(0.1f);
+
 		if( skipStartSequence || immediateMode )
 		{
 			GameManager.use.currentState = FR.GameState.NONE;
